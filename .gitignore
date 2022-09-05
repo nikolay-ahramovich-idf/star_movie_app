@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 **/pubspec.lock
+.metadata
 
 # Web related
 lib/generated_plugin_registrant.dart
