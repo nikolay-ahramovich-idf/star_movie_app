@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:star_movie_app/di/app_injector.dart';
 
-void main() {
+Future<void> main() async {
+  await initAppInjector();
   runApp(const MyApp());
 }
 
