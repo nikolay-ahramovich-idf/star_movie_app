@@ -1,8 +1,9 @@
-abstract class Bloc<State> {
-  initState();
-  State? get state;
-  set state(State? newState);
-  Stream<State> get stream;
+abstract class Bloc<S> {
+  S get state;
+  set state(S newState);
+  Stream<S?> get stream;
+
+  void initState();
   void add(dynamic data);
   void dispose();
 }

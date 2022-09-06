@@ -1,7 +1,7 @@
-abstract class BaseArguments {
+abstract class BaseArguments<T> {
+  final T? result;
+
   BaseArguments({
     this.result,
   });
-
-  Function(dynamic value)? result;
 }
