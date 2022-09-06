@@ -4,6 +4,6 @@ abstract class Bloc<S> {
   Stream<S?> get stream;
 
   void initState();
-  void add(dynamic data);
+  void add(S data);
   void dispose();
 }

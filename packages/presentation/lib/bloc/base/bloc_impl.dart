@@ -25,7 +25,7 @@ abstract class BlocImpl<S> implements Bloc<S> {
   Stream<S?> get stream => _dataStreamController.stream;
 
   @override
-  void add(dynamic data) {
+  void add(S data) {
     _dataStreamController.add(data);
   }
 
