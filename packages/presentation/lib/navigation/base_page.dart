@@ -3,9 +3,9 @@ import 'base_arguments.dart';
 
 class BasePage<T extends BaseArguments> extends Page {
   const BasePage({
-    @required required LocalKey key,
-    @required required String name,
-    @required required this.builder,
+    required LocalKey key,
+    required String name,
+    required this.builder,
     T? arguments,
   }) : super(key: key, name: name, arguments: arguments);
 

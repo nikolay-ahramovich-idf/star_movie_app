@@ -1,1 +1,1 @@
-const delayInSeconds = 3;
+const delayInSeconds = 0;

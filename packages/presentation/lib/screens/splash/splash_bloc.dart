@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/navigation/app_navigator.dart';
-import 'package:presentation/screens/main/main_screen.dart';
+import 'package:presentation/screens/home/home_screen.dart';
 import 'package:presentation/screens/splash/data/splash_data.dart';
 
 abstract class SplashBloc implements Bloc<SplashData> {
@@ -23,6 +23,6 @@ class _SplashBloc extends BlocImpl<SplashData> implements SplashBloc {
   }
 
   void _goToMainPage() {
-    _appNavigator.popAndPush(MainScreen.page());
+    _appNavigator.popAndPush(HomeScreen.page());
   }
 }
