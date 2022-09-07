@@ -8,6 +8,9 @@ abstract class BlocImpl<S> implements Bloc<S> {
   final _dataStreamController = StreamController<S?>();
   S _state;
 
+  @protected
+  final appNavigator = GetIt.I.get<AppNavigator>();
+
   BlocImpl({required S initState}) : _state = initState;
 
   @override
@@ -17,9 +20,6 @@ abstract class BlocImpl<S> implements Bloc<S> {
   @override
   @protected
   set state(S newState) => _state = newState;
-
-  @protected
-  final appNavigator = GetIt.I.get<AppNavigator>();
 
   @override
   Stream<S?> get stream => _dataStreamController.stream;
