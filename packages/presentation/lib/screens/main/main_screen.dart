@@ -9,7 +9,7 @@ class MainScreen extends StatelessWidget {
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,
-        builder: (contex) => const MainScreen(),
+        builder: (_) => const MainScreen(),
       );
 
   @override

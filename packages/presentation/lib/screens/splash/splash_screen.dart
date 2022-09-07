@@ -31,8 +31,8 @@ class _SplashScreenState extends BlocScreenState<SplashScreen, SplashBloc> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            splashScreenStartColorGradient,
-            splashScreenEndColorGradient,
+            AppColors.splashScreenStartColorGradient,
+            AppColors.splashScreenEndColorGradient,
           ],
         ),
       ),
@@ -41,7 +41,7 @@ class _SplashScreenState extends BlocScreenState<SplashScreen, SplashBloc> {
         body: Center(
           child: Image(
             image: AssetImage(
-              splashScreenMainImagePath,
+              AppImages.splashScreenMainImagePath,
               package: packageName,
             ),
           ),
@@ -54,7 +54,7 @@ class _SplashScreenState extends BlocScreenState<SplashScreen, SplashBloc> {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: splashScreenEndColorGradient,
+        systemNavigationBarColor: AppColors.splashScreenEndColorGradient,
         statusBarBrightness: Brightness.dark,
       ),
     );
