@@ -30,10 +30,7 @@ class _SplashScreenState extends BlocScreenState<SplashScreen, SplashBloc> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            AppColors.splashScreenStartColorGradient,
-            AppColors.splashScreenEndColorGradient,
-          ],
+          colors: AppColors.splashScreenGradient,
         ),
       ),
       child: const Scaffold(
@@ -42,7 +39,6 @@ class _SplashScreenState extends BlocScreenState<SplashScreen, SplashBloc> {
           child: Image(
             image: AssetImage(
               AppImages.splashScreenMainImagePath,
-              package: packageName,
             ),
           ),
         ),

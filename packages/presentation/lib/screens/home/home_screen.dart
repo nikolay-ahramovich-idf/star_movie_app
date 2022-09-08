@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/navigation/base_page.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
-  static const _routeName = '/MainScreen';
+  static const _routeName = '/HomeScreen';
 
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,
-        builder: (_) => const MainScreen(),
+        builder: (_) => const HomeScreen(),
       );
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Main Screen'),
+        child: Text('Home Screen'),
       ),
     );
   }
