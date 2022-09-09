@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:presentation/app/app_bloc.dart';
-import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
-import 'package:presentation/screens/splash_screen.dart';
+import 'package:presentation/const.dart';
 
 class StarMovieApp extends StatefulWidget {
   const StarMovieApp({super.key});
@@ -15,6 +15,7 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: bloc.stream,
         builder: (context, snapshot) {
