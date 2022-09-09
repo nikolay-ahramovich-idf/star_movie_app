@@ -8,7 +8,7 @@ import 'package:presentation/navigation/base_page.dart';
 abstract class AppBloc implements Bloc<AppData> {
   factory AppBloc() => _AppBloc();
 
-    void handleRemoveRouteSettings(RouteSettings value);
+  void handleRemoveRouteSettings(RouteSettings value);
 }
 
 class _AppBloc extends BlocImpl<AppData> implements AppBloc {
@@ -95,8 +95,7 @@ class _AppBloc extends BlocImpl<AppData> implements AppBloc {
     _updateData();
   }
 
-  BasePage? _currentPage() =>
-      state.pages.lastOrNull;
+  BasePage? _currentPage() => state.pages.lastOrNull;
 
   void _updateData() {
     super.add(state);
