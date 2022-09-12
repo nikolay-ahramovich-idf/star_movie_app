@@ -26,7 +26,6 @@ abstract class BlocImpl<S> implements Bloc<S> {
 
   @override
   void add(S data) {
-    // TODO possible remove possible not
     _state = state;
     _dataStreamController.add(data);
   }
