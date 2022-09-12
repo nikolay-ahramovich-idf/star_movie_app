@@ -1,11 +1,14 @@
-import 'package:dio/dio.dart';
+class DataConfig {
+  static const configPath = 'assets/json/config.json';
+}
 
 class TraktApiConfig {
   static const apiPath = 'https://api.trakt.tv';
 
+  static const traktApiKeyHeaderName = 'trakt-api-key';
+  static const traktApiKeyJsonConfigName = 'traktApiKey';
+
   static const apiHeaders = <String, dynamic>{
-    'trakt-api-key':
-        '03d54df75db1932571fa3664bf39ab7ba9178861a57958310937f9d51ce37d6f',
     'trakt-api-version': 2,
     'Content-Type': 'application/json',
   };
@@ -30,6 +33,19 @@ class TraktMovieCounts {
   static const maxAdditionalMoviesCount = 50;
 }
 
-class TMDBConfig {
-  static const apiKey = 'c75aefc9adf4486968bb9578ee595f9d';
+class IMDBConfig {
+  static const apiScheme = 'http';
+  static const apiPath = 'img.omdbapi.com';
+
+  static const imdbApiKeyQueryName = 'apikey';
+  static const imdbApiKeyJsonConfigName = 'imdbApiKey';
+}
+
+class IMDBQueryParameters {
+  static const imageQueryKey = 'i';
+}
+
+class DISingletonInstanceNames {
+  static const traktApiDio = 'traktApiDio';
+  static const traktApiService = 'traktApiService';
 }

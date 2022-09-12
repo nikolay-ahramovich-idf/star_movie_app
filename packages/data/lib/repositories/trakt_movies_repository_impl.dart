@@ -1,6 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:data/const.dart';
 import 'package:data/services/api_base_service.dart';
-import 'package:dio/dio.dart';
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/repositories/movies_repository.dart';
 
@@ -20,15 +20,14 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
   }
 
   Future<List<BaseMovieEntity>> _getMovies(String moviesUrl) async {
-    final moviesResponse =
-        await _traktApiService.get<List<Map<String, dynamic>>>(
+    final moviesResponse = await _traktApiService.get<List<dynamic>>(
       moviesUrl,
       queryParameters: TraktApiPathsQueryParameters.extendedQuery,
     );
 
     final headers = moviesResponse.headers;
-    final totalMoviesCount =
-        headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first as int;
+    final totalMoviesCount = int.parse(
+        headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first ?? '');
 
     int additionalMoviesCount =
         totalMoviesCount >= TraktMovieCounts.maxMoviesCount
@@ -42,7 +41,7 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
     paginationQueryParameters['limit'] = additionalMoviesCount;
 
     final additionalMoviesResponse =
-        await _traktApiService.get<List<Map<String, dynamic>>>(
+        await _traktApiService.get<List<dynamic>>(
       moviesUrl,
       queryParameters: paginationQueryParameters,
     );
