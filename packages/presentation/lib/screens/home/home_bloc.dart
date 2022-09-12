@@ -9,7 +9,7 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
-abstract class HomeBloc implements Bloc<HomeData> {
+abstract class HomeBloc implements Bloc<HomeData?> {
   factory HomeBloc() => _HomeBloc(
         GetIt.I.get<GetNowShowingMoviesUseCase>(),
         GetIt.I.get<GetComingSoonMoviesUseCase>(),
@@ -24,7 +24,7 @@ abstract class HomeBloc implements Bloc<HomeData> {
   void goToMovieDetailsPage(BaseMovieEntity movieDetails);
 }
 
-class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
+class _HomeBloc extends BlocImpl<HomeData?> implements HomeBloc {
   final GetNowShowingMoviesUseCase _getNowShowingMoviesUseCase;
   final GetComingSoonMoviesUseCase _getComingSoonMoviesUseCase;
   final ConvertApiRuntimeUsecase _convertApiRuntimeUsecase;
@@ -44,12 +44,14 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
 
   @override
   Future<void> showNowShowingMovies() async {
+    add(null);
     final movies = await _getNowShowingMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }
 
   @override
   Future<void> showComingSoonMovies() async {
+    add(null);
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }

@@ -14,6 +14,7 @@ class AppSizes {
   static const double size13 = 13;
   static const double size14 = 14;
   static const double size15 = 15;
+  static const double size16 = 16;
   static const double size18 = 18;
   static const double size20 = 20;
   static const double size24 = 24;
@@ -56,6 +57,8 @@ class HomeScreenSizes {
   static const double searchIconSize = 35;
   static const double selectionBorderRadiusSize = 30;
   static const double selectionBorderWidth = 2;
+  static const double gridChildAspecRatio = 1 / 2.15;
+  static const double gridViewMainAxisSpacing = 30;
   static const double bottomNavBarIconSize = 30;
 }
 
@@ -68,7 +71,7 @@ class HomeScreenStyles {
 
 class RatingWidgetConfig {
   static const starColor = Color.fromARGB(255, 255, 192, 69);
-  static const double starSize = 14;
+  static const double starSize = 16;
   static const double minCurrentRating = 0;
   static const double maxCurrentRating = 10;
 }
@@ -99,4 +102,10 @@ class MovieCardWidgetStyles {
     fontSize: 12,
     fontFamily: AppFonts.sfProTextFontName,
   );
+}
+
+class ShimmerLoaderWidgetColors {
+  static const fillColor = Colors.grey;
+  static final baseColor = Colors.grey[400]!;
+  static final hightlightColor = Colors.grey[300]!;
 }

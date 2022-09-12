@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:presentation/app/app_bloc.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
-import 'package:presentation/const.dart';
 
 class StarMovieApp extends StatefulWidget {
   const StarMovieApp({super.key});

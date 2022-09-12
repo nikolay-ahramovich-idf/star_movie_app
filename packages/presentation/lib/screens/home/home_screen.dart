@@ -4,6 +4,7 @@ import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/home/widgets/movie_card.dart';
+import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 
 enum SelectedMoviesType {
   nowShowing,
@@ -216,9 +217,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1 / 2.15,
+                        childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
                         crossAxisSpacing: AppSizes.size13,
-                        mainAxisSpacing: 30,
+                        mainAxisSpacing: HomeScreenSizes.gridViewMainAxisSpacing,
                       ),
                       itemBuilder: (context, index) {
                         final movie = data.movies[index];
@@ -243,7 +244,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                     ),
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const ShimmerLoader();
                 }
               },
             ),
