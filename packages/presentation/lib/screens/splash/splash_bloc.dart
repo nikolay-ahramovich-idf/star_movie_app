@@ -6,7 +6,7 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/screens/home/home_screen.dart';
 
 abstract class SplashBloc implements Bloc<BaseState> {
-  factory SplashBloc() => _SplashBloc(GetIt.I.get<DelayUsecase>());
+  factory SplashBloc(DelayUsecase delayUsecase) => _SplashBloc(delayUsecase);
 }
 
 class _SplashBloc extends BlocImpl<BaseState> implements SplashBloc {

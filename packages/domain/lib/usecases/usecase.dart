@@ -1,5 +1,5 @@
 abstract class UseCase<Output> {
-  Future<Output> call();
+  Output call();
 }
 
 abstract class UseCaseParams<Params, Output> {
