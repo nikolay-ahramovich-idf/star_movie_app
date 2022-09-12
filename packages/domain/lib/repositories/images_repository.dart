@@ -1,3 +1,3 @@
 abstract class ImagesRepository {
-  String getImageById(int id);
+  String getImageUrlById(String id);
 }
