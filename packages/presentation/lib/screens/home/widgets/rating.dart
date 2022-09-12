@@ -18,6 +18,7 @@ class Rating extends StatelessWidget {
     required this.starColor,
     required this.starSize,
     required this.mode,
+    super.key,
   }) {
     normalizedRating = _normalizeRating(
       rating,

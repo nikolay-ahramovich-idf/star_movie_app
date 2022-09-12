@@ -4,7 +4,11 @@ import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/home/widgets/movie_card.dart';
-import 'package:presentation/screens/home/widgets/rating.dart';
+
+enum SelectedMoviesType {
+  nowShowing,
+  comingSoon,
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +26,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
+  late SelectedMoviesType selectedType;
+
+  void changeMoviesType(SelectedMoviesType newType) {
+    setState(
+      () => selectedType = newType,
+    );
+  }
+
+  @override
+  void initState() {
+    selectedType = SelectedMoviesType.nowShowing;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +79,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
             ),
             Container(
               width: double.infinity,
-              height: 50,
+              height: AppSizes.size50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                   HomeScreenSizes.selectionBorderRadiusSize,
@@ -70,6 +88,117 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                   width: HomeScreenSizes.selectionBorderWidth,
                   color: HomeScreenColors.selectionBorderColor,
                 ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSizes.size4,
+                        AppSizes.size4,
+                        0,
+                        AppSizes.size4,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: selectedType == SelectedMoviesType.nowShowing
+                              ? HomeScreenColors.selectionActiveColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(
+                            HomeScreenSizes.selectionBorderRadiusSize,
+                          ),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            if (selectedType != SelectedMoviesType.nowShowing) {
+                              changeMoviesType(SelectedMoviesType.nowShowing);
+                              bloc.showNowShowingMovies();
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: AppSizes.size18,
+                              ),
+                              if (selectedType == SelectedMoviesType.nowShowing)
+                                const Image(
+                                  image: AssetImage(
+                                    AssetsImagesPaths.playButtonPath,
+                                  ),
+                                ),
+                              const SizedBox(
+                                width: AppSizes.size6,
+                              ),
+                              Text(
+                                'Now Showing',
+                                style: selectedType ==
+                                        SelectedMoviesType.nowShowing
+                                    ? SelectionButtonStyles
+                                        .activeButtonTextStyle
+                                    : SelectionButtonStyles
+                                        .inactiveButtonTextStyle,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        0,
+                        AppSizes.size4,
+                        AppSizes.size4,
+                        AppSizes.size4,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: selectedType == SelectedMoviesType.comingSoon
+                              ? HomeScreenColors.selectionActiveColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(
+                            HomeScreenSizes.selectionBorderRadiusSize,
+                          ),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            if (selectedType != SelectedMoviesType.comingSoon) {
+                              changeMoviesType(SelectedMoviesType.comingSoon);
+                              bloc.showComingSoonMovies();
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: AppSizes.size18,
+                              ),
+                              if (selectedType == SelectedMoviesType.comingSoon)
+                                const Image(
+                                  image: AssetImage(
+                                    AssetsImagesPaths.playButtonPath,
+                                  ),
+                                ),
+                              const SizedBox(
+                                width: AppSizes.size6,
+                              ),
+                              Text(
+                                'Coming Soon',
+                                style: selectedType ==
+                                        SelectedMoviesType.comingSoon
+                                    ? SelectionButtonStyles
+                                        .activeButtonTextStyle
+                                    : SelectionButtonStyles
+                                        .inactiveButtonTextStyle,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(
@@ -83,7 +212,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                   return Expanded(
                     child: GridView.builder(
                       shrinkWrap: true,
-                      itemCount: 5,
+                      itemCount: data.movies.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -92,12 +221,29 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                         mainAxisSpacing: 30,
                       ),
                       itemBuilder: (context, index) {
-                        return const MovieCard();
+                        final movie = data.movies[index];
+
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            bloc.goToMovieDetailsPage(movie);
+                          },
+                          child: SingleChildScrollView(
+                            child: MovieCard(
+                              movie.title,
+                              rating: movie.rating,
+                              genres: movie.genres,
+                              runtime: bloc.convertApiRuntime(movie.runtime),
+                              certification: movie.certification,
+                              imageUrl: bloc.getImageUrlById(movie.imdbId),
+                            ),
+                          ),
+                        );
                       },
                     ),
                   );
                 } else {
-                  return const CircularProgressIndicator(); // TODO possible remove
+                  return const CircularProgressIndicator();
                 }
               },
             ),

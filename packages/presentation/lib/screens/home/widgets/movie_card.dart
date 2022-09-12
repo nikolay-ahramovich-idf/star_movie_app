@@ -1,100 +1,120 @@
-import 'package:domain/entities/base_movie_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:presentation/const.dart';
+import 'package:presentation/extensions/string.dart';
 import 'package:presentation/screens/home/widgets/rating.dart';
 
 class MovieCard extends StatelessWidget {
-  // final BaseMovieEntity movieEntity;
+  final String title;
+  final double rating;
+  final List<String> genres;
+  final String runtime;
+  final String certification;
+  final String? imageUrl;
 
-  // const MovieCard({super.key, required this.movieEntity});
-
-  const MovieCard({
+  const MovieCard(
+    this.title, {
+    required this.rating,
+    required this.genres,
+    required this.runtime,
+    required this.certification,
+    this.imageUrl,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
-            child: Container(
-              width: double.infinity,
-              child: Image.network(
-                'https://image.tmdb.org/t/p/w200/AcKVlWaNVVVFQwro3nLXqPljcYA.jpg',
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 2 / 3,
+          child: SizedBox(
+            width: double.infinity,
+            child: imageUrl == null
+                ? const ImageNotExist()
+                : Image.network(
+                    imageUrl as String,
+                    errorBuilder: (context, error, stackTrace) => const Center(
+                      child: ImageNotExist(),
+                    ),
+                    fit: BoxFit.contain,
+                  ),
+          ),
+        ),
+        const SizedBox(
+          height: AppSizes.size10,
+        ),
+        Rating(
+          rating,
+          minCurrentRating: RatingWidgetConfig.minCurrentRating,
+          maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
+          starColor: RatingWidgetConfig.starColor,
+          starSize: RatingWidgetConfig.starSize,
+          mode: Mode.base,
+        ),
+        const SizedBox(
+          height: AppSizes.size10,
+        ),
+        Text(
+          title,
+          style: MovieCardWidgetStyles.movieNameTextStyle,
+        ),
+        const SizedBox(
+          height: AppSizes.size10,
+        ),
+        Wrap(
+          children: [
+            Text(
+              genres.first.capitalize(),
+              style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Rating(
-            6.8,
-            minCurrentRating: RatingWidgetConfig.minCurrentRating,
-            maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
-            starColor: RatingWidgetConfig.starColor,
-            starSize: RatingWidgetConfig.starSize,
-            mode: Mode.base,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'John Week 3 Welcome to Hell',
-            style: MovieCardWidget.movieNameTextStyle,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: const [
-              Text(
-                'Crime',
-                style: MovieCardWidget.movieAdditionalInfoTextStyle,
-              ),
-              SizedBox(
-                width: 3,
-              ),
-              Text(
-                '\u00b7',
-                style: MovieCardWidget.movieAdditionalInfoTextStyle,
-              ),
-              SizedBox(
-                width: 3,
-              ),
-              Text(
-                '2hr 10m | R',
-                style: MovieCardWidget.movieAdditionalInfoTextStyle,
-              ),
-            ],
-          )
-        ],
-      ),
+            const SizedBox(
+              width: AppSizes.size3,
+            ),
+            const Text(
+              '\u00b7',
+              style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
+            ),
+            const SizedBox(
+              width: AppSizes.size3,
+            ),
+            Text(
+              runtime,
+              style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
+            ),
+            const SizedBox(
+              width: AppSizes.size2,
+            ),
+            const Text(
+              '|',
+              style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
+            ),
+            const SizedBox(
+              width: AppSizes.size2,
+            ),
+            Text(
+              certification,
+              style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
+            ),
+          ],
+        )
+      ],
     );
   }
 }
 
-// @override
-// Widget build(BuildContext context) {
-//   return Container(
-//     decoration: BoxDecoration(border: Border.all(width: 2)),
-//     child: Column(
-//       children: [
-//         Image.network(
-//           'https://image.tmdb.org/t/p/w300/AcKVlWaNVVVFQwro3nLXqPljcYA.jpg',
-//         ),
-//         Rating(
-//           6.8,
-//           minCurrentRating: RatingWidgetConfig.minCurrentRating,
-//           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
-//           starColor: RatingWidgetConfig.starColor,
-//           mode: Mode.base,
-//         ),
-//       ],
-//     ),
-//   );
-// }
+class ImageNotExist extends StatelessWidget {
+  const ImageNotExist({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      'Image Not Exist Yet',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    );
+  }
+}
