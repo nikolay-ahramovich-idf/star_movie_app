@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum Mode { base, full }
 
-class Rating extends StatelessWidget {
+class RatingWidget extends StatelessWidget {
   static const minNewRating = 0;
   static const maxNewRating = 5;
 
@@ -11,7 +11,7 @@ class Rating extends StatelessWidget {
   final double starSize;
   final Mode mode;
 
-  Rating(
+  RatingWidget(
     double rating, {
     required double minCurrentRating,
     required double maxCurrentRating,

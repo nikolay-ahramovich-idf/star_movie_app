@@ -1,7 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/usecases/convert_api_runtime_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
-import 'package:get_it/get_it.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';

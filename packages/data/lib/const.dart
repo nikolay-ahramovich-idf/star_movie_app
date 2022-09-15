@@ -7,11 +7,6 @@ class TraktApiConfig {
 
   static const traktApiKeyHeaderName = 'trakt-api-key';
   static const traktApiKeyJsonConfigName = 'traktApiKey';
-
-  static const apiHeaders = <String, dynamic>{
-    'trakt-api-version': 2,
-    'Content-Type': 'application/json',
-  };
 }
 
 class TraktApiPaths {
@@ -31,18 +26,6 @@ class TraktMovieCounts {
   static const maxMoviesCount = 60;
   static const minAdditionalMoviesCount = 10;
   static const maxAdditionalMoviesCount = 50;
-}
-
-class IMDBConfig {
-  static const apiScheme = 'http';
-  static const apiPath = 'img.omdbapi.com';
-
-  static const imdbApiKeyQueryName = 'apikey';
-  static const imdbApiKeyJsonConfigName = 'imdbApiKey';
-}
-
-class IMDBQueryParameters {
-  static const imageQueryKey = 'i';
 }
 
 class DISingletonInstanceNames {

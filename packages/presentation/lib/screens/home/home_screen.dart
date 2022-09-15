@@ -3,7 +3,7 @@ import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
-import 'package:presentation/screens/home/widgets/movie_card.dart';
+import 'package:presentation/screens/home/widgets/movie_card_widget.dart';
 import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 
 enum SelectedMoviesType {
@@ -231,7 +231,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                             bloc.goToMovieDetailsPage(movie);
                           },
                           child: SingleChildScrollView(
-                            child: MovieCard(
+                            child: MovieCardWidget(
                               movie.title,
                               rating: movie.rating,
                               genres: movie.genres,

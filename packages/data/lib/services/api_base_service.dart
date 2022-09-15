@@ -5,8 +5,6 @@ abstract class ApiBaseService {
     String path, {
     Map<String, dynamic> queryParameters,
   });
-
-  void updateHeaders(Map<String, dynamic> newHeaders);
 }
 
 class ApiServiceImpl implements ApiBaseService {
@@ -22,10 +20,5 @@ class ApiServiceImpl implements ApiBaseService {
     final response = await _dio.get<T>(path, queryParameters: queryParameters);
 
     return response;
-  }
-
-  @override
-  void updateHeaders(Map<String, dynamic> newHeaders) {
-    _dio.options.headers = newHeaders;
   }
 }

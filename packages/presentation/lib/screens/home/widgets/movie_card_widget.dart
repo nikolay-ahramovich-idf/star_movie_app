@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
-import 'package:presentation/screens/home/widgets/rating.dart';
+import 'package:presentation/screens/home/widgets/rating_widget.dart';
 
-class MovieCard extends StatelessWidget {
+class MovieCardWidget extends StatelessWidget {
   final String title;
   final double rating;
   final List<String> genres;
@@ -11,7 +11,7 @@ class MovieCard extends StatelessWidget {
   final String certification;
   final String? imageUrl;
 
-  const MovieCard(
+  const MovieCardWidget(
     this.title, {
     required this.rating,
     required this.genres,
@@ -44,7 +44,7 @@ class MovieCard extends StatelessWidget {
         const SizedBox(
           height: AppSizes.size10,
         ),
-        Rating(
+        RatingWidget(
           rating,
           minCurrentRating: RatingWidgetConfig.minCurrentRating,
           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
