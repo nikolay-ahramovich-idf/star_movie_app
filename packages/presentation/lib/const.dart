@@ -7,6 +7,8 @@ class AppFonts {
 
 class AppSizes {
   AppSizes._();
+  static const double size0 = 0;
+  static const double size0point5 = 0.5;
   static const double size2 = 2;
   static const double size3 = 3;
   static const double size4 = 4;
@@ -28,6 +30,7 @@ class AppColors {
   AppColors._();
   static const primaryColor = Color.fromARGB(255, 15, 27, 43);
   static const transparentWhite = Color.fromRGBO(255, 255, 255, 0.5);
+  static const grey = Colors.grey;
 }
 
 class AssetsImagesPaths {

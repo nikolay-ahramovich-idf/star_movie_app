@@ -2,7 +2,7 @@ class BaseMovieEntity {
   final String? title;
   final double? rating;
   final List<String>? genres;
-  final String? runtime;
+  final int? runtime;
   final String? certification;
   final String? imdbId;
 
@@ -21,7 +21,7 @@ class BaseMovieEntity {
     final title = movieJson['title'] as String?;
     final rating = movieJson['rating'] as double?;
     final genres = List<String>.from(movieJson['genres']);
-    final runtime = _formatApiRuntime(movieJson['runtime'] as int?);
+    final runtime = movieJson['runtime'] as int?;
     final certification = movieJson['certification'] as String?;
 
     final ids = Map.from(movieJson['ids']);
@@ -35,13 +35,5 @@ class BaseMovieEntity {
       certification: certification,
       imdbId: imbdId,
     );
-  }
-
-  static String? _formatApiRuntime(int? runtime) {
-    if (runtime == null) return null;
-    const minutesInHour = 60;
-    final minutes = runtime % minutesInHour;
-    final hours = (runtime - minutes) / minutesInHour;
-    return '${hours}hr ${minutes}m';
   }
 }

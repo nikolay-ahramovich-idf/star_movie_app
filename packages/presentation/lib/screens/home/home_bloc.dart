@@ -9,16 +9,22 @@ import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 abstract class HomeBloc implements Bloc<HomeData> {
-  factory HomeBloc() => _HomeBloc(
-        GetIt.I.get<GetNowShowingMoviesUseCase>(),
-        GetIt.I.get<GetComingSoonMoviesUseCase>(),
-        GetIt.I.get<GetImageUrlUseCase>(),
+  factory HomeBloc(
+    GetNowShowingMoviesUseCase getNowShowingMoviesUseCase,
+    GetComingSoonMoviesUseCase getComingSoonMoviesUseCase,
+    GetImageUrlUseCase getImageUrlUseCase,
+  ) =>
+      _HomeBloc(
+        getNowShowingMoviesUseCase,
+        getComingSoonMoviesUseCase,
+        getImageUrlUseCase,
       );
 
   void changeMoviesType(SelectedMoviesType newType);
   Future<void> showNowShowingMovies();
   Future<void> showComingSoonMovies();
   String? getImageUrlById(String? id);
+  String? formatApiRuntime(int? runtime);
   void goToMovieDetailsPage(BaseMovieEntity movieDetails);
 }
 
@@ -72,6 +78,15 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
   @override
   String? getImageUrlById(String? id) {
     return id != null ? _getImageUrlUseCase(id) : id;
+  }
+
+  @override
+  String? formatApiRuntime(int? runtime) {
+    if (runtime == null) return null;
+    const minutesInHour = 60;
+    final minutes = runtime % minutesInHour;
+    final hours = (runtime - minutes) / minutesInHour;
+    return '${hours}hr ${minutes}m';
   }
 
   @override

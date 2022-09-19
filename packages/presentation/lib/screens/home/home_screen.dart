@@ -232,9 +232,13 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                               movie.title,
                               rating: movie.rating,
                               genres: movie.genres,
-                              runtime: movie.runtime,
+                              runtime: bloc.formatApiRuntime(
+                                movie.runtime,
+                              ),
                               certification: movie.certification,
-                              imageUrl: bloc.getImageUrlById(movie.imdbId),
+                              imageUrl: bloc.getImageUrlById(
+                                movie.imdbId,
+                              ),
                             ),
                           ),
                         );

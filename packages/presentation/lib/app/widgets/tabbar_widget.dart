@@ -14,8 +14,8 @@ class TabBarWidget extends StatelessWidget {
         color: AppColors.primaryColor,
         border: Border(
           top: BorderSide(
-            width: 0.5,
-            color: Colors.grey,
+            width: AppSizes.size0point5,
+            color: AppColors.grey,
           ),
         ),
       ),
@@ -25,7 +25,7 @@ class TabBarWidget extends StatelessWidget {
         showUnselectedLabels: false,
         backgroundColor: AppColors.primaryColor,
         unselectedItemColor: HomeScreenColors.bottomNavBarIconColorInactive,
-        elevation: 0,
+        elevation: AppSizes.size0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
