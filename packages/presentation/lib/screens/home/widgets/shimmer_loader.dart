@@ -9,71 +9,85 @@ class ShimmerLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        shrinkWrap: true,
-        itemCount: gridItemsCount,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
-          crossAxisSpacing: AppSizes.size13,
-          mainAxisSpacing: HomeScreenSizes.gridViewMainAxisSpacing,
+    return Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: ShimmerLoaderWidgetColors.baseColor,
+          highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: ShimmerLoaderWidgetColors.fillColor,
+            ),
+            width: double.infinity,
+            height: AppSizes.size50,
+          ),
         ),
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              AspectRatio(
-                aspectRatio: 2 / 3,
-                child: Shimmer.fromColors(
-                  baseColor: ShimmerLoaderWidgetColors.baseColor,
-                  highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
-                  child: Container(
+        const SizedBox(
+          height: AppSizes.size10,
+        ),
+        Expanded(
+          child: GridView.builder(
+            shrinkWrap: true,
+            itemCount: gridItemsCount,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
+              crossAxisSpacing: AppSizes.size13,
+              mainAxisSpacing: HomeScreenSizes.gridViewMainAxisSpacing,
+            ),
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 2 / 3,
+                    child: Shimmer.fromColors(
+                      baseColor: ShimmerLoaderWidgetColors.baseColor,
+                      highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                      child: Container(
+                        color: ShimmerLoaderWidgetColors.fillColor,
+                        width: double.infinity,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppSizes.size10,
+                  ),
+                  Container(
                     color: ShimmerLoaderWidgetColors.fillColor,
+                    height: RatingWidgetConfig.starSize,
                     width: double.infinity,
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: AppSizes.size10,
-              ),
-              Shimmer.fromColors(
-                baseColor: ShimmerLoaderWidgetColors.baseColor,
-                highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
-                child: Container(
-                  color: ShimmerLoaderWidgetColors.fillColor,
-                  height: RatingWidgetConfig.starSize,
-                  width: double.infinity,
-                ),
-              ),
-              const SizedBox(
-                height: AppSizes.size10,
-              ),
-              Shimmer.fromColors(
-                baseColor: ShimmerLoaderWidgetColors.baseColor,
-                highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
-                child: Container(
-                  color: ShimmerLoaderWidgetColors.fillColor,
-                  height: MovieCardWidgetStyles.movieNameTextStyle.fontSize,
-                  width: double.infinity,
-                ),
-              ),
-              const SizedBox(
-                height: AppSizes.size10,
-              ),
-              Shimmer.fromColors(
-                baseColor: ShimmerLoaderWidgetColors.baseColor,
-                highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
-                child: Container(
-                  color: ShimmerLoaderWidgetColors.fillColor,
-                  height:
-                      MovieCardWidgetStyles.movieAdditionalInfoTextStyle.fontSize,
-                  width: double.infinity,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                  const SizedBox(
+                    height: AppSizes.size10,
+                  ),
+                  Shimmer.fromColors(
+                    baseColor: ShimmerLoaderWidgetColors.baseColor,
+                    highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                    child: Container(
+                      color: ShimmerLoaderWidgetColors.fillColor,
+                      height: MovieCardWidgetStyles.movieNameTextStyle.fontSize,
+                      width: double.infinity,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppSizes.size10,
+                  ),
+                  Shimmer.fromColors(
+                    baseColor: ShimmerLoaderWidgetColors.baseColor,
+                    highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                    child: Container(
+                      color: ShimmerLoaderWidgetColors.fillColor,
+                      height: MovieCardWidgetStyles
+                          .movieAdditionalInfoTextStyle.fontSize,
+                      width: double.infinity,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
