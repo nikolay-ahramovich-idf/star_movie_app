@@ -15,8 +15,11 @@ class ShimmerLoader extends StatelessWidget {
           baseColor: ShimmerLoaderWidgetColors.baseColor,
           highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: ShimmerLoaderWidgetColors.fillColor,
+              borderRadius: BorderRadius.circular(
+                HomeScreenSizes.selectionBorderRadiusSize,
+              ),
             ),
             width: double.infinity,
             height: AppSizes.size50,

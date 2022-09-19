@@ -8,16 +8,26 @@ enum SelectedMoviesType {
 class HomeData {
   final Iterable<BaseMovieEntity> _movies;
   final SelectedMoviesType _selectedMovieType;
+  final bool _isLoading;
 
   const HomeData(
     this._movies,
     this._selectedMovieType,
+    this._isLoading,
   );
 
   List<BaseMovieEntity> get movies => _movies.toList();
   SelectedMoviesType get selectedMovieType => _selectedMovieType;
+  bool get isLoading => _isLoading;
 
   const HomeData.init()
       : _movies = const [],
-        _selectedMovieType = SelectedMoviesType.nowShowing;
+        _selectedMovieType = SelectedMoviesType.nowShowing,
+        _isLoading = false;
+
+  HomeData loadData() => HomeData(
+        _movies,
+        _selectedMovieType,
+        true,
+      );
 }

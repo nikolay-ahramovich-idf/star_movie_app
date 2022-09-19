@@ -64,7 +64,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
           stream: bloc.stream,
           builder: (context, snapshot) {
             final data = snapshot.data;
-            if (data != null && data.movies.isNotEmpty) {
+            if (data != null && !data.isLoading) {
               final selectedType = data.selectedMovieType;
 
               return Column(

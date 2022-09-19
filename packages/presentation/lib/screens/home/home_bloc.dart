@@ -49,20 +49,21 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
     final newState = HomeData(
       state.movies,
       newType,
+      false,
     );
     add(newState);
   }
 
   @override
   Future<void> showNowShowingMovies() async {
-    add(const HomeData.init());
+    add(state.loadData());
     final movies = await _getNowShowingMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }
 
   @override
   Future<void> showComingSoonMovies() async {
-    add(const HomeData.init());
+    add(state.loadData());
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }
@@ -71,6 +72,7 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
     final newState = HomeData(
       movies,
       state.selectedMovieType,
+      false,
     );
     add(newState);
   }
