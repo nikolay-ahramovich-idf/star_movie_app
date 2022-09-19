@@ -1,6 +1,11 @@
-import 'package:domain/entities/base_movie_entity.dart';
+import 'package:domain/entities/movies_response_entity.dart';
 
 abstract class MoviesRepository {
-  Future<List<BaseMovieEntity>> getNowShowingMovies();
-  Future<List<BaseMovieEntity>> getComingSoonMovies();
+  Future<MoviesResponseEntity> getNowShowingMovies([
+    Map<String, dynamic> queryParameters,
+  ]);
+  
+  Future<MoviesResponseEntity> getComingSoonMovies([
+    Map<String, dynamic> queryParameters,
+  ]);
 }

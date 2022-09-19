@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 class BaseMovieEntity {
-  final String title;
-  final double rating;
-  final List<String> genres;
-  final int runtime;
-  final String certification;
+  final String? title;
+  final double? rating;
+  final List<String>? genres;
+  final String? runtime;
+  final String? certification;
   final String? imdbId;
 
   const BaseMovieEntity(
@@ -20,13 +18,11 @@ class BaseMovieEntity {
   factory BaseMovieEntity.fromJson(Map<String, dynamic> json) {
     final movieJson = json['movie'] as Map<String, dynamic>;
 
-    final title = movieJson['title'] as String;
-    final rating = movieJson['rating'] as double;
+    final title = movieJson['title'] as String?;
+    final rating = movieJson['rating'] as double?;
     final genres = List<String>.from(movieJson['genres']);
-    final runtime = movieJson['runtime'] as int;
-    final String certification = movieJson['certification'] is String
-        ? movieJson['certification']
-        : 'NR';
+    final runtime = _formatApiRuntime(movieJson['runtime'] as int?);
+    final certification = movieJson['certification'] as String?;
 
     final ids = Map.from(movieJson['ids']);
     final imbdId = ids['imdb'] is String ? ids['imdb'] as String : null;
@@ -39,5 +35,13 @@ class BaseMovieEntity {
       certification: certification,
       imdbId: imbdId,
     );
+  }
+
+  static String? _formatApiRuntime(int? runtime) {
+    if (runtime == null) return null;
+    const minutesInHour = 60;
+    final minutes = runtime % minutesInHour;
+    final hours = (runtime - minutes) / minutesInHour;
+    return '${hours}hr ${minutes}m';
   }
 }
