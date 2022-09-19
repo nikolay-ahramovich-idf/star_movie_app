@@ -4,11 +4,13 @@ import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/navigation/base_page.dart';
+import 'package:presentation/screens/home/home_screen.dart';
 
 abstract class AppBloc implements Bloc<AppData> {
   factory AppBloc() => _AppBloc();
 
   void handleRemoveRouteSettings(RouteSettings value);
+  void goToHomePage();
 }
 
 class _AppBloc extends BlocImpl<AppData> implements AppBloc {
@@ -24,6 +26,11 @@ class _AppBloc extends BlocImpl<AppData> implements AppBloc {
   void handleRemoveRouteSettings(RouteSettings value) {
     state.pages.remove(value);
     _updateData();
+  }
+
+  @override
+  void goToHomePage() {
+    _popUntil(HomeScreen.page());
   }
 
   void _initNavHandler() {
