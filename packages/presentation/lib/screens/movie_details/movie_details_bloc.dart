@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
-import 'package:domain/usecases/convert_api_runtime_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
@@ -9,13 +9,13 @@ import 'package:presentation/screens/movie_details/data/movie_details_data.dart'
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
-  factory MovieDetailsBloc() => _MovieDetailsBloc(
-        GetIt.I.get<ConvertApiRuntimeUsecase>(),
-        // GetIt.I.get<GetImageUrlUseCase>(), TODO remove or change
-        GetIt.I.get<GetMovieCastUsecase>(), // TODO move usecases to DI level like in home bloc
+  factory MovieDetailsBloc(GetImageUrlUseCase getImageUrlUseCase,
+          GetMovieCastUsecase getMovieCastUsecase) =>
+      _MovieDetailsBloc(
+        getImageUrlUseCase,
+        getMovieCastUsecase,
       );
 
-  String convertApiRuntime(int runtime);
   String? getImageUrlById(String? id);
   String getGenresPresentation(Iterable<String> genres);
   Future<void> getCast(int movieId);
@@ -24,13 +24,11 @@ abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
 
 class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     implements MovieDetailsBloc {
-  final ConvertApiRuntimeUsecase _convertApiRuntimeUsecase;
-  // final GetImageUrlUseCase _getImageUrlUseCase; // TODO check later
+  final GetImageUrlUseCase _getImageUrlUseCase;
   final GetMovieCastUsecase _getMovieCastUsecase;
 
   _MovieDetailsBloc(
-    this._convertApiRuntimeUsecase,
-    // this._getImageUrlUseCase, TODO check later
+    this._getImageUrlUseCase,
     this._getMovieCastUsecase,
   ) : super(
           initState: MovieDetailsData.init(),
@@ -42,22 +40,8 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   }
 
   @override
-  String convertApiRuntime(int runtime) {
-    return _convertApiRuntimeUsecase(runtime);
-  }
-
-  @override
-  String? getImageUrlById(String? id) { // TODO remove later
-    final imageUri = Uri(
-      scheme: IMDBConfig.apiScheme,
-      host: IMDBConfig.apiPath,
-      queryParameters: {
-        IMDBConfig.imdbApiKeyQueryName: 3834002.toString(),
-        IMDBQueryParameters.imageQueryKey: id,
-      },
-    );
-
-    return id == null ? null : imageUri.toString();
+  String? getImageUrlById(String? id) {
+    return id != null ? _getImageUrlUseCase(id) : id;
   }
 
   @override
@@ -88,20 +72,22 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     if (arguments != null) {
       final movieDetailsScreenArguments =
           arguments as MovieDetailsScreenArguments;
+      final traktId = movieDetailsScreenArguments.movieDetails.traktId;
+      if (traktId != null) {
+        final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
+          traktId,
+          MovieDetailsScreenConfig.maxCastCount,
+        );
 
-      final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
-        movieDetailsScreenArguments.movieDetails.traktId,
-        MovieDetailsScreenConfig.maxCastCount,
-      );
+        final movieCast = await _getMovieCastUsecase(getMovieCastUsecaseParams);
 
-      final movieCast = await _getMovieCastUsecase(getMovieCastUsecaseParams);
+        final newState = MovieDetailsData(
+          movieDetailsScreenArguments.movieDetails,
+          movieCast,
+        );
 
-      final newState = MovieDetailsData(
-        movieDetailsScreenArguments.movieDetails,
-        movieCast,
-      );
-
-      add(newState);
+        add(newState);
+      }
     }
   }
 }

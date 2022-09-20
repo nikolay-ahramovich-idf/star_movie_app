@@ -3,16 +3,15 @@ import 'package:domain/entities/base_movie_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
+import 'package:presentation/extensions/bloc.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
-import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_bloc.dart';
 import 'package:presentation/screens/movie_details/widgets/shimmer_loader_widget.dart';
-import 'package:presentation/widgets/image_not_exist.dart';
+import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 import 'package:readmore/readmore.dart';
-import 'package:shimmer/shimmer.dart';
 
 class MovieDetailsScreenArguments extends BaseArguments {
   final BaseMovieEntity movieDetails;
@@ -68,15 +67,15 @@ class _MovieDetailsScreenState
                     right: AppSizes.size0,
                     child: ImageFiltered(
                       imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                      child: _getImageWiget(
+                      child: ImageWidget(
                         moviePosterImageUrl,
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
+                    top: AppSizes.size0,
+                    left: AppSizes.size0,
+                    right: AppSizes.size0,
                     child: SafeArea(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -126,7 +125,7 @@ class _MovieDetailsScreenState
                     top: AppSizes.size10,
                     left: AppSizes.screensHorizontalPadding,
                     right: AppSizes.screensHorizontalPadding,
-                    bottom: 0,
+                    bottom: AppSizes.size0,
                     child: SafeArea(
                       child: SingleChildScrollView(
                         child: Column(
@@ -146,14 +145,14 @@ class _MovieDetailsScreenState
                             const SizedBox(
                               height: AppSizes.size16,
                             ),
-                            _getImageWiget(
+                            ImageWidget(
                               moviePosterImageUrl,
                             ),
                             const SizedBox(
                               height: AppSizes.size32,
                             ),
                             Text(
-                              movieDetails.title,
+                              movieDetails.title ?? '',
                               style: MovieDetailsScreenStyles.movieNameStyle,
                               textAlign: TextAlign.center,
                             ),
@@ -161,7 +160,7 @@ class _MovieDetailsScreenState
                               height: AppSizes.size14,
                             ),
                             Text(
-                              '${bloc.convertApiRuntime(movieDetails.runtime)} | ${movieDetails.certification}',
+                              '${bloc.formatApiRuntime(movieDetails.runtime)} | ${movieDetails.certification}',
                               style: MovieDetailsScreenStyles
                                   .movieAdditionalDataStyle,
                             ),
@@ -169,7 +168,8 @@ class _MovieDetailsScreenState
                               height: AppSizes.size9,
                             ),
                             Text(
-                              bloc.getGenresPresentation(movieDetails.genres),
+                              bloc.getGenresPresentation(
+                                  movieDetails.genres ?? []),
                               style: MovieDetailsScreenStyles
                                   .movieAdditionalDataStyle,
                               textAlign: TextAlign.center,
@@ -178,7 +178,7 @@ class _MovieDetailsScreenState
                               height: AppSizes.size20,
                             ),
                             RatingWidget(
-                              movieDetails.rating,
+                              movieDetails.rating ?? 0,
                               minCurrentRating:
                                   RatingWidgetConfig.minCurrentRating,
                               maxCurrentRating:
@@ -296,7 +296,7 @@ class _MovieDetailsScreenState
                                   height: AppSizes.size14,
                                 ),
                                 ReadMoreText(
-                                  movieDetails.overview,
+                                  movieDetails.overview ?? '',
                                   style: MovieDetailsScreenStyles
                                       .movieDescriptionBodyStyle,
                                   trimLines: 4,
@@ -357,14 +357,13 @@ class _MovieDetailsScreenState
                                             Column(
                                               children: [
                                                 CircleAvatar(
-                                                  backgroundImage:
-                                                      castItem.posterPath !=
-                                                              null
-                                                          ? NetworkImage(
-                                                              castItem
-                                                                  .posterPath!,
-                                                            )
-                                                          : null,
+                                                  backgroundImage: castItem
+                                                              .posterPath !=
+                                                          null
+                                                      ? NetworkImage(
+                                                          castItem.posterPath!,
+                                                        )
+                                                      : null,
                                                   radius: AppSizes.size49 / 2,
                                                 ),
                                                 const SizedBox(
@@ -435,18 +434,9 @@ class _MovieDetailsScreenState
     );
   }
 
-  Widget _getImageWiget(String? imageUrl) {
-    return imageUrl == null
-        ? const ImageNotExist()
-        : Image.network(
-            imageUrl,
-            errorBuilder: (_, error, stackTrace) => const ImageNotExist(),
-            fit: BoxFit.contain,
-          );
-  }
-
   Widget _getThreeDotsWidget() {
     const dotsNumber = 3;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

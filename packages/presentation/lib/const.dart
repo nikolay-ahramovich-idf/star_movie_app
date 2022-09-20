@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppFonts {
+  AppFonts._();
   static const sfProTextFontName = '.SF Pro Text';
 }
 
 class AppSizes {
+  AppSizes._();
   static const double size0 = 0;
+  static const double size0point5 = 0.5;
   static const double size2 = 2;
   static const double size3 = 3;
   static const double size4 = 4;
@@ -35,19 +38,22 @@ class AppSizes {
 }
 
 class AppColors {
+  AppColors._();
+  static const primaryColor = Color.fromARGB(255, 15, 27, 43);
   static const transparentWhite = Color.fromRGBO(255, 255, 255, 0.5);
-  static const primaryColor =
-      Color.fromARGB(255, 15, 27, 43);
   static const white = Colors.white;
+  static const grey = Colors.grey;
 }
 
 class AssetsImagesPaths {
+  AssetsImagesPaths._();
   static const playButtonPath = 'assets/play-button.png';
   static const splashScreenMainImagePath = 'assets/torch-light.png';
   static const respondArrow = 'assets/respond-arrow.png';
 }
 
 class SplashScreenColors {
+  SplashScreenColors._();
   static const splashScreenStartColorGradient =
       Color.fromARGB(255, 229, 25, 25);
   static const splashScreenEndColorGradient = Color.fromARGB(255, 219, 82, 82);
@@ -59,6 +65,7 @@ class SplashScreenColors {
 }
 
 class HomeScreenColors {
+  HomeScreenColors._();
   static const searchIconButtonColor = Colors.white;
   static const selectionBorderColor = Color.fromARGB(255, 44, 63, 91);
   static const selectionActiveColor = Color.fromARGB(255, 217, 37, 29);
@@ -68,6 +75,7 @@ class HomeScreenColors {
 }
 
 class HomeScreenSizes {
+  HomeScreenSizes._();
   static const double horizontalPaddingSize = 18;
   static const double searchIconSize = 35;
   static const double selectionBorderRadiusSize = 30;
@@ -78,6 +86,7 @@ class HomeScreenSizes {
 }
 
 class HomeScreenStyles {
+  HomeScreenStyles._();
   static const appBarStyle = TextStyle(
     fontSize: 28,
     fontFamily: AppFonts.sfProTextFontName,
@@ -134,8 +143,9 @@ class MovieDetailsScreenConfig {
 }
 
 class RatingWidgetConfig {
+  RatingWidgetConfig._();
   static const starColor = Color.fromARGB(255, 255, 192, 69);
-  static const double starSize = 16; // TODO move to corresponding screen config
+  static const double starSize = 16;
   static const fullModeRatingStyle = TextStyle(
     fontSize: 30,
     color: AppColors.white,
@@ -146,6 +156,7 @@ class RatingWidgetConfig {
 }
 
 class SelectionButtonStyles {
+  SelectionButtonStyles._();
   static const activeButtonTextStyle = TextStyle(
     color: AppColors.white,
     fontFamily: AppFonts.sfProTextFontName,
@@ -160,6 +171,7 @@ class SelectionButtonStyles {
 }
 
 class MovieCardWidgetStyles {
+  MovieCardWidgetStyles._();
   static const movieNameTextStyle = TextStyle(
     color: Colors.white,
     fontSize: 16,
@@ -174,20 +186,15 @@ class MovieCardWidgetStyles {
 }
 
 class ShimmerLoaderWidgetColors {
+  ShimmerLoaderWidgetColors._();
   static const fillColor = Colors.grey;
   static final baseColor = Colors.grey[400]!;
   static final hightlightColor = Colors.grey[300]!;
 }
 
-// TODO remove IMDBConfig below
-class IMDBConfig {
-  static const apiScheme = 'http';
-  static const apiPath = 'img.omdbapi.com';
-
-  static const imdbApiKeyQueryName = 'apikey';
-  static const imdbApiKeyJsonConfigName = 'imdbApiKey';
-}
-
-class IMDBQueryParameters {
-  static const imageQueryKey = 'i';
+class ImageWidgetStyles {
+  ImageWidgetStyles._();
+  static const imageNotExistStyle = TextStyle(
+    color: AppColors.white,
+  );
 }

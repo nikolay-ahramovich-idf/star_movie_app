@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
-import 'package:presentation/widgets/image_not_exist.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 
 class MovieCardWidget extends StatelessWidget {
-  final String title;
-  final double rating;
-  final List<String> genres;
-  final String runtime;
-  final String certification;
+  final String? title;
+  final double? rating;
+  final List<String>? genres;
+  final String? runtime;
+  final String? certification;
   final String? imageUrl;
 
   const MovieCardWidget(
@@ -31,22 +30,14 @@ class MovieCardWidget extends StatelessWidget {
           aspectRatio: 2 / 3,
           child: SizedBox(
             width: double.infinity,
-            child: imageUrl == null
-                ? const ImageNotExist()
-                : Image.network(
-                    imageUrl as String,
-                    errorBuilder: (context, error, stackTrace) => const Center(
-                      child: ImageNotExist(),
-                    ),
-                    fit: BoxFit.contain,
-                  ),
+            child: ImageNotExist(imageUrl),
           ),
         ),
         const SizedBox(
           height: AppSizes.size10,
         ),
         RatingWidget(
-          rating,
+          rating ?? 0,
           minCurrentRating: RatingWidgetConfig.minCurrentRating,
           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
           starColor: RatingWidgetConfig.starColor,
@@ -57,7 +48,7 @@ class MovieCardWidget extends StatelessWidget {
           height: AppSizes.size10,
         ),
         Text(
-          title,
+          title ?? '',
           style: MovieCardWidgetStyles.movieNameTextStyle,
         ),
         const SizedBox(
@@ -66,7 +57,9 @@ class MovieCardWidget extends StatelessWidget {
         Wrap(
           children: [
             Text(
-              genres.first.capitalize(),
+              genres != null && genres!.isNotEmpty
+                  ? genres!.first.capitalize()
+                  : '',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
             const SizedBox(
@@ -80,7 +73,7 @@ class MovieCardWidget extends StatelessWidget {
               width: AppSizes.size3,
             ),
             Text(
-              runtime,
+              runtime ?? '',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
             const SizedBox(
@@ -94,12 +87,40 @@ class MovieCardWidget extends StatelessWidget {
               width: AppSizes.size2,
             ),
             Text(
-              certification,
+              certification ?? 'NR',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
           ],
         )
       ],
     );
+  }
+}
+
+class ImageNotExist extends StatelessWidget {
+  final String? imageUrl;
+
+  const ImageNotExist(
+    this.imageUrl, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return imageUrl == null
+        ? const Text(
+            'Image Not Exist Yet',
+            style: TextStyle(color: Colors.white),
+          )
+        : Image.network(
+            imageUrl as String,
+            errorBuilder: (context, error, stackTrace) => const Center(
+              child: Text(
+                'Image Not Exist Yet',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            fit: BoxFit.contain,
+          );
   }
 }

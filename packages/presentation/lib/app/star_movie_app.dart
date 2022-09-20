@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/app/app_bloc.dart';
+import 'package:presentation/app/widgets/tabbar_widget.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
+import 'package:presentation/screens/splash/splash_screen.dart';
 
 class StarMovieApp extends StatefulWidget {
   const StarMovieApp({super.key});
@@ -26,6 +28,12 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
                   return route.didPop(result);
                 },
                 pages: appData.pages.toList(),
+              ),
+              bottomNavigationBar: Visibility(
+                visible: appData.pages.last.key != SplashScreen.page().key,
+                child: TabBarWidget(
+                  bloc.goToHomePage,
+                ),
               ),
             );
           }

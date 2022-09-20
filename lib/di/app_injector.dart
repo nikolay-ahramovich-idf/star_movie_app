@@ -4,6 +4,6 @@ import 'package:presentation/di/presentation_injector.dart';
 
 Future<void> initAppInjector() async {
   await initDataInjector();
-  initDomainInjector();
+  await initDomainInjector();
   initPresentationInjector();
 }

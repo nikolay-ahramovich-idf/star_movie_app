@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 class BaseMovieEntity {
-  final String title;
-  final double rating;
-  final List<String> genres;
-  final int runtime;
-  final String certification;
-  final String overview;
-  final int traktId;
+  final String? title;
+  final double? rating;
+  final List<String>? genres;
+  final int? runtime;
+  final String? certification;
+  final String? overview;
+  final int? traktId;
   final String? imdbId;
 
   const BaseMovieEntity(
@@ -24,17 +22,14 @@ class BaseMovieEntity {
   factory BaseMovieEntity.fromJson(Map<String, dynamic> json) {
     final movieJson = json['movie'] as Map<String, dynamic>;
 
-    final title = movieJson['title'] as String;
-    final rating = movieJson['rating'] as double;
+    final title = movieJson['title'] as String?;
+    final rating = movieJson['rating'] as double?;
     final genres = List<String>.from(movieJson['genres']);
-    final runtime = movieJson['runtime'] as int;
-    final overview = movieJson['overview'] as String;
-    final String certification = movieJson['certification'] is String
-        ? movieJson['certification']
-        : 'NR';
-
+    final overview = movieJson['overview'] as String?;
+    final runtime = movieJson['runtime'] as int?;
+    final certification = movieJson['certification'] as String?;
     final ids = Map.from(movieJson['ids']);
-    final traktId =  ids['trakt'] as int;
+    final traktId =  ids['trakt'] as int?;
     final imbdId = ids['imdb'] is String ? ids['imdb'] as String : null;
 
     return BaseMovieEntity(
