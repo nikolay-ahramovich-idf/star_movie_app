@@ -5,8 +5,8 @@ class ConvertApiRuntimeUsecase extends UseCaseParams<int, String> {
 
   @override
   String call(int params) {
-    final minutes = params % minutesPerHour;
-    final hours = (params - minutes) / minutesPerHour;
+    final minutes = (params % minutesPerHour);
+    final hours = (params - minutes) ~/ minutesPerHour;
     return '${hours}hr ${minutes}m';
   }
 }

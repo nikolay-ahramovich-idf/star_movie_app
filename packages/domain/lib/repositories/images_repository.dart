@@ -1,3 +1,3 @@
 abstract class ImagesRepository {
-  String getImageUrlById(String id);
+  Future<String?> getActorPictureById(int id);
 }
