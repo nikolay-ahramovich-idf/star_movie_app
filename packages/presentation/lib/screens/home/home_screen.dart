@@ -3,7 +3,7 @@ import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
-import 'package:presentation/screens/home/widgets/movie_card.dart';
+import 'package:presentation/screens/home/widgets/movie_card_widget.dart';
 import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 
 enum SelectedMoviesType {
@@ -44,10 +44,10 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HomeScreenColors.primaryColor,
+      backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: HomeScreenColors.primaryColor,
+        backgroundColor: AppColors.primaryColor,
         centerTitle: false,
         title: const Text(
           'Star Movie',
@@ -71,7 +71,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: HomeScreenSizes.horizontalPaddingSize,
+          horizontal: AppSizes.screensHorizontalPadding,
         ),
         child: Column(
           children: [
@@ -231,7 +231,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                             bloc.goToMovieDetailsPage(movie);
                           },
                           child: SingleChildScrollView(
-                            child: MovieCard(
+                            child: MovieCardWidget(
                               movie.title,
                               rating: movie.rating,
                               genres: movie.genres,
@@ -255,7 +255,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(bottom: 15),
         decoration: const BoxDecoration(
-          color: HomeScreenColors.primaryColor,
+          color: AppColors.primaryColor,
           border: Border(
             top: BorderSide(
               width: 0.5,
@@ -267,7 +267,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          backgroundColor: HomeScreenColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
           unselectedItemColor: HomeScreenColors.bottomNavBarIconColorInactive,
           elevation: 0,
           items: const <BottomNavigationBarItem>[
