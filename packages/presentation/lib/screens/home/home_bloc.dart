@@ -56,14 +56,18 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
 
   @override
   Future<void> showNowShowingMovies() async {
-    add(state.loadData());
+    add(state.copyWith(
+      isLoading: true,
+    ));
     final movies = await _getNowShowingMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }
 
   @override
   Future<void> showComingSoonMovies() async {
-    add(state.loadData());
+    add(state.copyWith(
+      isLoading: true,
+    ));
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }

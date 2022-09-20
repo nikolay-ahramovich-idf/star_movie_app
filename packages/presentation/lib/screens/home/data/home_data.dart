@@ -25,9 +25,14 @@ class HomeData {
         _selectedMovieType = SelectedMoviesType.nowShowing,
         _isLoading = false;
 
-  HomeData loadData() => HomeData(
-        _movies,
-        _selectedMovieType,
-        true,
+  HomeData copyWith({
+    List<BaseMovieEntity>? movies,
+    SelectedMoviesType? selectedMovieType,
+    bool? isLoading,
+  }) =>
+      HomeData(
+        movies ?? _movies,
+        selectedMovieType ?? _selectedMovieType,
+        isLoading ?? _isLoading,
       );
 }
