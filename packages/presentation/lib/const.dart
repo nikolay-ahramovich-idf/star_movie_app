@@ -5,12 +5,15 @@ class AppFonts {
 }
 
 class AppSizes {
+  static const double size0 = 0;
   static const double size2 = 2;
   static const double size3 = 3;
   static const double size4 = 4;
   static const double size6 = 6;
   static const double size8 = 8;
+  static const double size9 = 9;
   static const double size10 = 10;
+  static const double size12 = 12;
   static const double size13 = 13;
   static const double size14 = 14;
   static const double size15 = 15;
@@ -19,16 +22,29 @@ class AppSizes {
   static const double size20 = 20;
   static const double size24 = 24;
   static const double size29 = 29;
+  static const double size32 = 32;
+  static const double size35 = 35;
+  static const double size45 = 45;
+  static const double size49 = 49;
   static const double size50 = 50;
+  static const double size56 = 56;
+  static const double size57 = 57;
+  static const double size282 = 282;
+
+  static const double screensHorizontalPadding = 18;
 }
 
 class AppColors {
   static const transparentWhite = Color.fromRGBO(255, 255, 255, 0.5);
+  static const primaryColor =
+      Color.fromARGB(255, 15, 27, 43);
+  static const white = Colors.white;
 }
 
 class AssetsImagesPaths {
   static const playButtonPath = 'assets/play-button.png';
   static const splashScreenMainImagePath = 'assets/torch-light.png';
+  static const respondArrow = 'assets/respond-arrow.png';
 }
 
 class SplashScreenColors {
@@ -43,7 +59,6 @@ class SplashScreenColors {
 }
 
 class HomeScreenColors {
-  static const primaryColor = Color.fromARGB(255, 15, 27, 43);
   static const searchIconButtonColor = Colors.white;
   static const selectionBorderColor = Color.fromARGB(255, 44, 63, 91);
   static const selectionActiveColor = Color.fromARGB(255, 217, 37, 29);
@@ -69,16 +84,70 @@ class HomeScreenStyles {
   );
 }
 
+class MovieDetailsScreenSizes {
+  static const double ratingStarSize = 24;
+  static const double navigationIconSize = 21;
+}
+
+class MovieDetailsScreenStyles {
+  static const movieNameStyle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    fontFamily: AppFonts.sfProTextFontName,
+    color: AppColors.white,
+  );
+
+  static const movieAdditionalDataStyle = TextStyle(
+    fontSize: 16,
+    fontFamily: AppFonts.sfProTextFontName,
+    color: AppColors.transparentWhite,
+  );
+
+  static const movieDescriptionHeaderStyle = TextStyle(
+    fontSize: 18,
+    fontFamily: AppFonts.sfProTextFontName,
+    color: AppColors.white,
+  );
+
+  static final movieDescriptionBodyStyle = TextStyle(
+    height: 2,
+    fontSize: 14,
+    fontFamily: AppFonts.sfProTextFontName,
+    color: AppColors.white.withOpacity(0.7),
+  );
+
+  static final movieDescriptionCastNameStyle =
+      movieDescriptionHeaderStyle.copyWith(fontSize: 14);
+
+  static final movieDescriptionRoleNameStyle =
+      movieAdditionalDataStyle.copyWith(fontSize: 12);
+
+  static const showMoreStyle = TextStyle(
+    fontSize: 14,
+    fontFamily: AppFonts.sfProTextFontName,
+    color: Color.fromRGBO(71, 207, 255, 1),
+  );
+}
+
+class MovieDetailsScreenConfig {
+  static const int maxCastCount = 4;
+}
+
 class RatingWidgetConfig {
   static const starColor = Color.fromARGB(255, 255, 192, 69);
-  static const double starSize = 16;
+  static const double starSize = 16; // TODO move to corresponding screen config
+  static const fullModeRatingStyle = TextStyle(
+    fontSize: 30,
+    color: AppColors.white,
+  );
+
   static const double minCurrentRating = 0;
   static const double maxCurrentRating = 10;
 }
 
 class SelectionButtonStyles {
   static const activeButtonTextStyle = TextStyle(
-    color: Colors.white,
+    color: AppColors.white,
     fontFamily: AppFonts.sfProTextFontName,
     fontSize: AppSizes.size14,
   );
@@ -108,4 +177,17 @@ class ShimmerLoaderWidgetColors {
   static const fillColor = Colors.grey;
   static final baseColor = Colors.grey[400]!;
   static final hightlightColor = Colors.grey[300]!;
+}
+
+// TODO remove IMDBConfig below
+class IMDBConfig {
+  static const apiScheme = 'http';
+  static const apiPath = 'img.omdbapi.com';
+
+  static const imdbApiKeyQueryName = 'apikey';
+  static const imdbApiKeyJsonConfigName = 'imdbApiKey';
+}
+
+class IMDBQueryParameters {
+  static const imageQueryKey = 'i';
 }
