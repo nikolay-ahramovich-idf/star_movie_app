@@ -1,9 +1,8 @@
-import 'package:domain/usecases/delay_usecase.dart';
 import 'package:get_it/get_it.dart';
+import 'package:domain/usecases/delay_usecase.dart';
 import 'package:presentation/bloc/base/base_state.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
-import 'package:presentation/navigation/app_navigator.dart';
 import 'package:presentation/screens/home/home_screen.dart';
 
 abstract class SplashBloc implements Bloc<BaseState> {
