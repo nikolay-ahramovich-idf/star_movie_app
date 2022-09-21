@@ -42,8 +42,8 @@ Future<void> _initUsecaseModule() async {
     ),
   );
 
-  GetIt.I.registerFactory<GetImageUrlUseCase>(
-    () => GetImageUrlUseCase(
+  GetIt.I.registerFactory<GetImageUrlUsecase>(
+    () => GetImageUrlUsecase(
       imdbApiKey.toString(),
     ),
   );

@@ -38,7 +38,7 @@ void _initHomeModule() {
     () => HomeBloc(
       GetIt.I.get<GetNowShowingMoviesUseCase>(),
       GetIt.I.get<GetComingSoonMoviesUseCase>(),
-      GetIt.I.get<GetImageUrlUseCase>(),
+      GetIt.I.get<GetImageUrlUsecase>(),
     ),
   );
 }
@@ -46,7 +46,7 @@ void _initHomeModule() {
 void _initMovieDetailsModule() {
   GetIt.I.registerFactory<MovieDetailsBloc>(
     () => MovieDetailsBloc(
-      GetIt.I.get<GetImageUrlUseCase>(),
+      GetIt.I.get<GetImageUrlUsecase>(),
       GetIt.I.get<GetMovieCastUsecase>(),
     ),
   );

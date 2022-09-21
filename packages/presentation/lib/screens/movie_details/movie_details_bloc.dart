@@ -9,10 +9,10 @@ import 'package:presentation/screens/movie_details/data/movie_details_data.dart'
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
-  factory MovieDetailsBloc(GetImageUrlUseCase getImageUrlUseCase,
+  factory MovieDetailsBloc(GetImageUrlUsecase getImageUrlUsecase,
           GetMovieCastUsecase getMovieCastUsecase) =>
       _MovieDetailsBloc(
-        getImageUrlUseCase,
+        getImageUrlUsecase,
         getMovieCastUsecase,
       );
 
@@ -24,11 +24,11 @@ abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
 
 class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     implements MovieDetailsBloc {
-  final GetImageUrlUseCase _getImageUrlUseCase;
+  final GetImageUrlUsecase _getImageUrlUsecase;
   final GetMovieCastUsecase _getMovieCastUsecase;
 
   _MovieDetailsBloc(
-    this._getImageUrlUseCase,
+    this._getImageUrlUsecase,
     this._getMovieCastUsecase,
   ) : super(
           initState: MovieDetailsData.init(),
@@ -41,7 +41,7 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
 
   @override
   String? getImageUrlById(String? id) {
-    return id != null ? _getImageUrlUseCase(id) : id;
+    return id != null ? _getImageUrlUsecase(id) : id;
   }
 
   @override

@@ -41,11 +41,6 @@ class MovieDetailsScreen extends StatefulWidget {
 class _MovieDetailsScreenState
     extends BlocScreenState<MovieDetailsScreen, MovieDetailsBloc> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
@@ -256,7 +251,7 @@ class _MovieDetailsScreenState
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                        0,
+                                        AppSizes.size0,
                                         AppSizes.size4,
                                         AppSizes.size4,
                                         AppSizes.size4,
@@ -331,7 +326,6 @@ class _MovieDetailsScreenState
                                   height: AppSizes.size24,
                                 ),
                                 Table(
-                                  // defaultColumnWidth: const IntrinsicColumnWidth(),
                                   defaultVerticalAlignment:
                                       TableCellVerticalAlignment.middle,
                                   columnWidths: const {

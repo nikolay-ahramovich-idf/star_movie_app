@@ -12,7 +12,7 @@ abstract class HomeBloc implements Bloc<HomeData> {
   factory HomeBloc(
     GetNowShowingMoviesUseCase getNowShowingMoviesUseCase,
     GetComingSoonMoviesUseCase getComingSoonMoviesUseCase,
-    GetImageUrlUseCase getImageUrlUseCase,
+    GetImageUrlUsecase getImageUrlUseCase,
   ) =>
       _HomeBloc(
         getNowShowingMoviesUseCase,
@@ -30,7 +30,7 @@ abstract class HomeBloc implements Bloc<HomeData> {
 class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
   final GetNowShowingMoviesUseCase _getNowShowingMoviesUseCase;
   final GetComingSoonMoviesUseCase _getComingSoonMoviesUseCase;
-  final GetImageUrlUseCase _getImageUrlUseCase;
+  final GetImageUrlUsecase _getImageUrlUseCase;
 
   _HomeBloc(
     this._getNowShowingMoviesUseCase,
