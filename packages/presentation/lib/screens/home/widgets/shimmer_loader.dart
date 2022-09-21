@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerLoader extends StatelessWidget {

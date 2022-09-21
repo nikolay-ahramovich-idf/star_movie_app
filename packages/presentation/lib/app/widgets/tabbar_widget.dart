@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/const.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
 
 class TabBarWidget extends StatelessWidget {
   final VoidCallback _pop;

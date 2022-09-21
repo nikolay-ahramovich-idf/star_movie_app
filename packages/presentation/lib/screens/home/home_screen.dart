@@ -7,6 +7,9 @@ import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/home/widgets/movie_card_widget.dart';
 import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

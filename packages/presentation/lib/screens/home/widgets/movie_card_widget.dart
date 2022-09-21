@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 
 class MovieCardWidget extends StatelessWidget {
