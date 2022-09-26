@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/bloc.dart';
+import 'package:presentation/extensions/string.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
@@ -82,7 +83,7 @@ class _MovieDetailsScreenState
                             IconButton(
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
-                              onPressed: bloc.goBack,
+                              onPressed: bloc.handleBackPressed,
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 color: AppColors.white,
@@ -130,7 +131,7 @@ class _MovieDetailsScreenState
                               width: AppSizes.size57,
                               height: AppSizes.size57,
                               decoration: const BoxDecoration(
-                                color: AppColors.transparentWhite,
+                                color: AppColors.transparentWhite50,
                                 shape: BoxShape.circle,
                               ),
                               child: Image.asset(
@@ -163,8 +164,9 @@ class _MovieDetailsScreenState
                               height: AppSizes.size9,
                             ),
                             Text(
-                              bloc.getGenresPresentation(
-                                  movieDetails.genres ?? []),
+                              getGenresPresentation(
+                                movieDetails.genres ?? [],
+                              ),
                               style: MovieDetailsScreenStyles
                                   .movieAdditionalDataStyle,
                               textAlign: TextAlign.center,
@@ -178,7 +180,7 @@ class _MovieDetailsScreenState
                                   RatingWidgetConfig.minCurrentRating,
                               maxCurrentRating:
                                   RatingWidgetConfig.maxCurrentRating,
-                              starColor: RatingWidgetConfig.starColor,
+                              starColor: AppColors.gold,
                               starSize: MovieDetailsScreenSizes.ratingStarSize,
                               mode: Mode.full,
                             ),
@@ -218,7 +220,7 @@ class _MovieDetailsScreenState
                                                 .selectionBorderRadiusSize,
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Detail',
                                           style: SelectionButtonStyles
                                               .activeButtonTextStyle,
@@ -240,7 +242,7 @@ class _MovieDetailsScreenState
                                                 .selectionBorderRadiusSize,
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Reviews',
                                           style: SelectionButtonStyles
                                               .inactiveButtonTextStyle,
@@ -265,7 +267,7 @@ class _MovieDetailsScreenState
                                                 .selectionBorderRadiusSize,
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Showtime',
                                           style: SelectionButtonStyles
                                               .inactiveButtonTextStyle,
@@ -282,7 +284,7 @@ class _MovieDetailsScreenState
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Synopsis',
                                   style: MovieDetailsScreenStyles
                                       .movieDescriptionHeaderStyle,
@@ -309,13 +311,13 @@ class _MovieDetailsScreenState
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Cast & Crew',
                                       style: MovieDetailsScreenStyles
                                           .movieDescriptionHeaderStyle,
                                     ),
-                                    Text(
+                                    const Text(
                                       'View All',
                                       style: MovieDetailsScreenStyles
                                           .showMoreStyle,
@@ -445,11 +447,15 @@ class _MovieDetailsScreenState
               height: AppSizes.size4,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.transparentWhite,
+                color: AppColors.transparentWhite50,
               ),
             ),
           )
       ],
     );
   }
+}
+
+String getGenresPresentation(Iterable<String> genres) {
+  return genres.map((genre) => genre.capitalize()).join(', ');
 }

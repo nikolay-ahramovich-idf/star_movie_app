@@ -8,8 +8,8 @@ class ShimmerLoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: ShimmerLoaderWidgetColors.baseColor,
-      highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+      baseColor: AppColors.baseColor,
+      highlightColor: AppColors.hightlightColor,
       child: Stack(
         fit: StackFit.expand,
         children: [

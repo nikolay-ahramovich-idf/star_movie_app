@@ -12,13 +12,13 @@ class ImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _imageUrl == null
-        ? const Text(
+        ? Text(
             'Image Not Exist Yet',
             style: ImageWidgetStyles.imageNotExistStyle,
           )
         : Image.network(
             _imageUrl!,
-            errorBuilder: (_, error, stackTrace) => const Center(
+            errorBuilder: (_, error, stackTrace) => Center(
               child: Text(
                 'Image Not Exist Yet',
                 style: ImageWidgetStyles.imageNotExistStyle,

@@ -40,7 +40,7 @@ class MovieCardWidget extends StatelessWidget {
           rating ?? 0,
           minCurrentRating: RatingWidgetConfig.minCurrentRating,
           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
-          starColor: RatingWidgetConfig.starColor,
+          starColor: AppColors.gold,
           starSize: RatingWidgetConfig.starSize,
           mode: Mode.base,
         ),
@@ -65,7 +65,7 @@ class MovieCardWidget extends StatelessWidget {
             const SizedBox(
               width: AppSizes.size3,
             ),
-            const Text(
+            Text(
               '\u00b7',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
@@ -79,7 +79,7 @@ class MovieCardWidget extends StatelessWidget {
             const SizedBox(
               width: AppSizes.size2,
             ),
-            const Text(
+            Text(
               '|',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),

@@ -37,7 +37,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
         centerTitle: false,
-        title: const Text(
+        title: Text(
           'Star Movie',
           style: HomeScreenStyles.appBarStyle,
         ),
