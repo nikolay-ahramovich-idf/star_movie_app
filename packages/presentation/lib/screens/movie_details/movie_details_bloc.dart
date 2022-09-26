@@ -4,22 +4,24 @@ import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
-import 'package:presentation/extensions/string.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
-  factory MovieDetailsBloc(GetImageUrlUsecase getImageUrlUsecase,
-          GetMovieCastUsecase getMovieCastUsecase) =>
+  factory MovieDetailsBloc(
+    GetImageUrlUsecase getImageUrlUsecase,
+    GetMovieCastUsecase getMovieCastUsecase,
+  ) =>
       _MovieDetailsBloc(
         getImageUrlUsecase,
         getMovieCastUsecase,
       );
 
   String? getImageUrlById(String? id);
-  String getGenresPresentation(Iterable<String> genres);
+
   Future<void> getCast(int movieId);
-  void goBack();
+
+  void handleBackPressed();
 }
 
 class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
@@ -45,11 +47,6 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   }
 
   @override
-  String getGenresPresentation(Iterable<String> genres) {
-    return genres.map((g) => g.capitalize()).join(', ');
-  }
-
-  @override
   Future<void> getCast(int movieId) async {
     final params = GetMovieCastUsecaseParams(
         movieId, MovieDetailsScreenConfig.maxCastCount);
@@ -62,7 +59,7 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   }
 
   @override
-  void goBack() {
+  void handleBackPressed() {
     appNavigator.pop();
   }
 
@@ -72,7 +69,9 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     if (arguments != null) {
       final movieDetailsScreenArguments =
           arguments as MovieDetailsScreenArguments;
+
       final traktId = movieDetailsScreenArguments.movieDetails.traktId;
+
       if (traktId != null) {
         final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
           traktId,

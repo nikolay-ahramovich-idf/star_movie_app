@@ -11,5 +11,5 @@ abstract class MoviesRepository {
     Map<String, dynamic> queryParameters,
   ]);
 
-  Future<Iterable<MovieCharacterEntity>> getCast(int movieId);
+  Future<Iterable<dynamic>> getCast(int movieId);
 }

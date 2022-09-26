@@ -27,7 +27,7 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
   }
 
   @override
-  Future<Iterable<MovieCharacterEntity>> getCast(int movieId) async {
+  Future<Iterable<dynamic>> getCast(int movieId) async {
     final peopleApiUri = _getPeopleApiUri(movieId);
 
     final peopleResponse =
@@ -37,13 +37,7 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
         ? {}
         : (peopleResponse.data as Map<String, dynamic>)['cast']);
 
-    return cast
-        .where(
-          (element) => List<dynamic>.from(element['characters']).isNotEmpty,
-        )
-        .map(
-          (e) => MovieCharacterEntity.fromJson(e),
-        );
+    return cast;
   }
 
   Future<MoviesResponseEntity> _getMovies(
@@ -54,7 +48,7 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
       ...TraktApiPathsQueryParameters.extendedQuery,
       ...queryParameters,
     };
-    
+
     final moviesResponse = await _traktApiService.get<List<dynamic>>(
       moviesUrl,
       queryParameters: fullQueryParameters,

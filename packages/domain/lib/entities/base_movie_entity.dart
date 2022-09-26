@@ -22,15 +22,15 @@ class BaseMovieEntity {
   factory BaseMovieEntity.fromJson(Map<String, dynamic> json) {
     final movieJson = json['movie'] as Map<String, dynamic>;
 
-    final title = movieJson['title'] as String?;
-    final rating = movieJson['rating'] as double?;
+    final title = movieJson['title'];
+    final rating = movieJson['rating'];
     final genres = List<String>.from(movieJson['genres']);
-    final overview = movieJson['overview'] as String?;
-    final runtime = movieJson['runtime'] as int?;
-    final certification = movieJson['certification'] as String?;
+    final overview = movieJson['overview'];
+    final runtime = movieJson['runtime'];
+    final certification = movieJson['certification'];
     final ids = Map.from(movieJson['ids']);
-    final traktId =  ids['trakt'] as int?;
-    final imbdId = ids['imdb'] is String ? ids['imdb'] as String : null;
+    final traktId = ids['trakt'];
+    final imbdId = ids['imdb'] is String ? ids['imdb'] : null;
 
     return BaseMovieEntity(
       title,

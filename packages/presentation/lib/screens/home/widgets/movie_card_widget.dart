@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
+import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 
 class MovieCardWidget extends StatelessWidget {
@@ -30,7 +31,7 @@ class MovieCardWidget extends StatelessWidget {
           aspectRatio: 2 / 3,
           child: SizedBox(
             width: double.infinity,
-            child: ImageNotExist(imageUrl),
+            child: ImageWidget(imageUrl),
           ),
         ),
         const SizedBox(
@@ -94,33 +95,5 @@ class MovieCardWidget extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-class ImageNotExist extends StatelessWidget {
-  final String? imageUrl;
-
-  const ImageNotExist(
-    this.imageUrl, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return imageUrl == null
-        ? const Text(
-            'Image Not Exist Yet',
-            style: TextStyle(color: Colors.white),
-          )
-        : Image.network(
-            imageUrl as String,
-            errorBuilder: (context, error, stackTrace) => const Center(
-              child: Text(
-                'Image Not Exist Yet',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            fit: BoxFit.contain,
-          );
   }
 }

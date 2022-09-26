@@ -97,9 +97,12 @@ Dio _buildDioForTractApi(String traktApiKey) {
 }
 
 Dio _buildDioForTMDBApi(String tmdbApiKey) {
-  final didOptions = BaseOptions(baseUrl: TMDBConfig.apiPath, queryParameters: {
-    TMDBConfig.tmdbApiKeyQueryName: tmdbApiKey,
-  });
+  final didOptions = BaseOptions(
+    baseUrl: TMDBConfig.apiPath,
+    queryParameters: {
+      TMDBConfig.tmdbApiKeyQueryName: tmdbApiKey,
+    },
+  );
 
   return Dio(didOptions);
 }

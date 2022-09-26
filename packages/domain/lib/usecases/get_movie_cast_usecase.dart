@@ -25,19 +25,33 @@ class GetMovieCastUsecase extends UseCaseParams<GetMovieCastUsecaseParams,
 
   @override
   Future<Iterable<MovieCharacterEntity>> call(
-      GetMovieCastUsecaseParams params) async {
+    GetMovieCastUsecaseParams params,
+  ) async {
     final cast = await _moviesRepository.getCast(params.movieId);
 
-    final updatingCastWithPosters = cast.take(params.maxNumberOfActors).map(
+    final updatingCastWithPosters = cast
+        .where(
+          (castItem) => List<dynamic>.from(castItem['characters']).isNotEmpty,
+        )
+        .map(
+          (castItem) => MovieCharacterEntity.fromJson(
+            castItem,
+          ),
+        )
+        .take(
+          params.maxNumberOfActors,
+        )
+        .map(
       (actor) async {
-        final posterPath =
-            await _imagesRepository.getActorPictureById(actor.tmdbId);
+        final posterPath = await _imagesRepository.getActorPictureById(
+          actor.tmdbId,
+        );
 
-        if (posterPath != null) {
-          return actor.updatePosterPath(posterPath);
-        }
-
-        return actor;
+        return posterPath != null
+            ? actor.updatePosterPath(
+                posterPath,
+              )
+            : actor;
       },
     );
 
