@@ -25,3 +25,8 @@ class TraktApiSpecialHeaders {
   TraktApiSpecialHeaders._();
   static const totalMoviesCountHeader = 'X-Pagination-Item-Count';
 }
+
+class TMDBConfig {
+  TMDBConfig._();
+  static const actorPictureApiPath = 'https://image.tmdb.org/t/p/original';
+}

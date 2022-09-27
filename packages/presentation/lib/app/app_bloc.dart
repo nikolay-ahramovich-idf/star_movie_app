@@ -10,6 +10,7 @@ abstract class AppBloc implements Bloc<AppData> {
   factory AppBloc() => _AppBloc();
 
   void handleRemoveRouteSettings(RouteSettings value);
+
   void goToHomePage();
 }
 

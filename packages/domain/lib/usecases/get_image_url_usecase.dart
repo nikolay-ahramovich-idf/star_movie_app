@@ -1,10 +1,10 @@
 import 'package:domain/const.dart';
 import 'package:domain/usecases/usecase.dart';
 
-class GetImageUrlUsecase extends UseCaseParams<String, String> {
+class GetImageUrlUseCase extends UseCaseParams<String, String> {
   final String _imdbApiKey;
 
-  GetImageUrlUsecase(this._imdbApiKey);
+  GetImageUrlUseCase(this._imdbApiKey);
 
   @override
   String call(String params) {

@@ -17,7 +17,9 @@ class HomeData {
   );
 
   List<BaseMovieEntity> get movies => _movies.toList();
+
   SelectedMoviesType get selectedMovieType => _selectedMovieType;
+
   bool get isLoading => _isLoading;
 
   const HomeData.init()

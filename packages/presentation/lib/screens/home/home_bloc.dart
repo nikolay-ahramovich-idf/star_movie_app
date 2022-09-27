@@ -1,7 +1,6 @@
-import 'package:get_it/get_it.dart';
 import 'package:domain/entities/base_movie_entity.dart';
-import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
+import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
@@ -12,7 +11,7 @@ abstract class HomeBloc implements Bloc<HomeData> {
   factory HomeBloc(
     GetNowShowingMoviesUseCase getNowShowingMoviesUseCase,
     GetComingSoonMoviesUseCase getComingSoonMoviesUseCase,
-    GetImageUrlUsecase getImageUrlUseCase,
+    GetImageUrlUseCase getImageUrlUseCase,
   ) =>
       _HomeBloc(
         getNowShowingMoviesUseCase,
@@ -21,16 +20,22 @@ abstract class HomeBloc implements Bloc<HomeData> {
       );
 
   void changeMoviesType(SelectedMoviesType newType);
+
   Future<void> showNowShowingMovies();
+
   Future<void> showComingSoonMovies();
+
   String? getImageUrlById(String? id);
+
+  String? formatApiRuntime(int? runtime);
+
   void goToMovieDetailsPage(BaseMovieEntity movieDetails);
 }
 
 class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
   final GetNowShowingMoviesUseCase _getNowShowingMoviesUseCase;
   final GetComingSoonMoviesUseCase _getComingSoonMoviesUseCase;
-  final GetImageUrlUsecase _getImageUrlUseCase;
+  final GetImageUrlUseCase _getImageUrlUseCase;
 
   _HomeBloc(
     this._getNowShowingMoviesUseCase,
@@ -58,7 +63,9 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
     add(state.copyWith(
       isLoading: true,
     ));
+
     final movies = await _getNowShowingMoviesUseCase();
+
     _updateHomeDataWithMovies(movies);
   }
 
@@ -86,15 +93,19 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
   }
 
   @override
-  void goToMovieDetailsPage(BaseMovieEntity movieDetails) {
-    final movieDetailsScreenArguments = MovieDetailsScreenArguments(
-      movieDetails: movieDetails,
-    );
+  String? formatApiRuntime(int? runtime) {
+    if (runtime == null) return null;
+    const minutesInHour = 60;
+    final minutes = runtime % minutesInHour;
+    final hours = (runtime - minutes) ~/ minutesInHour;
+    return '${hours}hr ${minutes}m';
+  }
 
-    appNavigator.push(
-      MovieDetailsScreen.page(
-        movieDetailsScreenArguments,
-      ),
-    );
+  @override
+  void goToMovieDetailsPage(BaseMovieEntity movieDetails) {
+    final movieDetailsScreenArguments =
+        MovieDetailsScreenArguments(movieDetails: movieDetails);
+
+    appNavigator.push(MovieDetailsScreen.page(movieDetailsScreenArguments));
   }
 }

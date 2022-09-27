@@ -1,9 +1,9 @@
 import 'dart:ui';
+
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
-import 'package:presentation/extensions/bloc.dart';
 import 'package:presentation/extensions/string.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';

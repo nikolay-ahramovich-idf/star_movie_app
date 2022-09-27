@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
@@ -9,13 +8,15 @@ import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
   factory MovieDetailsBloc(
-    GetImageUrlUsecase getImageUrlUsecase,
-    GetMovieCastUsecase getMovieCastUsecase,
+    GetImageUrlUseCase getImageUrlUseCase,
+    GetMovieCastUseCase getMovieCastUseCase,
   ) =>
       _MovieDetailsBloc(
-        getImageUrlUsecase,
-        getMovieCastUsecase,
+        getImageUrlUseCase,
+        getMovieCastUseCase,
       );
+
+  String? formatApiRuntime(int? runtime);
 
   String? getImageUrlById(String? id);
 
@@ -26,15 +27,13 @@ abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
 
 class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     implements MovieDetailsBloc {
-  final GetImageUrlUsecase _getImageUrlUsecase;
-  final GetMovieCastUsecase _getMovieCastUsecase;
+  final GetImageUrlUseCase _getImageUrlUseCase;
+  final GetMovieCastUseCase _getMovieCastUseCase;
 
   _MovieDetailsBloc(
-    this._getImageUrlUsecase,
-    this._getMovieCastUsecase,
-  ) : super(
-          initState: MovieDetailsData.init(),
-        );
+    this._getImageUrlUseCase,
+    this._getMovieCastUseCase,
+  ) : super(initState: MovieDetailsData.init());
 
   @override
   void initState() {
@@ -42,8 +41,17 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   }
 
   @override
+  String? formatApiRuntime(int? runtime) {
+    if (runtime == null) return null;
+    const minutesInHour = 60;
+    final minutes = runtime % minutesInHour;
+    final hours = (runtime - minutes) ~/ minutesInHour;
+    return '${hours}hr ${minutes}m';
+  }
+
+  @override
   String? getImageUrlById(String? id) {
-    return id != null ? _getImageUrlUsecase(id) : id;
+    return id != null ? _getImageUrlUseCase(id) : id;
   }
 
   @override
@@ -51,7 +59,7 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     final params = GetMovieCastUsecaseParams(
         movieId, MovieDetailsScreenConfig.maxCastCount);
 
-    final cast = await _getMovieCastUsecase(params);
+    final cast = await _getMovieCastUseCase(params);
 
     final newState = MovieDetailsData(state.movieDetails, cast);
 
@@ -78,7 +86,7 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
           MovieDetailsScreenConfig.maxCastCount,
         );
 
-        final movieCast = await _getMovieCastUsecase(getMovieCastUsecaseParams);
+        final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
 
         final newState = MovieDetailsData(
           movieDetailsScreenArguments.movieDetails,

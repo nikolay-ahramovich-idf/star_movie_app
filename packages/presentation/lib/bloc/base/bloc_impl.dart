@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/navigation/app_navigator.dart';
-import 'package:get_it/get_it.dart';
 
 abstract class BlocImpl<S> implements Bloc<S> {
   final _dataStreamController = StreamController<S?>();

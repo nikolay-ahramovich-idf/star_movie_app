@@ -1,6 +1,5 @@
 import 'package:data/const.dart';
 import 'package:data/services/api_base_service.dart';
-import 'package:domain/entities/movie_character_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
 import 'package:domain/repositories/movies_repository.dart';
 
