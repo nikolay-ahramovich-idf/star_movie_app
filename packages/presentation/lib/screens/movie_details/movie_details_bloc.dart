@@ -57,11 +57,16 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   @override
   Future<void> getCast(int movieId) async {
     final params = GetMovieCastUsecaseParams(
-        movieId, MovieDetailsScreenConfig.maxCastCount);
+      movieId,
+      MovieDetailsScreenConfig.maxCastCount,
+    );
 
     final cast = await _getMovieCastUseCase(params);
 
-    final newState = MovieDetailsData(state.movieDetails, cast);
+    final newState = MovieDetailsData(
+      state.movieDetails,
+      cast,
+    );
 
     add(newState);
   }

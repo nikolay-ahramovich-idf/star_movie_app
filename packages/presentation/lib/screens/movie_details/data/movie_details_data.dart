@@ -1,10 +1,9 @@
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/entities/movie_character_entity.dart';
-import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
 class MovieDetailsData {
   final BaseMovieEntity? _movieDetails;
-  final Iterable<MovieCharacterEntity>? _cast;
+  final List<MovieCharacterEntity>? _cast;
 
   MovieDetailsData(
     this._movieDetails,
@@ -17,6 +16,5 @@ class MovieDetailsData {
 
   BaseMovieEntity? get movieDetails => _movieDetails;
 
-  List<MovieCharacterEntity> get cast =>
-      (_cast as Iterable<MovieCharacterEntity>).toList();
+  List<MovieCharacterEntity>? get cast => _cast;
 }
