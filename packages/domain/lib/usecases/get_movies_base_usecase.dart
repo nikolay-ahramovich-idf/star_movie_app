@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 abstract class GetMoviesBaseUsecase
     implements UseCase<Future<Iterable<BaseMovieEntity>>> {
   @protected
-  Future<Iterable<BaseMovieEntity>> getMovies(
+  Future<List<BaseMovieEntity>> getMovies(
       Future<MoviesResponseEntity> Function([Map<String, dynamic>])
           moviesGetter) async {
     final moviesResponse = await moviesGetter();
@@ -35,6 +35,6 @@ abstract class GetMoviesBaseUsecase
       ...(additionalMoviesResponse.movies ?? []),
     ];
 
-    return resultMovies.map((movie) => BaseMovieEntity.fromJson(movie));
+    return resultMovies.map((movie) => BaseMovieEntity.fromJson(movie)).toList();
   }
 }

@@ -6,7 +6,7 @@ enum SelectedMoviesType {
 }
 
 class HomeData {
-  final Iterable<BaseMovieEntity> _movies;
+  final List<BaseMovieEntity> _movies;
   final SelectedMoviesType _selectedMovieType;
   final bool _isLoading;
 
@@ -16,7 +16,7 @@ class HomeData {
     this._isLoading,
   );
 
-  List<BaseMovieEntity> get movies => _movies.toList();
+  List<BaseMovieEntity> get movies => _movies;
 
   SelectedMoviesType get selectedMovieType => _selectedMovieType;
 

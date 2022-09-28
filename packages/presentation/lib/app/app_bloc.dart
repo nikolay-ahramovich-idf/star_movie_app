@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_screen.dart';
 
-abstract class AppBloc implements Bloc<AppData> {
+abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   factory AppBloc() => _AppBloc();
 
   void handleRemoveRouteSettings(RouteSettings value);
@@ -14,7 +15,7 @@ abstract class AppBloc implements Bloc<AppData> {
   void goToHomePage();
 }
 
-class _AppBloc extends BlocImpl<AppData> implements AppBloc {
+class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   _AppBloc() : super(initState: AppData.init());
 
   @override

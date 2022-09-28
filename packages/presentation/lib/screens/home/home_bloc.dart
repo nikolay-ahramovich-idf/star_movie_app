@@ -4,10 +4,11 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
-abstract class HomeBloc implements Bloc<HomeData> {
+abstract class HomeBloc implements Bloc<BaseArguments, HomeData> {
   factory HomeBloc(
     GetNowShowingMoviesUseCase getNowShowingMoviesUseCase,
     GetComingSoonMoviesUseCase getComingSoonMoviesUseCase,
@@ -32,7 +33,7 @@ abstract class HomeBloc implements Bloc<HomeData> {
   void goToMovieDetailsPage(BaseMovieEntity movieDetails);
 }
 
-class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
+class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
   final GetNowShowingMoviesUseCase _getNowShowingMoviesUseCase;
   final GetComingSoonMoviesUseCase _getComingSoonMoviesUseCase;
   final GetImageUrlUseCase _getImageUrlUseCase;
@@ -78,7 +79,7 @@ class _HomeBloc extends BlocImpl<HomeData> implements HomeBloc {
     _updateHomeDataWithMovies(movies);
   }
 
-  void _updateHomeDataWithMovies(Iterable<BaseMovieEntity> movies) {
+  void _updateHomeDataWithMovies(List<BaseMovieEntity> movies) {
     final newState = HomeData(
       movies,
       state.selectedMovieType,

@@ -28,11 +28,11 @@ class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUsecaseParams,
   Future<List<MovieCharacterEntity>> call(
     GetMovieCastUsecaseParams params,
   ) async {
-    final cast = await _moviesRepository.getCast(params.movieId);
+    final castResponse = await _moviesRepository.getCast(params.movieId);
 
-    final updatingCastWithPosters = cast
+    final updatingCastWithPosters = castResponse.cast
         .where(
-            (castItem) => List<dynamic>.from(castItem['characters']).isNotEmpty)
+            (castItem) => List<String>.from(castItem['characters']).isNotEmpty)
         .map((castItem) => MovieCharacterEntity.fromJson(castItem))
         .take(params.maxNumberOfActors)
         .map((actor) async {
