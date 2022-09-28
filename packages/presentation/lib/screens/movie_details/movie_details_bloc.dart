@@ -6,7 +6,8 @@ import 'package:presentation/const.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
-abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
+abstract class MovieDetailsBloc
+    implements Bloc<MovieDetailsScreenArguments, MovieDetailsData> {
   factory MovieDetailsBloc(
     GetImageUrlUseCase getImageUrlUseCase,
     GetMovieCastUseCase getMovieCastUseCase,
@@ -16,8 +17,6 @@ abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
         getMovieCastUseCase,
       );
 
-  String? formatApiRuntime(int? runtime);
-
   String? getImageUrlById(String? id);
 
   Future<void> getCast(int movieId);
@@ -25,7 +24,8 @@ abstract class MovieDetailsBloc implements Bloc<MovieDetailsData> {
   void handleBackPressed();
 }
 
-class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
+class _MovieDetailsBloc
+    extends BlocImpl<MovieDetailsScreenArguments, MovieDetailsData>
     implements MovieDetailsBloc {
   final GetImageUrlUseCase _getImageUrlUseCase;
   final GetMovieCastUseCase _getMovieCastUseCase;
@@ -36,17 +36,10 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
   ) : super(initState: MovieDetailsData.init());
 
   @override
-  void initState() {
-    _updateMovieDetailsWithArgumentsData();
-  }
+  void initArgs(MovieDetailsScreenArguments args) {
+    super.initArgs(args);
 
-  @override
-  String? formatApiRuntime(int? runtime) {
-    if (runtime == null) return null;
-    const minutesInHour = 60;
-    final minutes = runtime % minutesInHour;
-    final hours = (runtime - minutes) ~/ minutesInHour;
-    return '${hours}hr ${minutes}m';
+    _getCast(args);
   }
 
   @override
@@ -65,6 +58,7 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
 
     final newState = MovieDetailsData(
       state.movieDetails,
+      state.formattedRuntime,
       cast,
     );
 
@@ -76,30 +70,32 @@ class _MovieDetailsBloc extends BlocImpl<MovieDetailsData>
     appNavigator.pop();
   }
 
-  Future<void> _updateMovieDetailsWithArgumentsData() async {
-    final arguments = appNavigator.currentPage()?.arguments;
+  Future<void> _getCast(MovieDetailsScreenArguments args) async {
+    final traktId = args.movieDetails.traktId;
 
-    if (arguments != null) {
-      final movieDetailsScreenArguments =
-          arguments as MovieDetailsScreenArguments;
+    if (traktId != null) {
+      final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
+        traktId,
+        MovieDetailsScreenConfig.maxCastCount,
+      );
 
-      final traktId = movieDetailsScreenArguments.movieDetails.traktId;
+      final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
 
-      if (traktId != null) {
-        final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
-          traktId,
-          MovieDetailsScreenConfig.maxCastCount,
-        );
+      final newState = MovieDetailsData(
+        args.movieDetails,
+        _formatApiRuntime(args.movieDetails.runtime),
+        movieCast,
+      );
 
-        final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
-
-        final newState = MovieDetailsData(
-          movieDetailsScreenArguments.movieDetails,
-          movieCast,
-        );
-
-        add(newState);
-      }
+      add(newState);
     }
+  }
+
+  String? _formatApiRuntime(int? runtime) {
+    if (runtime == null) return null;
+    const minutesInHour = 60;
+    final minutes = runtime % minutesInHour;
+    final hours = (runtime - minutes) ~/ minutesInHour;
+    return '${hours}hr ${minutes}m';
   }
 }

@@ -49,6 +49,7 @@ class _MovieDetailsScreenState
           stream: bloc.stream,
           builder: (context, snapshot) {
             final movieDetails = snapshot.data?.movieDetails;
+            final runtime = snapshot.data?.formattedRuntime;
             final cast = snapshot.data?.cast;
 
             if (movieDetails != null) {
@@ -156,7 +157,7 @@ class _MovieDetailsScreenState
                               height: AppSizes.size14,
                             ),
                             Text(
-                              '${bloc.formatApiRuntime(movieDetails.runtime)} | ${movieDetails.certification}',
+                              '$runtime | ${movieDetails.certification}',
                               style: MovieDetailsScreenStyles
                                   .movieAdditionalDataStyle,
                             ),
