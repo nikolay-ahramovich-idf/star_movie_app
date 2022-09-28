@@ -30,7 +30,7 @@ class BaseMovieEntity {
     final certification = movieJson['certification'];
     final ids = Map.from(movieJson['ids']);
     final traktId = ids['trakt'];
-    final imdbId = ids['imdb'] is String ? ids['imdb'] : null;
+    final imdbId = ids['imdb'];
 
     return BaseMovieEntity(
       title,
