@@ -1,3 +1,3 @@
 abstract class ImagesRepository {
-  Future<String?> getActorPictureById(int id);
+  Future<List<Map<String, dynamic>>?> getActorsProfiles(int id);
 }

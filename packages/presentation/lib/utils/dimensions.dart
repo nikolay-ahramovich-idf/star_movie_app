@@ -18,6 +18,7 @@ class AppSizes {
   static const double size20 = 20;
   static const double size24 = 24;
   static const double size29 = 29;
+  static const double size30 = 30;
   static const double size32 = 32;
   static const double size35 = 35;
   static const double size45 = 45;
@@ -32,7 +33,6 @@ class AppSizes {
 
 class HomeScreenSizes {
   HomeScreenSizes._();
-  static const double ratingStarSize = 16;
   static const double horizontalPaddingSize = 18;
   static const double searchIconSize = 35;
   static const double selectionBorderRadiusSize = 30;
@@ -40,9 +40,11 @@ class HomeScreenSizes {
   static const double gridChildAspecRatio = 1 / 2.15;
   static const double gridViewMainAxisSpacing = 30;
   static const double bottomNavBarIconSize = 30;
+  static const double ratingStarSize = 16;
 }
 
 class MovieDetailsScreenSizes {
+  MovieDetailsScreenSizes._();
   static const double ratingStarSize = 24;
   static const double navigationIconSize = 21;
 }

@@ -3,95 +3,100 @@ import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/fonts.dart';
 
+class AppStyles {
+  AppStyles._();
+
+  static TextStyle white(
+    double fontSize, {
+    String fontFamily = AppFonts.sfProTextFontName,
+    FontWeight fontWeight = FontWeight.normal,
+    TextDecoration decoration = TextDecoration.none,
+    FontStyle fontStyle = FontStyle.normal,
+    double opacity = 1,
+    double? height,
+  }) {
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontStyle: fontStyle,
+      color: Colors.white.withOpacity(
+        opacity,
+      ),
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      decoration: decoration,
+      height: height,
+    );
+  }
+}
+
 class HomeScreenStyles {
   HomeScreenStyles._();
-  static const appBarStyle = TextStyle(
-    fontSize: 28,
-    fontFamily: AppFonts.sfProTextFontName,
-  );
+  static final appBarStyle = AppStyles.white(AppSizes.size29);
 }
 
 class MovieDetailsScreenStyles {
-  static const movieNameStyle = TextStyle(
-    fontSize: 24,
+  MovieDetailsScreenStyles._();
+
+  static final movieNameStyle = AppStyles.white(
+    AppSizes.size24,
     fontWeight: FontWeight.w600,
-    fontFamily: AppFonts.sfProTextFontName,
-    color: AppColors.white,
   );
 
-  static const movieAdditionalDataStyle = TextStyle(
-    fontSize: 16,
-    fontFamily: AppFonts.sfProTextFontName,
-    color: AppColors.transparentWhite,
+  static final movieAdditionalDataStyle = AppStyles.white(
+    AppSizes.size15,
+    opacity: 0.5,
   );
 
-  static const movieDescriptionHeaderStyle = TextStyle(
-    fontSize: 18,
-    fontFamily: AppFonts.sfProTextFontName,
-    color: AppColors.white,
-  );
+  static final movieDescriptionHeaderStyle = AppStyles.white(AppSizes.size18);
 
-  static final movieDescriptionBodyStyle = TextStyle(
+  static final movieDescriptionBodyStyle = AppStyles.white(
+    AppSizes.size14,
     height: 2,
-    fontSize: 14,
-    fontFamily: AppFonts.sfProTextFontName,
-    color: AppColors.white.withOpacity(0.7),
+    opacity: 0.7,
   );
 
-  static final movieDescriptionCastNameStyle =
-      movieDescriptionHeaderStyle.copyWith(fontSize: 14);
+  static final movieDescriptionCastNameStyle = AppStyles.white(AppSizes.size14);
 
-  static final movieDescriptionRoleNameStyle =
-      movieAdditionalDataStyle.copyWith(fontSize: 12);
+  static final movieDescriptionRoleNameStyle = AppStyles.white(
+    AppSizes.size12,
+    opacity: 0.5,
+  );
 
   static const showMoreStyle = TextStyle(
-    fontSize: 14,
+    fontSize: AppSizes.size14,
     fontFamily: AppFonts.sfProTextFontName,
-    color: Color.fromRGBO(71, 207, 255, 1),
+    color: AppColors.lightBlue,
   );
 }
 
 class SelectionButtonStyles {
   SelectionButtonStyles._();
-  static const activeButtonTextStyle = TextStyle(
-    color: AppColors.white,
-    fontFamily: AppFonts.sfProTextFontName,
-    fontSize: AppSizes.size14,
-  );
+  static final activeButtonTextStyle = AppStyles.white(AppSizes.size14);
 
-  static const inactiveButtonTextStyle = TextStyle(
-    color: AppColors.transparentWhite,
-    fontFamily: AppFonts.sfProTextFontName,
-    fontSize: AppSizes.size14,
+  static final inactiveButtonTextStyle = AppStyles.white(
+    AppSizes.size14,
+    opacity: 0.5,
   );
 }
 
 class MovieCardWidgetStyles {
   MovieCardWidgetStyles._();
-  static const movieNameTextStyle = TextStyle(
-    color: Colors.white,
-    fontSize: 16,
-    fontFamily: AppFonts.sfProTextFontName,
-  );
+  static final movieNameTextStyle = AppStyles.white(AppSizes.size16);
 
-  static const movieAdditionalInfoTextStyle = TextStyle(
-    color: AppColors.transparentWhite,
-    fontSize: 12,
-    fontFamily: AppFonts.sfProTextFontName,
+  static final movieAdditionalInfoTextStyle = AppStyles.white(
+    AppSizes.size12,
+    opacity: 0.5,
   );
 }
 
 class ImageWidgetStyles {
   ImageWidgetStyles._();
-  static const imageNotExistStyle = TextStyle(
-    color: AppColors.white,
-  );
+  static final imageNotExistStyle = AppStyles.white(AppSizes.size14);
 }
 
 class RatingWidgetStyles {
   RatingWidgetStyles._();
-  static const fullModeRatingStyle = TextStyle(
-    fontSize: 30,
-    color: AppColors.white,
+  static final fullModeRatingStyle = AppStyles.white(
+    AppSizes.size30,
   );
 }

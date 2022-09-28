@@ -1,13 +1,13 @@
-import 'package:get_it/get_it.dart';
-import 'package:domain/repositories/images_repository.dart';
-import 'package:data/services/app_config_service_impl.dart';
-import 'package:domain/services/app_config_service.dart';
-import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/const.dart';
+import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
 import 'package:data/services/api_base_service.dart';
+import 'package:data/services/app_config_service_impl.dart';
 import 'package:dio/dio.dart';
+import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
+import 'package:domain/services/app_config_service.dart';
+import 'package:get_it/get_it.dart';
 
 Future<void> initDataInjector() async {
   _initAppConfigService();
@@ -18,9 +18,7 @@ Future<void> initDataInjector() async {
 }
 
 void _initAppConfigService() {
-  GetIt.I.registerSingleton<AppConfigService>(
-    AppConfigServiceImpl(),
-  );
+  GetIt.I.registerSingleton<AppConfigService>(AppConfigServiceImpl());
 }
 
 Future<void> _initTractApiService() async {
@@ -57,9 +55,7 @@ Future<void> _initTMDBApiService() async {
 
   GetIt.I.registerSingleton<ApiBaseService>(
     ApiServiceImpl(
-      GetIt.I.get<Dio>(
-        instanceName: DISingletonInstanceNames.tmdbApiDio,
-      ),
+      GetIt.I.get<Dio>(instanceName: DISingletonInstanceNames.tmdbApiDio),
     ),
     instanceName: DISingletonInstanceNames.tmdbApiService,
   );
@@ -69,8 +65,7 @@ void _initMoviesRepository() {
   GetIt.I.registerSingleton<MoviesRepository>(
     TraktMoviesRepositoryImpl(
       GetIt.I.get<ApiBaseService>(
-        instanceName: DISingletonInstanceNames.traktApiService,
-      ),
+          instanceName: DISingletonInstanceNames.traktApiService),
     ),
   );
 }
@@ -79,8 +74,7 @@ void _initImagesRepository() {
   GetIt.I.registerSingleton<ImagesRepository>(
     TMDBImagesRepository(
       GetIt.I.get<ApiBaseService>(
-        instanceName: DISingletonInstanceNames.tmdbApiService,
-      ),
+          instanceName: DISingletonInstanceNames.tmdbApiService),
     ),
   );
 }
@@ -88,18 +82,17 @@ void _initImagesRepository() {
 Dio _buildDioForTractApi(String traktApiKey) {
   final dioOptions = BaseOptions(
     baseUrl: TraktApiConfig.apiPath,
-    headers: {
-      TraktApiConfig.traktApiKeyHeaderName: traktApiKey,
-    },
+    headers: {TraktApiConfig.traktApiKeyHeaderName: traktApiKey},
   );
 
   return Dio(dioOptions);
 }
 
 Dio _buildDioForTMDBApi(String tmdbApiKey) {
-  final didOptions = BaseOptions(baseUrl: TMDBConfig.apiPath, queryParameters: {
-    TMDBConfig.tmdbApiKeyQueryName: tmdbApiKey,
-  });
+  final didOptions = BaseOptions(
+    baseUrl: TMDBConfig.apiPath,
+    queryParameters: {TMDBConfig.tmdbApiKeyQueryName: tmdbApiKey},
+  );
 
   return Dio(didOptions);
 }
