@@ -10,6 +10,7 @@ import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,14 +35,16 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
         centerTitle: false,
-        title: const Text(
-          'Star Movie',
+        title: Text(
+          appLocalizations?.appNameLabel ?? '',
           style: HomeScreenStyles.appBarStyle,
         ),
         actions: [
@@ -134,7 +137,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                       width: AppSizes.size6,
                                     ),
                                     Text(
-                                      'Now Showing',
+                                      appLocalizations.nowShowingCategoryLabel,
                                       style: selectedType ==
                                               SelectedMoviesType.nowShowing
                                           ? SelectionButtonStyles
@@ -191,7 +194,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                       width: AppSizes.size6,
                                     ),
                                     Text(
-                                      'Coming Soon',
+                                      appLocalizations
+                                              ?.comingSoonCategoryLabel ??
+                                          '',
                                       style: selectedType ==
                                               SelectedMoviesType.comingSoon
                                           ? SelectionButtonStyles
@@ -239,7 +244,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                               runtime: bloc.formatApiRuntime(
                                 movie.runtime,
                               ),
-                              certification: movie.certification,
+                              certification: movie.certification ??
+                                  appLocalizations?.notRatedLabel ??
+                                  '',
                               imageUrl: bloc.getImageUrlById(
                                 movie.imdbId,
                               ),

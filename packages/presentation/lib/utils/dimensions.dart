@@ -32,6 +32,7 @@ class AppSizes {
 
 class HomeScreenSizes {
   HomeScreenSizes._();
+  static const double ratingStarSize = 16;
   static const double horizontalPaddingSize = 18;
   static const double searchIconSize = 35;
   static const double selectionBorderRadiusSize = 30;

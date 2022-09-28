@@ -36,3 +36,7 @@ class ShimmerLoaderWidgetColors {
   static final baseColor = AppColors.grey[400]!;
   static final hightlightColor = AppColors.grey[300]!;
 }
+
+class RatingWidgetColors {
+  static const starColor = Color.fromARGB(255, 255, 192, 69);
+}

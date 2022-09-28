@@ -60,7 +60,7 @@ class ShimmerLoader extends StatelessWidget {
                   ),
                   Container(
                     color: ShimmerLoaderWidgetColors.fillColor,
-                    height: RatingWidgetConfig.starSize,
+                    height: HomeScreenSizes.ratingStarSize,
                     width: double.infinity,
                   ),
                   const SizedBox(

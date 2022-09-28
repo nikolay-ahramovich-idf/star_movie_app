@@ -15,6 +15,7 @@ import 'package:presentation/utils/styles.dart';
 import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 import 'package:readmore/readmore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieDetailsScreenArguments extends BaseArguments {
   final BaseMovieEntity movieDetails;
@@ -50,6 +51,8 @@ class _MovieDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: StreamBuilder<MovieDetailsData?>(
@@ -185,7 +188,7 @@ class _MovieDetailsScreenState
                                 RatingWidgetConfig.minCurrentRating,
                             maxCurrentRating:
                                 RatingWidgetConfig.maxCurrentRating,
-                            starColor: RatingWidgetConfig.starColor,
+                            starColor: RatingWidgetColors.starColor,
                             starSize: MovieDetailsScreenSizes.ratingStarSize,
                             mode: Mode.full,
                           ),
@@ -225,8 +228,8 @@ class _MovieDetailsScreenState
                                               .selectionBorderRadiusSize,
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Detail',
+                                      child: Text(
+                                        appLocalizations.detailCategoryLabel,
                                         style: SelectionButtonStyles
                                             .activeButtonTextStyle,
                                       ),
@@ -247,8 +250,8 @@ class _MovieDetailsScreenState
                                               .selectionBorderRadiusSize,
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Reviews',
+                                      child: Text(
+                                        appLocalizations.reviewsCategoryLabel,
                                         style: SelectionButtonStyles
                                             .inactiveButtonTextStyle,
                                       ),
@@ -272,8 +275,8 @@ class _MovieDetailsScreenState
                                               .selectionBorderRadiusSize,
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Showtime',
+                                      child: Text(
+                                        appLocalizations.showtimeCategoryLabel,
                                         style: SelectionButtonStyles
                                             .inactiveButtonTextStyle,
                                       ),
@@ -289,8 +292,8 @@ class _MovieDetailsScreenState
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Synopsis',
+                              Text(
+                                appLocalizations.synopsisHeaderLabel,
                                 style: MovieDetailsScreenStyles
                                     .movieDescriptionHeaderStyle,
                               ),
@@ -303,8 +306,10 @@ class _MovieDetailsScreenState
                                     .movieDescriptionBodyStyle,
                                 trimLines: 4,
                                 trimMode: TrimMode.Line,
-                                trimCollapsedText: 'Show More',
-                                trimExpandedText: ' Show Less',
+                                trimCollapsedText:
+                                    appLocalizations.showMoreButtonLabel,
+                                trimExpandedText:
+                                    ' ${appLocalizations.showLessButtonLabel}',
                                 moreStyle:
                                     MovieDetailsScreenStyles.showMoreStyle,
                                 lessStyle:
@@ -316,14 +321,14 @@ class _MovieDetailsScreenState
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
-                                    'Cast & Crew',
+                                    appLocalizations.castAndCrewHeaderLabel,
                                     style: MovieDetailsScreenStyles
                                         .movieDescriptionHeaderStyle,
                                   ),
                                   Text(
-                                    'View All',
+                                    appLocalizations.viewAllButtonLabel,
                                     style:
                                         MovieDetailsScreenStyles.showMoreStyle,
                                   ),

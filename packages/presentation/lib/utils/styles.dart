@@ -66,8 +66,6 @@ class SelectionButtonStyles {
   );
 }
 
-
-
 class MovieCardWidgetStyles {
   MovieCardWidgetStyles._();
   static const movieNameTextStyle = TextStyle(
@@ -86,6 +84,14 @@ class MovieCardWidgetStyles {
 class ImageWidgetStyles {
   ImageWidgetStyles._();
   static const imageNotExistStyle = TextStyle(
+    color: AppColors.white,
+  );
+}
+
+class RatingWidgetStyles {
+  RatingWidgetStyles._();
+  static const fullModeRatingStyle = TextStyle(
+    fontSize: 30,
     color: AppColors.white,
   );
 }

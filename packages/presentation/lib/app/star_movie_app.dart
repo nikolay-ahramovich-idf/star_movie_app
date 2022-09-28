@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:presentation/app/app_bloc.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/screens/splash/splash_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StarMovieApp extends StatefulWidget {
   const StarMovieApp({super.key});
@@ -16,6 +18,13 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       home: StreamBuilder(
         stream: bloc.stream,
         builder: (context, snapshot) {

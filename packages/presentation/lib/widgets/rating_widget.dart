@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/const.dart';
 import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 
 enum Mode { base, full }
 
@@ -43,7 +43,7 @@ class RatingWidget extends StatelessWidget {
         if (mode == Mode.full)
           Text(
             '${normalizedRating.toStringAsFixed(1)}/$maxNewRating',
-            style: RatingWidgetConfig.fullModeRatingStyle,
+            style: RatingWidgetStyles.fullModeRatingStyle,
           ),
         if (mode == Mode.full)
           const SizedBox(
