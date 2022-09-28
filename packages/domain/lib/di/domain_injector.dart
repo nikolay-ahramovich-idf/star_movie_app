@@ -3,9 +3,9 @@ import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/usecases/delay_usecase.dart';
+import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
-import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,8 +14,8 @@ Future<void> initDomainInjector() async {
 }
 
 Future<void> _initUsecaseModule() async {
-  GetIt.I.registerFactory<DelayUsecase>(
-    () => DelayUsecase(),
+  GetIt.I.registerFactory<DelayUseCase>(
+    () => DelayUseCase(),
   );
 
   GetIt.I.registerFactory<GetNowShowingMoviesUseCase>(
@@ -35,8 +35,8 @@ Future<void> _initUsecaseModule() async {
     IMDBConfig.imdbApiKeyJsonConfigName,
   );
 
-  GetIt.I.registerFactory<GetMovieCastUsecase>(
-    () => GetMovieCastUsecase(
+  GetIt.I.registerFactory<GetMovieCastUseCase>(
+    () => GetMovieCastUseCase(
       GetIt.I.get<MoviesRepository>(),
       GetIt.I.get<ImagesRepository>(),
     ),

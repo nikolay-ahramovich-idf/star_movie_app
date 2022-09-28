@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
   static const primaryColor = Color.fromARGB(255, 15, 27, 43);
-  static const transparentWhite = Color.fromRGBO(255, 255, 255, 0.5);
+  static const transparentWhite50 = Color.fromRGBO(255, 255, 255, 0.5);
+  static const transparentWhite70 = Color.fromRGBO(255, 255, 255, 0.7);
   static const white = Colors.white;
   static const grey = Colors.grey;
+  static const lightBlue = Color.fromARGB(255, 71, 207, 255);
+  static const gold = Color.fromARGB(255, 255, 192, 69);
+  static const fillColor = Colors.grey;
+  static final baseColor = Colors.grey[400]!;
+  static final hightlightColor = Colors.grey[300]!;
 }
 
 class SplashScreenColors {
@@ -22,19 +28,12 @@ class SplashScreenColors {
 
 class HomeScreenColors {
   HomeScreenColors._();
-  static const searchIconButtonColor = AppColors.white;
+  static const searchIconButtonColor = Colors.white;
   static const selectionBorderColor = Color.fromARGB(255, 44, 63, 91);
   static const selectionActiveColor = Color.fromARGB(255, 217, 37, 29);
   static const selectionInactiveColor = Colors.transparent;
   static const bottomNavBarIconColorActive = Color.fromARGB(255, 71, 207, 255);
-  static const bottomNavBarIconColorInactive = AppColors.transparentWhite;
-}
-
-class ShimmerLoaderWidgetColors {
-  ShimmerLoaderWidgetColors._();
-  static const fillColor = AppColors.grey;
-  static final baseColor = AppColors.grey[400]!;
-  static final hightlightColor = AppColors.grey[300]!;
+  static const bottomNavBarIconColorInactive = AppColors.transparentWhite50;
 }
 
 class RatingWidgetColors {

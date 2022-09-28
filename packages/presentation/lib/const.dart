@@ -12,6 +12,7 @@ class MovieDetailsScreenConfig {
 
 class RatingWidgetConfig {
   RatingWidgetConfig._();
+
   static const double minCurrentRating = 0;
   static const double maxCurrentRating = 10;
 }

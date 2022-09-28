@@ -1,10 +1,12 @@
 import 'dart:async';
+
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/navigation/app_navigator.dart';
-import 'package:get_it/get_it.dart';
+import 'package:presentation/navigation/base_arguments.dart';
 
-abstract class BlocImpl<S> implements Bloc<S> {
+abstract class BlocImpl<T extends BaseArguments, S> implements Bloc<T, S> {
   final _dataStreamController = StreamController<S?>();
   S _state;
 
@@ -23,6 +25,12 @@ abstract class BlocImpl<S> implements Bloc<S> {
 
   @override
   Stream<S?> get stream => _dataStreamController.stream;
+
+  @override
+  void initArgs(T args) {}
+
+  @override
+  void initState() {}
 
   @override
   void add(S data) {

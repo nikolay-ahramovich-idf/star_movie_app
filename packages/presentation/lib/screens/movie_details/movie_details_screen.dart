@@ -1,9 +1,11 @@
 import 'dart:ui';
+
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
-import 'package:presentation/extensions/bloc.dart';
+import 'package:presentation/extensions/string.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
@@ -15,7 +17,6 @@ import 'package:presentation/utils/styles.dart';
 import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 import 'package:readmore/readmore.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieDetailsScreenArguments extends BaseArguments {
   final BaseMovieEntity movieDetails;
@@ -45,11 +46,6 @@ class MovieDetailsScreen extends StatefulWidget {
 class _MovieDetailsScreenState
     extends BlocScreenState<MovieDetailsScreen, MovieDetailsBloc> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
@@ -59,6 +55,7 @@ class _MovieDetailsScreenState
         stream: bloc.stream,
         builder: (context, snapshot) {
           final movieDetails = snapshot.data?.movieDetails;
+          final runtime = snapshot.data?.formattedRuntime;
           final cast = snapshot.data?.cast;
 
           if (movieDetails != null) {
@@ -93,7 +90,7 @@ class _MovieDetailsScreenState
                           IconButton(
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
-                            onPressed: bloc.goBack,
+                            onPressed: bloc.handleBackPressed,
                             icon: const Icon(
                               Icons.arrow_back_ios,
                               color: AppColors.white,
@@ -140,7 +137,7 @@ class _MovieDetailsScreenState
                             width: AppSizes.size57,
                             height: AppSizes.size57,
                             decoration: const BoxDecoration(
-                              color: AppColors.transparentWhite,
+                              color: AppColors.transparentWhite50,
                               shape: BoxShape.circle,
                             ),
                             child: Image.asset(
@@ -165,7 +162,7 @@ class _MovieDetailsScreenState
                             height: AppSizes.size14,
                           ),
                           Text(
-                            '${bloc.formatApiRuntime(movieDetails.runtime)} | ${movieDetails.certification}',
+                            '$runtime | ${movieDetails.certification}',
                             style: MovieDetailsScreenStyles
                                 .movieAdditionalDataStyle,
                           ),
@@ -173,8 +170,7 @@ class _MovieDetailsScreenState
                             height: AppSizes.size9,
                           ),
                           Text(
-                            bloc.getGenresPresentation(
-                                movieDetails.genres ?? []),
+                            getGenresPresentation(movieDetails.genres ?? []),
                             style: MovieDetailsScreenStyles
                                 .movieAdditionalDataStyle,
                             textAlign: TextAlign.center,
@@ -188,7 +184,7 @@ class _MovieDetailsScreenState
                                 RatingWidgetConfig.minCurrentRating,
                             maxCurrentRating:
                                 RatingWidgetConfig.maxCurrentRating,
-                            starColor: RatingWidgetColors.starColor,
+                            starColor: AppColors.gold,
                             starSize: MovieDetailsScreenSizes.ratingStarSize,
                             mode: Mode.full,
                           ),
@@ -459,11 +455,15 @@ class _MovieDetailsScreenState
               height: AppSizes.size4,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.transparentWhite,
+                color: AppColors.transparentWhite50,
               ),
             ),
           )
       ],
     );
   }
+}
+
+String getGenresPresentation(Iterable<String> genres) {
+  return genres.map((genre) => genre.capitalize()).join(', ');
 }
