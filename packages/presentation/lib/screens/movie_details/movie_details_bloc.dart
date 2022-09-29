@@ -19,8 +19,6 @@ abstract class MovieDetailsBloc
 
   String? getImageUrlById(String? id);
 
-  Future<void> getCast(int movieId);
-
   void handleBackPressed();
 }
 
@@ -45,24 +43,6 @@ class _MovieDetailsBloc
   @override
   String? getImageUrlById(String? id) {
     return id != null ? _getImageUrlUseCase(id) : id;
-  }
-
-  @override
-  Future<void> getCast(int movieId) async {
-    final params = GetMovieCastUseCaseParams(
-      movieId,
-      MovieDetailsScreenConfig.maxCastCount,
-    );
-
-    final cast = await _getMovieCastUseCase(params);
-
-    final newState = MovieDetailsData(
-      state.movieDetails,
-      state.formattedRuntime,
-      cast,
-    );
-
-    add(newState);
   }
 
   @override

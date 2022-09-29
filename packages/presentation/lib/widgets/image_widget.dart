@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/const.dart';
 import 'package:presentation/utils/styles.dart';
 
 class ImageWidget extends StatelessWidget {
