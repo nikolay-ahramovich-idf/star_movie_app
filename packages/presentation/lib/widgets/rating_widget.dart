@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/const.dart';
 
 enum Mode { base, full }
 
@@ -34,8 +35,19 @@ class RatingWidget extends StatelessWidget {
     final ratingInStars = normalizedRating.round();
 
     return Row(
+      mainAxisAlignment: mode == Mode.full
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
       children: [
-        if (mode == Mode.full) Text('$normalizedRating/$maxNewRating'),
+        if (mode == Mode.full)
+          Text(
+            '${normalizedRating.toStringAsFixed(1)}/$maxNewRating',
+            style: RatingWidgetConfig.fullModeRatingStyle,
+          ),
+        if (mode == Mode.full)
+          const SizedBox(
+            width: AppSizes.size9,
+          ),
         Row(
           children: [
             for (int i = minNewRating + 1; i <= maxNewRating; i++)

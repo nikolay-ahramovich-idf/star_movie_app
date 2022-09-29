@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'base_arguments.dart';
 
 class BasePage<T extends BaseArguments> extends Page {

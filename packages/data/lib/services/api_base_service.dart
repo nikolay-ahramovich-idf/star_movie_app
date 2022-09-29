@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 abstract class ApiBaseService {
   Future<Response<T>> get<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
+    Map<String, dynamic>? queryParameters,
   });
 }
 

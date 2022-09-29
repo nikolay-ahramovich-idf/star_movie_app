@@ -4,6 +4,8 @@ class BaseMovieEntity {
   final List<String>? genres;
   final int? runtime;
   final String? certification;
+  final String? overview;
+  final int? traktId;
   final String? imdbId;
 
   const BaseMovieEntity(
@@ -12,20 +14,23 @@ class BaseMovieEntity {
     required this.genres,
     required this.runtime,
     required this.certification,
+    required this.overview,
+    required this.traktId,
     this.imdbId,
   });
 
   factory BaseMovieEntity.fromJson(Map<String, dynamic> json) {
     final movieJson = json['movie'] as Map<String, dynamic>;
 
-    final title = movieJson['title'] as String?;
-    final rating = movieJson['rating'] as double?;
+    final title = movieJson['title'];
+    final rating = movieJson['rating'];
     final genres = List<String>.from(movieJson['genres']);
-    final runtime = movieJson['runtime'] as int?;
-    final certification = movieJson['certification'] as String?;
-
+    final overview = movieJson['overview'];
+    final runtime = movieJson['runtime'];
+    final certification = movieJson['certification'];
     final ids = Map.from(movieJson['ids']);
-    final imbdId = ids['imdb'] is String ? ids['imdb'] as String : null;
+    final traktId = ids['trakt'];
+    final imdbId = ids['imdb'];
 
     return BaseMovieEntity(
       title,
@@ -33,7 +38,9 @@ class BaseMovieEntity {
       genres: genres,
       runtime: runtime,
       certification: certification,
-      imdbId: imbdId,
+      overview: overview,
+      traktId: traktId,
+      imdbId: imdbId,
     );
   }
 }

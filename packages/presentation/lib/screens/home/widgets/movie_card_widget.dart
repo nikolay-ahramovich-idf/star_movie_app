@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
-import 'package:presentation/screens/home/widgets/rating_widget.dart';
+import 'package:presentation/widgets/image_widget.dart';
+import 'package:presentation/widgets/rating_widget.dart';
 
 class MovieCardWidget extends StatelessWidget {
   final String? title;
@@ -30,7 +31,7 @@ class MovieCardWidget extends StatelessWidget {
           aspectRatio: 2 / 3,
           child: SizedBox(
             width: double.infinity,
-            child: ImageNotExist(imageUrl),
+            child: ImageWidget(imageUrl),
           ),
         ),
         const SizedBox(
@@ -40,7 +41,7 @@ class MovieCardWidget extends StatelessWidget {
           rating ?? 0,
           minCurrentRating: RatingWidgetConfig.minCurrentRating,
           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
-          starColor: RatingWidgetConfig.starColor,
+          starColor: AppColors.gold,
           starSize: RatingWidgetConfig.starSize,
           mode: Mode.base,
         ),
@@ -65,7 +66,7 @@ class MovieCardWidget extends StatelessWidget {
             const SizedBox(
               width: AppSizes.size3,
             ),
-            const Text(
+            Text(
               '\u00b7',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
@@ -79,7 +80,7 @@ class MovieCardWidget extends StatelessWidget {
             const SizedBox(
               width: AppSizes.size2,
             ),
-            const Text(
+            Text(
               '|',
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
@@ -94,33 +95,5 @@ class MovieCardWidget extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-class ImageNotExist extends StatelessWidget {
-  final String? imageUrl;
-
-  const ImageNotExist(
-    this.imageUrl, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return imageUrl == null
-        ? const Text(
-            'Image Not Exist Yet',
-            style: TextStyle(color: Colors.white),
-          )
-        : Image.network(
-            imageUrl as String,
-            errorBuilder: (context, error, stackTrace) => const Center(
-              child: Text(
-                'Image Not Exist Yet',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            fit: BoxFit.contain,
-          );
   }
 }

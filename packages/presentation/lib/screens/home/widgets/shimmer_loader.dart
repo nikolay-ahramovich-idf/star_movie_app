@@ -12,11 +12,11 @@ class ShimmerLoader extends StatelessWidget {
     return Column(
       children: [
         Shimmer.fromColors(
-          baseColor: ShimmerLoaderWidgetColors.baseColor,
-          highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+          baseColor: AppColors.baseColor,
+          highlightColor: AppColors.hightlightColor,
           child: Container(
             decoration: BoxDecoration(
-              color: ShimmerLoaderWidgetColors.fillColor,
+              color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(
                 HomeScreenSizes.selectionBorderRadiusSize,
               ),
@@ -44,10 +44,10 @@ class ShimmerLoader extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 2 / 3,
                     child: Shimmer.fromColors(
-                      baseColor: ShimmerLoaderWidgetColors.baseColor,
-                      highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                      baseColor: AppColors.baseColor,
+                      highlightColor: AppColors.hightlightColor,
                       child: Container(
-                        color: ShimmerLoaderWidgetColors.fillColor,
+                        color: AppColors.fillColor,
                         width: double.infinity,
                       ),
                     ),
@@ -56,7 +56,7 @@ class ShimmerLoader extends StatelessWidget {
                     height: AppSizes.size10,
                   ),
                   Container(
-                    color: ShimmerLoaderWidgetColors.fillColor,
+                    color: AppColors.fillColor,
                     height: RatingWidgetConfig.starSize,
                     width: double.infinity,
                   ),
@@ -64,10 +64,10 @@ class ShimmerLoader extends StatelessWidget {
                     height: AppSizes.size10,
                   ),
                   Shimmer.fromColors(
-                    baseColor: ShimmerLoaderWidgetColors.baseColor,
-                    highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                    baseColor: AppColors.baseColor,
+                    highlightColor: AppColors.hightlightColor,
                     child: Container(
-                      color: ShimmerLoaderWidgetColors.fillColor,
+                      color: AppColors.fillColor,
                       height: MovieCardWidgetStyles.movieNameTextStyle.fontSize,
                       width: double.infinity,
                     ),
@@ -76,10 +76,10 @@ class ShimmerLoader extends StatelessWidget {
                     height: AppSizes.size10,
                   ),
                   Shimmer.fromColors(
-                    baseColor: ShimmerLoaderWidgetColors.baseColor,
-                    highlightColor: ShimmerLoaderWidgetColors.hightlightColor,
+                    baseColor: AppColors.baseColor,
+                    highlightColor: AppColors.hightlightColor,
                     child: Container(
-                      color: ShimmerLoaderWidgetColors.fillColor,
+                      color: AppColors.fillColor,
                       height: MovieCardWidgetStyles
                           .movieAdditionalInfoTextStyle.fontSize,
                       width: double.infinity,

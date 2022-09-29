@@ -36,7 +36,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
         centerTitle: false,
-        title: const Text(
+        title: Text(
           'Star Movie',
           style: HomeScreenStyles.appBarStyle,
         ),
@@ -58,7 +58,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: HomeScreenSizes.horizontalPaddingSize,
+          horizontal: AppSizes.screensHorizontalPadding,
         ),
         child: StreamBuilder<HomeData?>(
           stream: bloc.stream,

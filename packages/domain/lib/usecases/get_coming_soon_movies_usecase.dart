@@ -8,7 +8,7 @@ class GetComingSoonMoviesUseCase extends GetMoviesBaseUsecase {
   GetComingSoonMoviesUseCase(this._moviesRepository);
 
   @override
-  Future<Iterable<BaseMovieEntity>> call() async {
+  Future<List<BaseMovieEntity>> call() async {
     return await getMovies(
       _moviesRepository.getComingSoonMovies,
     );
