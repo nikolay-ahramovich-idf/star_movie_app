@@ -5,6 +5,12 @@ class AssetsImagesPaths {
   static const respondArrow = 'assets/respond-arrow.png';
 }
 
+class HomeScreenConfig {
+  HomeScreenConfig._();
+  static const moviesNotAvailableErrorMessage =
+      'Movies are not available due to error. Turn to administrator!';
+}
+
 class MovieDetailsScreenConfig {
   MovieDetailsScreenConfig._();
   static const int maxCastCount = 4;

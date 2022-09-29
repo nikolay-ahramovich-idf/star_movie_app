@@ -13,9 +13,15 @@ abstract class GetMoviesBaseUsecase
           moviesGetter) async {
     final moviesResponse = await moviesGetter();
 
+    if (moviesResponse.errorMessage != null) {
+      print('Log: ${moviesResponse.errorMessage}');
+      return [];
+    }
+
     final headers = moviesResponse.headers;
     final totalMoviesCount = int.parse(
-        headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first ?? '');
+      headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first ?? '',
+    );
 
     int additionalMoviesCount =
         totalMoviesCount >= TraktMovieCounts.maxMoviesCount
@@ -35,6 +41,8 @@ abstract class GetMoviesBaseUsecase
       ...(additionalMoviesResponse.movies ?? []),
     ];
 
-    return resultMovies.map((movie) => BaseMovieEntity.fromJson(movie)).toList();
+    return resultMovies
+        .map((movie) => BaseMovieEntity.fromJson(movie))
+        .toList();
   }
 }

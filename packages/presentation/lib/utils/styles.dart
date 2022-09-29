@@ -32,6 +32,10 @@ class AppStyles {
 class HomeScreenStyles {
   HomeScreenStyles._();
   static final appBarStyle = AppStyles.white(AppSizes.size29);
+
+  static final moviesNotAvailableMessageStyle = AppStyles.white(
+    AppSizes.size24,
+  );
 }
 
 class MovieDetailsScreenStyles {
