@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/const.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerLoader extends StatelessWidget {
@@ -57,7 +59,7 @@ class ShimmerLoader extends StatelessWidget {
                   ),
                   Container(
                     color: AppColors.fillColor,
-                    height: RatingWidgetConfig.starSize,
+                    height: HomeScreenSizes.ratingStarSize,
                     width: double.infinity,
                   ),
                   const SizedBox(

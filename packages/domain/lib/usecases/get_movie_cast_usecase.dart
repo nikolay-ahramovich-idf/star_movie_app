@@ -4,17 +4,17 @@ import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/usecases/usecase.dart';
 
-class GetMovieCastUsecaseParams {
+class GetMovieCastUseCaseParams {
   final int movieId;
   final int maxNumberOfActors;
 
-  GetMovieCastUsecaseParams(
+  GetMovieCastUseCaseParams(
     this.movieId,
     this.maxNumberOfActors,
   );
 }
 
-class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUsecaseParams,
+class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUseCaseParams,
     Future<List<MovieCharacterEntity>>> {
   final MoviesRepository _moviesRepository;
   final ImagesRepository _imagesRepository;
@@ -26,7 +26,7 @@ class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUsecaseParams,
 
   @override
   Future<List<MovieCharacterEntity>> call(
-    GetMovieCastUsecaseParams params,
+    GetMovieCastUseCaseParams params,
   ) async {
     final castResponse = await _moviesRepository.getCast(params.movieId);
 

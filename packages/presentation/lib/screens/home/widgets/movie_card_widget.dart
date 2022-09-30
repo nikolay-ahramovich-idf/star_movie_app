@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/extensions/string.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
 
@@ -9,7 +12,7 @@ class MovieCardWidget extends StatelessWidget {
   final double? rating;
   final List<String>? genres;
   final String? runtime;
-  final String? certification;
+  final String certification;
   final String? imageUrl;
 
   const MovieCardWidget(
@@ -42,7 +45,7 @@ class MovieCardWidget extends StatelessWidget {
           minCurrentRating: RatingWidgetConfig.minCurrentRating,
           maxCurrentRating: RatingWidgetConfig.maxCurrentRating,
           starColor: AppColors.gold,
-          starSize: RatingWidgetConfig.starSize,
+          starSize: HomeScreenSizes.ratingStarSize,
           mode: Mode.base,
         ),
         const SizedBox(
@@ -88,7 +91,7 @@ class MovieCardWidget extends StatelessWidget {
               width: AppSizes.size2,
             ),
             Text(
-              certification ?? 'NR',
+              certification,
               style: MovieCardWidgetStyles.movieAdditionalInfoTextStyle,
             ),
           ],

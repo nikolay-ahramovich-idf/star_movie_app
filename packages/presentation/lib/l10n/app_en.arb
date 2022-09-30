@@ -1,0 +1,14 @@
+{
+    "appNameLabel": "Star Movie",
+    "nowShowingCategoryLabel": "Now Showing",
+    "comingSoonCategoryLabel": "Coming Soon",
+    "detailCategoryLabel": "Detail",
+    "reviewsCategoryLabel": "Reviews",
+    "showtimeCategoryLabel": "Showtime",
+    "synopsisHeaderLabel": "Synopsis",
+    "castAndCrewHeaderLabel": "Cast & Crew",
+    "showMoreButtonLabel": "Show More",
+    "showLessButtonLabel": "Show Less",
+    "viewAllButtonLabel": "View All",
+    "notRatedLabel": "NR"
+}

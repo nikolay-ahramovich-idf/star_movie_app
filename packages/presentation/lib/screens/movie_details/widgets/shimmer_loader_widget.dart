@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/const.dart';
+import 'package:presentation/utils/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerLoaderWidget extends StatelessWidget {
@@ -17,7 +17,9 @@ class ShimmerLoaderWidget extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(color: AppColors.primaryColor),
+              decoration: const BoxDecoration(
+                color: AppColors.primaryColor,
+              ),
             ),
           ),
         ],

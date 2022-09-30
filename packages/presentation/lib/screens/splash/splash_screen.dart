@@ -4,6 +4,7 @@ import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/splash/splash_bloc.dart';
+import 'package:presentation/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

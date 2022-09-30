@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
@@ -6,6 +7,9 @@ import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/home/widgets/movie_card_widget.dart';
 import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
+import 'package:presentation/utils/colors.dart';
+import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +34,8 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -37,7 +43,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         backgroundColor: AppColors.primaryColor,
         centerTitle: false,
         title: Text(
-          'Star Movie',
+          appLocalizations.appNameLabel,
           style: HomeScreenStyles.appBarStyle,
         ),
         actions: [
@@ -130,7 +136,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                       width: AppSizes.size6,
                                     ),
                                     Text(
-                                      'Now Showing',
+                                      appLocalizations.nowShowingCategoryLabel,
                                       style: selectedType ==
                                               SelectedMoviesType.nowShowing
                                           ? SelectionButtonStyles
@@ -147,7 +153,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              0,
+                              AppSizes.size0,
                               AppSizes.size4,
                               AppSizes.size4,
                               AppSizes.size4,
@@ -187,7 +193,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                       width: AppSizes.size6,
                                     ),
                                     Text(
-                                      'Coming Soon',
+                                      appLocalizations.comingSoonCategoryLabel,
                                       style: selectedType ==
                                               SelectedMoviesType.comingSoon
                                           ? SelectionButtonStyles
@@ -235,7 +241,8 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                               runtime: bloc.formatApiRuntime(
                                 movie.runtime,
                               ),
-                              certification: movie.certification,
+                              certification: movie.certification ??
+                                  appLocalizations.notRatedLabel,
                               imageUrl: bloc.getImageUrlById(
                                 movie.imdbId,
                               ),

@@ -11,10 +11,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   domain:
     path: ../domain
   shimmer: ^2.0.0
   readmore: ^2.2.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -22,4 +25,4 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
+  generate: true

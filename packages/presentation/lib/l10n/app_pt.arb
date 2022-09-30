@@ -1,0 +1,14 @@
+{
+    "appNameLabel": "Estrela de cinema",
+    "nowShowingCategoryLabel": "Em exibição",
+    "comingSoonCategoryLabel": "Em breve",
+    "detailCategoryLabel": "Detalhe",
+    "reviewsCategoryLabel": "Comentários",
+    "showtimeCategoryLabel": "Showtime",
+    "synopsisHeaderLabel": "Sinopse",
+    "castAndCrewHeaderLabel": "Elenco e Equipe",
+    "showMoreButtonLabel": "Mostrar mais",
+    "showLessButtonLabel": "Mostrar Menos",
+    "viewAllButtonLabel": "Ver tudo",
+    "notRatedLabel": "NR"
+}

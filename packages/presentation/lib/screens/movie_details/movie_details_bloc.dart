@@ -54,7 +54,7 @@ class _MovieDetailsBloc
     final traktId = args.movieDetails.traktId;
 
     if (traktId != null) {
-      final getMovieCastUsecaseParams = GetMovieCastUsecaseParams(
+      final getMovieCastUsecaseParams = GetMovieCastUseCaseParams(
         traktId,
         MovieDetailsScreenConfig.maxCastCount,
       );
