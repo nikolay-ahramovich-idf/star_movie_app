@@ -15,7 +15,7 @@ class TabBarWidget extends StatelessWidget {
         color: AppColors.primaryColor,
         border: Border(
           top: BorderSide(
-            width: AppSizes.size0point5,
+            width: AppSizes.size1,
             color: AppColors.grey,
           ),
         ),

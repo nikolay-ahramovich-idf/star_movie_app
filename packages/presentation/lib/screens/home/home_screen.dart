@@ -148,7 +148,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(
-                              0,
+                              AppSizes.size0,
                               AppSizes.size4,
                               AppSizes.size4,
                               AppSizes.size4,
