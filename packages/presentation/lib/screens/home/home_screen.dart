@@ -252,9 +252,8 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          HomeScreenConfig.moviesNotAvailableErrorMessage,
-                          style:
-                              HomeScreenStyles.moviesNotAvailableMessageStyle,
+                          appLocalizations.moviesNotAvailableErrorMessage,
+                          style: HomeScreenStyles.white24Style,
                         ),
                       ),
                     )

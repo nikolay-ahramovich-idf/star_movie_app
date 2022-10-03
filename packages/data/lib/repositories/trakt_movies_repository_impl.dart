@@ -3,6 +3,7 @@ import 'package:data/services/api_base_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/entities/cast_response_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
+import 'package:domain/exceptions/movies_request_exception.dart';
 import 'package:domain/repositories/movies_repository.dart';
 
 class TraktMoviesRepositoryImpl implements MoviesRepository {
@@ -57,11 +58,7 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
         headers: moviesResponse.headers.map,
       );
     } on DioError catch (e) {
-      return MoviesResponseEntity(
-        [],
-        headers: {},
-        errorMessage: e.message,
-      );
+      throw MoviesRequestException(e.message);
     }
   }
 

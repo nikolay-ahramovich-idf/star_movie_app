@@ -10,5 +10,6 @@
     "showMoreButtonLabel": "Show More",
     "showLessButtonLabel": "Show Less",
     "viewAllButtonLabel": "View All",
-    "notRatedLabel": "NR"
+    "notRatedLabel": "NR",
+    "moviesNotAvailableErrorMessage":  "Movies are not available due to error. Turn to administrator!"
 }
