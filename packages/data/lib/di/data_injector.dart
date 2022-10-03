@@ -1,4 +1,5 @@
 import 'package:data/const.dart';
+import 'package:data/repositories/firestore_repository.dart';
 import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
 import 'package:data/services/api_base_service.dart';
@@ -6,14 +7,18 @@ import 'package:data/services/app_config_service_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
+import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/app_config_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 
 Future<void> initDataInjector(
   String traktApiBaseUrl,
   String traktApiKeyConfigKey,
 ) async {
+  await Firebase.initializeApp();
   _initAppConfigService();
+  _initFirestoreService();
   await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);
   await _initTMDBApiService();
   _initMoviesRepository();
@@ -86,6 +91,10 @@ void _initImagesRepository() {
           instanceName: DISingletonInstanceNames.tmdbApiService),
     ),
   );
+}
+
+void _initFirestoreService() {
+  GetIt.I.registerSingleton<RemoteStoreRepository>(FirestoreService());
 }
 
 Dio _buildDioForTractApi(

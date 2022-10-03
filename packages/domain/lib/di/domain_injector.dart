@@ -1,12 +1,15 @@
 import 'package:domain/const.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
+import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/app_config_service.dart';
+import 'package:domain/usecases/create_user_usecase.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
+import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 Future<void> initDomainInjector() async {
@@ -46,5 +49,13 @@ Future<void> _initUsecaseModule() async {
     () => GetImageUrlUseCase(
       imdbApiKey.toString(),
     ),
+  );
+
+  GetIt.I.registerFactory<CreateUserUseCase>(
+    () => CreateUserUseCase(GetIt.I.get<RemoteStoreRepository>()),
+  );
+
+  GetIt.I.registerFactory<UserIsRegisteredUseCase>(
+    () => UserIsRegisteredUseCase(GetIt.I.get<RemoteStoreRepository>()),
   );
 }

@@ -17,5 +17,6 @@
     "userNameInputLabel": "User Name",
     "passwordInputLabel": "Password",
     "forgotPasswordButtonLabel": "Forgot Password?",
-    "loginButtonLabel": "Login"
+    "loginButtonLabel": "Login",
+    "loginIsSuccessLabel": "Login is success"
 }
