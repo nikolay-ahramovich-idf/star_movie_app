@@ -169,13 +169,13 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             AuthIconButtonWidget(
                               AssetsImagesPaths.facebookIconPath,
                               color: AppColors.facebookColor,
-                              onPressAction: bloc.loginByFacebook,
+                              onPressAction: bloc.authByFacebook,
                             ),
                             const SizedBox(width: AppSizes.size24),
                             AuthIconButtonWidget(
                               AssetsImagesPaths.googleIconPath,
                               color: AppColors.googleColor,
-                              onPressAction: bloc.loginByGoogle,
+                              onPressAction: bloc.authByGoogle,
                             ),
                           ],
                         ),

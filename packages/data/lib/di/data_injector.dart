@@ -1,5 +1,6 @@
 import 'package:data/const.dart';
 import 'package:data/repositories/auth_repository_impl.dart';
+import 'package:data/repositories/credentials_repository_impl.dart';
 import 'package:data/repositories/firestore_repository.dart';
 import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
@@ -9,6 +10,7 @@ import 'package:data/services/facebook_auth_service.dart';
 import 'package:data/services/google_auth_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/repositories/auth_repository.dart';
+import 'package:domain/repositories/credentials_repository.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
@@ -30,6 +32,7 @@ Future<void> initDataInjector(
   _initImagesRepository();
   _initAuthServices();
   _initAuthRepository();
+  _initCredentialsRepository();
 }
 
 void _initAppConfigService() {
@@ -123,6 +126,10 @@ void _initAuthRepository() {
     GetIt.I.get<AuthService>(
         instanceName: DISingletonInstanceNames.googleAuthService),
   ));
+}
+
+void _initCredentialsRepository() {
+  GetIt.I.registerSingleton<CredentialsRepository>(CredentialsRepositoryImpl());
 }
 
 Dio _buildDioForTractApi(

@@ -2,6 +2,7 @@ import 'package:domain/entities/user_entity.dart';
 import 'package:domain/usecases/create_user_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
+import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
@@ -15,19 +16,21 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     UserIsRegisteredUseCase userIsRegisteredUseCase,
     FacebookAuthUseCase facebookAuthUseCase,
     GoogleAuthUseCase googleAuthUseCase,
+    SaveCredentialsUseCase saveCredentialsUseCase,
   ) =>
       _LoginBloc(
         createUserUseCase,
         userIsRegisteredUseCase,
         facebookAuthUseCase,
         googleAuthUseCase,
+        saveCredentialsUseCase,
       );
 
   void updateLogin(String newLogin);
   void updatePassword(String newPassword);
   Future<void> onLogin();
-  Future<void> loginByFacebook();
-  Future<void> loginByGoogle();
+  Future<void> authByFacebook();
+  Future<void> authByGoogle();
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -36,12 +39,14 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final UserIsRegisteredUseCase _userIsRegisteredUseCase;
   final FacebookAuthUseCase _facebookAuthUseCase;
   final GoogleAuthUseCase _googleAuthUseCase;
+  final SaveCredentialsUseCase _saveCredentialsUseCase;
 
   _LoginBloc(
     this._createUserUseCase,
     this._userIsRegisteredUseCase,
     this._facebookAuthUseCase,
     this._googleAuthUseCase,
+    this._saveCredentialsUseCase,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -64,12 +69,13 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     final userIsRegistered = await _userIsRegisteredUseCase(user);
 
     if (userIsRegistered) {
+      await _saveCredentialsUseCase(user);
       appNavigator.popAndPush(SuccessLoginScreen.page());
     }
   }
 
   @override
-  Future<void> loginByFacebook() async {
+  Future<void> authByFacebook() async {
     final user = await _facebookAuthUseCase();
 
     if (user != null) {
@@ -81,10 +87,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  Future<void> loginByGoogle() async {
+  Future<void> authByGoogle() async {
     final user = await _googleAuthUseCase();
-
-    print('${user?.login} - ${user?.password}');
 
     if (user != null) {
       add(LoginData(
