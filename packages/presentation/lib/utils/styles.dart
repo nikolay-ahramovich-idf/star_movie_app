@@ -27,11 +27,39 @@ class AppStyles {
       height: height,
     );
   }
+
+  static final appBarStyle = AppStyles.white(AppSizes.size29);
+}
+
+class LoginScreenStyles {
+  LoginScreenStyles._();
+
+  static const signUpButtonStyle = TextStyle(
+    fontSize: AppSizes.size16,
+    color: AppColors.red,
+  );
+
+  static final loginButtonTextStyle = AppStyles.white(
+    AppSizes.size16,
+    fontWeight: FontWeight.w400,
+  );
+
+  static final inputLabelsStyle = AppStyles.white(
+    AppSizes.size12,
+    opacity: 0.5,
+  );
+
+  static final forgotPasswordLabelStyle = AppStyles.white(
+    AppSizes.size14,
+    opacity: 0.5,
+  );
 }
 
 class HomeScreenStyles {
   HomeScreenStyles._();
-  static final appBarStyle = AppStyles.white(AppSizes.size29);
+
+  static final appBarStyle =
+      AppStyles.white(AppSizes.size29); // TODO move to AppStyles
 
   static final white24Style = AppStyles.white(AppSizes.size24);
 }

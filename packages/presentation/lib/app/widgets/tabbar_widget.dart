@@ -2,25 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 
-class TabBarWidget extends StatelessWidget {
-  final VoidCallback _pop;
+class TabBarWidget extends StatefulWidget {
+  final VoidCallback _goToHomePage;
+  final VoidCallback _goToLoginPage;
 
-  const TabBarWidget(this._pop, {super.key});
+  const TabBarWidget(this._goToHomePage, this._goToLoginPage, {super.key});
+
+  @override
+  State<TabBarWidget> createState() => _TabBarWidgetState();
+}
+
+class _TabBarWidgetState extends State<TabBarWidget> {
+  int _currentIndex = 0;
+
+  set currentIndex(int index) => setState(() {
+        if (_currentIndex != index) {
+          _currentIndex = index;
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: AppSizes.size15),
       decoration: const BoxDecoration(
         color: AppColors.primaryColor,
         border: Border(
           top: BorderSide(
             width: AppSizes.size1,
-            color: AppColors.grey,
+            color: AppColors.dividersColor,
           ),
         ),
       ),
       child: BottomNavigationBar(
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -58,8 +73,15 @@ class TabBarWidget extends StatelessWidget {
           ),
         ],
         onTap: (tabIconIndex) {
-          if (tabIconIndex == 0) {
-            _pop();
+          if (tabIconIndex != _currentIndex) {
+            currentIndex = tabIconIndex;
+            switch (tabIconIndex) {
+              case 0:
+                widget._goToHomePage();
+                break;
+              case 3:
+                widget._goToLoginPage();
+            }
           }
         },
       ),

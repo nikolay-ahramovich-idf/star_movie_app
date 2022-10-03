@@ -45,6 +45,7 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
                 visible: appData.pages.last.key != SplashScreen.page().key,
                 child: TabBarWidget(
                   bloc.goToHomePage,
+                  bloc.goToLoginPage,
                 ),
               ),
             );

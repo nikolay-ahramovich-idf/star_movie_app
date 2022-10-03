@@ -3,6 +3,13 @@ class AssetsImagesPaths {
   static const playButtonPath = 'assets/play-button.png';
   static const splashScreenMainImagePath = 'assets/torch-light.png';
   static const respondArrow = 'assets/respond-arrow.png';
+
+  static const usernameIconPath = 'assets/username-icon.png';
+  static const passwordIconPath = 'assets/password-icon.png';
+
+  static const twitterIconPath = 'assets/twitter-icon.png';
+  static const facebookIconPath = 'assets/facebook-icon.png';
+  static const googleIconPath = 'assets/google-icon.png';
 }
 
 class MovieDetailsScreenConfig {

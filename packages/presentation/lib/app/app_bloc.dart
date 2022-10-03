@@ -6,6 +6,7 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_screen.dart';
+import 'package:presentation/screens/login/login_screen.dart';
 
 abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   factory AppBloc() => _AppBloc();
@@ -13,6 +14,7 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   void handleRemoveRouteSettings(RouteSettings value);
 
   void goToHomePage();
+  void goToLoginPage();
 }
 
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
@@ -33,6 +35,11 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   @override
   void goToHomePage() {
     _popUntil(HomeScreen.page());
+  }
+
+  @override
+  void goToLoginPage() {
+    _push(LoginScreen.page());
   }
 
   void _initNavHandler() {
