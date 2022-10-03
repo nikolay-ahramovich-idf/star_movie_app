@@ -1,14 +1,19 @@
 import 'package:data/const.dart';
+import 'package:data/repositories/auth_repository_impl.dart';
 import 'package:data/repositories/firestore_repository.dart';
 import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
 import 'package:data/services/api_base_service.dart';
 import 'package:data/services/app_config_service_impl.dart';
+import 'package:data/services/facebook_auth_service.dart';
+import 'package:data/services/google_auth_service.dart';
 import 'package:dio/dio.dart';
+import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/app_config_service.dart';
+import 'package:domain/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 
@@ -18,11 +23,13 @@ Future<void> initDataInjector(
 ) async {
   await Firebase.initializeApp();
   _initAppConfigService();
-  _initFirestoreService();
+  _initFirestoreRepository();
   await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);
   await _initTMDBApiService();
   _initMoviesRepository();
   _initImagesRepository();
+  _initAuthServices();
+  _initAuthRepository();
 }
 
 void _initAppConfigService() {
@@ -93,8 +100,29 @@ void _initImagesRepository() {
   );
 }
 
-void _initFirestoreService() {
-  GetIt.I.registerSingleton<RemoteStoreRepository>(FirestoreService());
+void _initFirestoreRepository() {
+  GetIt.I.registerSingleton<RemoteStoreRepository>(FirestoreRepository());
+}
+
+void _initAuthServices() {
+  GetIt.I.registerSingleton<AuthService>(
+    FacebookAuthService(),
+    instanceName: DISingletonInstanceNames.facebookAuthService,
+  );
+
+  GetIt.I.registerSingleton<AuthService>(
+    GoogleAuthService(),
+    instanceName: DISingletonInstanceNames.googleAuthService,
+  );
+}
+
+void _initAuthRepository() {
+  GetIt.I.registerSingleton<AuthRepository>(AuthRepositoryImpl(
+    GetIt.I.get<AuthService>(
+        instanceName: DISingletonInstanceNames.facebookAuthService),
+    GetIt.I.get<AuthService>(
+        instanceName: DISingletonInstanceNames.googleAuthService),
+  ));
 }
 
 Dio _buildDioForTractApi(

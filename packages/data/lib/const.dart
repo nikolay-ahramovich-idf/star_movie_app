@@ -37,6 +37,9 @@ class DISingletonInstanceNames {
   static const tmdbApiDio = 'tmdbApiDio';
   static const tmdbApiService = 'tmdbApiService';
   static const tmdbImagesRepository = 'tmdbImagesRepository';
+
+  static const facebookAuthService = 'facebookAuthService';
+  static const googleAuthService = 'googleAuthService';
 }
 
 class TMDBConfig {

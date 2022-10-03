@@ -15,7 +15,9 @@ dependencies:
     path: ../domain
   dio: ^4.0.6
   cloud_firestore: ^3.2.1
-  firebase_core: ^1.19.1
+  # firebase_core: ^1.19.1
+  firebase_auth: ^3.11.1
+  flutter_facebook_auth: ^4.4.1+1
 
 dev_dependencies:
   flutter_test:

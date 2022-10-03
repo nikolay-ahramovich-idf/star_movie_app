@@ -56,6 +56,8 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
       body: StreamBuilder<LoginData?>(
           stream: bloc.stream,
           builder: (context, snapshot) {
+            final data = snapshot.data;
+            if (data != null) {
             return Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -84,6 +86,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                         ),
                         const SizedBox(height: AppSizes.size12),
                         TextField(
+                          controller: TextEditingController(text: data.login),
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(
                             color: AppColors.transparentWhite50,
@@ -104,6 +107,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                         ),
                         const SizedBox(height: AppSizes.size12),
                         TextField(
+                          controller: TextEditingController(text: data.password,),
                           obscureText: true,
                           style: const TextStyle(
                             color: AppColors.transparentWhite50,
@@ -162,7 +166,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           AuthIconButtonWidget(
                             AssetsImagesPaths.facebookIconPath,
                             color: AppColors.facebookColor,
-                            onPressAction: () => print('Implement Faceboock'),
+                            onPressAction: bloc.loginByFacebook,
                           ),
                           const SizedBox(width: AppSizes.size24),
                           AuthIconButtonWidget(
@@ -177,6 +181,9 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                 ),
               ),
             );
+            } else {
+              return Container();
+            }
           }),
     );
   }

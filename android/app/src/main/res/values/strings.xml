@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
     <string name="app_name">Default App Name</string>
+
+    <string name="facebook_app_id">5739474182788894</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">56789</string>
 </resources>
