@@ -30,7 +30,9 @@ abstract class BlocImpl<T extends BaseArguments, S> implements Bloc<T, S> {
   void initArgs(T args) {}
 
   @override
-  void initState() {}
+  void initState() {
+    add(_state);
+  }
 
   @override
   void add(S data) {

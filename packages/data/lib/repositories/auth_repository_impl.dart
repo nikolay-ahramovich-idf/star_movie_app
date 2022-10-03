@@ -16,10 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final userData = await _facebookAuthService.login();
 
     if (userData != null) {
-      final login = userData['email'];
-      final password = userData['id'];
-
-      return UserEntity(login: login, password: password);
+      return userDataToUserEntity(userData);
     }
 
     return null;
@@ -27,7 +24,25 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserEntity?> authWithGoogle() async {
-    // TODO: implement authWithGoogle
-    throw UnimplementedError();
+    final userData = await _googleAuthService.login();
+    userData?.forEach((key, value) {
+      print('$key - $value');
+    });
+
+    if (userData != null) {
+      return userDataToUserEntity(userData);
+    }
+
+    return null;
+  }
+
+  UserEntity userDataToUserEntity(Map<String, dynamic> userData) {
+    final email = userData['email'];
+    final id = userData['id'];
+
+    return UserEntity(
+      login: email,
+      password: id,
+    );
   }
 }

@@ -71,7 +71,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   @override
   Future<void> loginByFacebook() async {
     final user = await _facebookAuthUseCase();
-    print(user?.login);
+
     if (user != null) {
       add(LoginData(
         user.login,
@@ -83,6 +83,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   @override
   Future<void> loginByGoogle() async {
     final user = await _googleAuthUseCase();
+
+    print('${user?.login} - ${user?.password}');
 
     if (user != null) {
       add(LoginData(

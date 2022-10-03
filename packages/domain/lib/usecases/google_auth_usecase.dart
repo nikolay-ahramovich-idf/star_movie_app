@@ -9,6 +9,6 @@ class GoogleAuthUseCase implements UseCase<Future<UserEntity?>> {
 
   @override
   Future<UserEntity?> call() async {
-    return await _authService.authWithFacebook();
+    return await _authService.authWithGoogle();
   }
 }

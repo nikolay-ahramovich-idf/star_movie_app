@@ -58,129 +58,132 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
           builder: (context, snapshot) {
             final data = snapshot.data;
             if (data != null) {
-            return Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: AppColors.dividersColor,
-                    width: AppSizes.size1,
-                  ),
-                ),
-                color: AppColors.primaryColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.screensHorizontalPadding,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: AppSizes.size1),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          appLocalizations.userNameInputLabel.toUpperCase(),
-                          style: LoginScreenStyles.inputLabelsStyle,
-                        ),
-                        const SizedBox(height: AppSizes.size12),
-                        TextField(
-                          controller: TextEditingController(text: data.login),
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(
-                            color: AppColors.transparentWhite50,
-                          ),
-                          decoration: InputDecoration(
-                              disabledBorder: InputBorder.none,
-                              filled: true,
-                              fillColor:
-                                  LoginScreenColors.inputFieldBackgroundColor,
-                              prefixIcon: Image.asset(
-                                  AssetsImagesPaths.usernameIconPath)),
-                          onChanged: bloc.updateLogin,
-                        ),
-                        const SizedBox(height: AppSizes.size16),
-                        Text(
-                          appLocalizations.passwordInputLabel.toUpperCase(),
-                          style: LoginScreenStyles.inputLabelsStyle,
-                        ),
-                        const SizedBox(height: AppSizes.size12),
-                        TextField(
-                          controller: TextEditingController(text: data.password,),
-                          obscureText: true,
-                          style: const TextStyle(
-                            color: AppColors.transparentWhite50,
-                          ),
-                          decoration: InputDecoration(
-                              disabledBorder: InputBorder.none,
-                              filled: true,
-                              fillColor:
-                                  LoginScreenColors.inputFieldBackgroundColor,
-                              prefixIcon: Image.asset(
-                                  AssetsImagesPaths.passwordIconPath)),
-                          onChanged: bloc.updatePassword,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: AppSizes.size32,
-                          ),
-                          child: Center(
-                            child: Text(
-                              appLocalizations.forgotPasswordButtonLabel,
-                              style: LoginScreenStyles.forgotPasswordLabelStyle,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.red,
-                            ),
-                            onPressed: bloc.onLogin,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: AppSizes.size15,
-                              ),
-                              child: Text(
-                                appLocalizations.loginButtonLabel,
-                                style: LoginScreenStyles.loginButtonTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: AppColors.dividersColor,
+                      width: AppSizes.size1,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: AppSizes.size35),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  color: AppColors.primaryColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.screensHorizontalPadding,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: AppSizes.size1),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const AuthIconButtonWidget(
-                            AssetsImagesPaths.twitterIconPath,
-                            color: AppColors.twitterColor,
-                            onPressAction: null,
+                          Text(
+                            appLocalizations.userNameInputLabel.toUpperCase(),
+                            style: LoginScreenStyles.inputLabelsStyle,
                           ),
-                          const SizedBox(width: AppSizes.size24),
-                          AuthIconButtonWidget(
-                            AssetsImagesPaths.facebookIconPath,
-                            color: AppColors.facebookColor,
-                            onPressAction: bloc.loginByFacebook,
+                          const SizedBox(height: AppSizes.size12),
+                          TextField(
+                            controller: TextEditingController(text: data.login),
+                            keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(
+                              color: AppColors.transparentWhite50,
+                            ),
+                            decoration: InputDecoration(
+                                disabledBorder: InputBorder.none,
+                                filled: true,
+                                fillColor:
+                                    LoginScreenColors.inputFieldBackgroundColor,
+                                prefixIcon: Image.asset(
+                                    AssetsImagesPaths.usernameIconPath)),
+                            onChanged: bloc.updateLogin,
                           ),
-                          const SizedBox(width: AppSizes.size24),
-                          AuthIconButtonWidget(
-                            AssetsImagesPaths.googleIconPath,
-                            color: AppColors.googleColor,
-                            onPressAction: () => print('Implement Google'),
+                          const SizedBox(height: AppSizes.size16),
+                          Text(
+                            appLocalizations.passwordInputLabel.toUpperCase(),
+                            style: LoginScreenStyles.inputLabelsStyle,
+                          ),
+                          const SizedBox(height: AppSizes.size12),
+                          TextField(
+                            controller: TextEditingController(
+                              text: data.password,
+                            ),
+                            obscureText: true,
+                            style: const TextStyle(
+                              color: AppColors.transparentWhite50,
+                            ),
+                            decoration: InputDecoration(
+                                disabledBorder: InputBorder.none,
+                                filled: true,
+                                fillColor:
+                                    LoginScreenColors.inputFieldBackgroundColor,
+                                prefixIcon: Image.asset(
+                                    AssetsImagesPaths.passwordIconPath)),
+                            onChanged: bloc.updatePassword,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: AppSizes.size32,
+                            ),
+                            child: Center(
+                              child: Text(
+                                appLocalizations.forgotPasswordButtonLabel,
+                                style:
+                                    LoginScreenStyles.forgotPasswordLabelStyle,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.red,
+                              ),
+                              onPressed: bloc.onLogin,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: AppSizes.size15,
+                                ),
+                                child: Text(
+                                  appLocalizations.loginButtonLabel,
+                                  style: LoginScreenStyles.loginButtonTextStyle,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppSizes.size35),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const AuthIconButtonWidget(
+                              AssetsImagesPaths.twitterIconPath,
+                              color: AppColors.twitterColor,
+                              onPressAction: null,
+                            ),
+                            const SizedBox(width: AppSizes.size24),
+                            AuthIconButtonWidget(
+                              AssetsImagesPaths.facebookIconPath,
+                              color: AppColors.facebookColor,
+                              onPressAction: bloc.loginByFacebook,
+                            ),
+                            const SizedBox(width: AppSizes.size24),
+                            AuthIconButtonWidget(
+                              AssetsImagesPaths.googleIconPath,
+                              color: AppColors.googleColor,
+                              onPressAction: bloc.loginByGoogle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
             } else {
               return Container();
             }

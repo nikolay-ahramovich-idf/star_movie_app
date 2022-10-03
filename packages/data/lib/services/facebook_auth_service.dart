@@ -6,7 +6,7 @@ class FacebookAuthService implements AuthService {
 
   @override
   Future<Map<String, dynamic>?> login() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final loginResult = await FacebookAuth.instance.login();
 
     if (loginResult.status == LoginStatus.success) {
       return await _authProvider.getUserData();
