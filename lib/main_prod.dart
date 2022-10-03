@@ -1,11 +1,7 @@
-import 'package:star_movie_app/flavor_config.dart';
+import 'package:star_movie_app/environments.dart';
 
 import 'main.dart';
 
 void main() {
-  mainCommon(FlavorConfig(
-    'TraktTv',
-    apiBaseUrl: 'https://api.trakt.tv',
-    apiKeyConfigKey: 'traktApiKey',
-  ));
+  mainCommon(Environments.prod);
 }

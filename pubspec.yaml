@@ -26,6 +26,7 @@ flutter:
   assets:
     - assets/
     - assets/json/
+    - resources/flavors_config/
   generate: true
 
 

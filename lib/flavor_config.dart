@@ -8,4 +8,16 @@ class FlavorConfig {
     required this.apiBaseUrl,
     required this.apiKeyConfigKey,
   });
+
+  factory FlavorConfig.fromJson(Map<String, dynamic> json) {
+    final appTitle = json['appTitle'];
+    final apiBaseUrl = json['baseUrl'];
+    final apiKeyConfigKey = json['apiKey'];
+
+    return FlavorConfig(
+      appTitle,
+      apiBaseUrl: apiBaseUrl,
+      apiKeyConfigKey: apiKeyConfigKey,
+    );
+  }
 }
