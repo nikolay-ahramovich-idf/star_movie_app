@@ -86,7 +86,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           ),
                           const SizedBox(height: AppSizes.size12),
                           TextField(
-                            controller: TextEditingController(text: data.login),
+                            controller: _createTextController(data.login),
                             keyboardType: TextInputType.emailAddress,
                             style: const TextStyle(
                               color: AppColors.transparentWhite50,
@@ -107,9 +107,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           ),
                           const SizedBox(height: AppSizes.size12),
                           TextField(
-                            controller: TextEditingController(
-                              text: data.password,
-                            ),
+                            controller: _createTextController(data.password),
                             obscureText: true,
                             style: const TextStyle(
                               color: AppColors.transparentWhite50,
@@ -190,4 +188,14 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
           }),
     );
   }
+}
+
+TextEditingController _createTextController(String value) {
+  final textEditingController = TextEditingController(text: value);
+  textEditingController.selection = TextSelection(
+    baseOffset: value.length,
+    extentOffset: value.length,
+  );
+
+  return textEditingController;
 }
