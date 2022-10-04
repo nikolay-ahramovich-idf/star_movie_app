@@ -39,7 +39,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         centerTitle: false,
         title: Text(
           appLocalizations.appNameLabel,
-          style: HomeScreenStyles.appBarStyle,
+          style: AppStyles.appBarStyle,
         ),
         actions: [
           Padding(

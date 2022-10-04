@@ -58,9 +58,6 @@ class LoginScreenStyles {
 class HomeScreenStyles {
   HomeScreenStyles._();
 
-  static final appBarStyle =
-      AppStyles.white(AppSizes.size29); // TODO move to AppStyles
-
   static final white24Style = AppStyles.white(AppSizes.size24);
 }
 

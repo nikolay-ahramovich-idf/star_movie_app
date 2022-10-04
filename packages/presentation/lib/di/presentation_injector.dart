@@ -1,4 +1,3 @@
-import 'package:domain/usecases/create_user_usecase.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
@@ -6,6 +5,7 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
+import 'package:domain/usecases/log_social_network_auth_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -43,11 +43,11 @@ void _initSplashModule() {
 void _initLoginModule() {
   GetIt.I.registerFactory<LoginBloc>(
     () => LoginBloc(
-      GetIt.I.get<CreateUserUseCase>(),
       GetIt.I.get<UserIsRegisteredUseCase>(),
       GetIt.I.get<FacebookAuthUseCase>(),
       GetIt.I.get<GoogleAuthUseCase>(),
       GetIt.I.get<SaveCredentialsUseCase>(),
+      GetIt.I.get<LogSocialNetworkAuthUseCase>(),
     ),
   );
 }

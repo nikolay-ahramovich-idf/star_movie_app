@@ -30,3 +30,8 @@ class TMDBConfig {
   TMDBConfig._();
   static const actorPictureApiPath = 'https://image.tmdb.org/t/p/original';
 }
+
+class FirestoreCollectionNames {
+  FirestoreCollectionNames._();
+  static const users = 'users';
+}

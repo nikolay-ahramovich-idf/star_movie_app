@@ -162,19 +162,19 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           children: [
                             const AuthIconButtonWidget(
                               AssetsImagesPaths.twitterIconPath,
-                              color: AppColors.twitterColor,
+                              color: LoginScreenColors.twitterColor,
                               onPressAction: null,
                             ),
                             const SizedBox(width: AppSizes.size24),
                             AuthIconButtonWidget(
                               AssetsImagesPaths.facebookIconPath,
-                              color: AppColors.facebookColor,
+                              color: LoginScreenColors.facebookColor,
                               onPressAction: bloc.authByFacebook,
                             ),
                             const SizedBox(width: AppSizes.size24),
                             AuthIconButtonWidget(
                               AssetsImagesPaths.googleIconPath,
-                              color: AppColors.googleColor,
+                              color: LoginScreenColors.googleColor,
                               onPressAction: bloc.authByGoogle,
                             ),
                           ],

@@ -1,7 +1,7 @@
 import 'package:domain/entities/user_entity.dart';
-import 'package:domain/usecases/create_user_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
+import 'package:domain/usecases/log_social_network_auth_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
@@ -12,18 +12,18 @@ import 'package:presentation/screens/login/success_login_screen.dart';
 
 abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
   factory LoginBloc(
-    CreateUserUseCase createUserUseCase,
     UserIsRegisteredUseCase userIsRegisteredUseCase,
     FacebookAuthUseCase facebookAuthUseCase,
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
+    LogSocialNetworkAuthUseCase logSocialNetworkAuthUseCase,
   ) =>
       _LoginBloc(
-        createUserUseCase,
         userIsRegisteredUseCase,
         facebookAuthUseCase,
         googleAuthUseCase,
         saveCredentialsUseCase,
+        logSocialNetworkAuthUseCase,
       );
 
   void updateLogin(String newLogin);
@@ -35,18 +35,18 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     implements LoginBloc {
-  final CreateUserUseCase _createUserUseCase; // TODO remove usecase
   final UserIsRegisteredUseCase _userIsRegisteredUseCase;
   final FacebookAuthUseCase _facebookAuthUseCase;
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
+  final LogSocialNetworkAuthUseCase _logSocialNetworkAuthUseCase;
 
   _LoginBloc(
-    this._createUserUseCase,
     this._userIsRegisteredUseCase,
     this._facebookAuthUseCase,
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
+    this._logSocialNetworkAuthUseCase,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -61,6 +61,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> onLogin() async {
+    await _logSocialNetworkAuthUseCase('auth_by_login');
     final user = UserEntity(
       login: state.login,
       password: state.password,
@@ -76,6 +77,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByFacebook() async {
+    await _logSocialNetworkAuthUseCase('auth_by_facebook');
     final user = await _facebookAuthUseCase();
 
     if (user != null) {
@@ -88,6 +90,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByGoogle() async {
+    await _logSocialNetworkAuthUseCase('auth_by_google');
     final user = await _googleAuthUseCase();
 
     if (user != null) {

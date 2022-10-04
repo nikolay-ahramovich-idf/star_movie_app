@@ -20,7 +20,7 @@ dependencies:
   flutter_facebook_auth: ^4.4.1+1
   google_sign_in: ^5.4.2
   shared_preferences: ^2.0.15
-
+  firebase_analytics: ^9.3.7
 
 dev_dependencies:
   flutter_test:

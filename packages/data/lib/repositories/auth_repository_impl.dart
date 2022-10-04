@@ -25,9 +25,6 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserEntity?> authWithGoogle() async {
     final userData = await _googleAuthService.login();
-    userData?.forEach((key, value) {
-      print('$key - $value');
-    });
 
     if (userData != null) {
       return userDataToUserEntity(userData);

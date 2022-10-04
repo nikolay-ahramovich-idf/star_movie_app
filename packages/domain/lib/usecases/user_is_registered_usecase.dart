@@ -1,3 +1,4 @@
+import 'package:domain/const.dart';
 import 'package:domain/entities/user_entity.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/usecases/usecase.dart';
@@ -11,7 +12,7 @@ class UserIsRegisteredUseCase
   @override
   Future<bool> call(UserEntity user) async {
     final userDocData = await _storeRepository.getDocumentDataByValues(
-      "users", // TODO move to constant
+      FirestoreCollectionNames.users,
       user.toJson(),
     );
 

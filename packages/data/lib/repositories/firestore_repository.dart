@@ -5,17 +5,6 @@ class FirestoreRepository implements RemoteStoreRepository {
   final _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<Iterable<Map<String, dynamic>>> getDocuments(
-      String collectionPath) async {
-    final querySnapshot = await _firestore.collection(collectionPath).get();
-    final documents = querySnapshot.docs.map(
-      (document) => document.data(),
-    );
-
-    return documents;
-  }
-
-  @override
   Future<Map<String, dynamic>?> getDocumentDataByValues(
     String collectionName,
     Map<String, dynamic> queryMap,
@@ -43,14 +32,5 @@ class FirestoreRepository implements RemoteStoreRepository {
     } catch (_) {
       return null;
     }
-  }
-
-  @override
-  Future<void> createDocument(
-    String collectionName,
-    Map<String, dynamic> documentData,
-  ) async {
-    final collectionRef = _firestore.collection(collectionName);
-    await collectionRef.add(documentData);
   }
 }

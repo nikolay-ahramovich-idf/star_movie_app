@@ -4,6 +4,7 @@ import 'package:data/repositories/credentials_repository_impl.dart';
 import 'package:data/repositories/firestore_repository.dart';
 import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
+import 'package:data/services/analytics_service_impl.dart';
 import 'package:data/services/api_base_service.dart';
 import 'package:data/services/app_config_service_impl.dart';
 import 'package:data/services/facebook_auth_service.dart';
@@ -14,6 +15,7 @@ import 'package:domain/repositories/credentials_repository.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
+import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,6 +35,7 @@ Future<void> initDataInjector(
   _initAuthServices();
   _initAuthRepository();
   _initCredentialsRepository();
+  _initAnalyticsService();
 }
 
 void _initAppConfigService() {
@@ -130,6 +133,10 @@ void _initAuthRepository() {
 
 void _initCredentialsRepository() {
   GetIt.I.registerSingleton<CredentialsRepository>(CredentialsRepositoryImpl());
+}
+
+void _initAnalyticsService() {
+  GetIt.I.registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
 }
 
 Dio _buildDioForTractApi(
