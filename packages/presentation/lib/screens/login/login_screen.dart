@@ -92,12 +92,14 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               color: AppColors.transparentWhite50,
                             ),
                             decoration: InputDecoration(
-                                disabledBorder: InputBorder.none,
-                                filled: true,
-                                fillColor:
-                                    LoginScreenColors.inputFieldBackgroundColor,
-                                prefixIcon: Image.asset(
-                                    AssetsImagesPaths.usernameIconPath)),
+                              disabledBorder: InputBorder.none,
+                              filled: true,
+                              fillColor:
+                                  LoginScreenColors.inputFieldBackgroundColor,
+                              prefixIcon: Image.asset(
+                                AssetsImagesPaths.usernameIconPath,
+                              ),
+                            ),
                             onChanged: bloc.updateLogin,
                           ),
                           const SizedBox(height: AppSizes.size16),
@@ -113,12 +115,14 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               color: AppColors.transparentWhite50,
                             ),
                             decoration: InputDecoration(
-                                disabledBorder: InputBorder.none,
-                                filled: true,
-                                fillColor:
-                                    LoginScreenColors.inputFieldBackgroundColor,
-                                prefixIcon: Image.asset(
-                                    AssetsImagesPaths.passwordIconPath)),
+                              disabledBorder: InputBorder.none,
+                              filled: true,
+                              fillColor:
+                                  LoginScreenColors.inputFieldBackgroundColor,
+                              prefixIcon: Image.asset(
+                                AssetsImagesPaths.passwordIconPath,
+                              ),
+                            ),
                             onChanged: bloc.updatePassword,
                           ),
                           Padding(

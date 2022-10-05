@@ -120,7 +120,10 @@ void _initFirestoreRepository() {
   GetIt.I.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
 
   GetIt.I.registerSingleton<RemoteStoreRepository>(
-      FirestoreRepository(GetIt.I.get<FirebaseFirestore>()));
+    FirestoreRepository(
+      GetIt.I.get<FirebaseFirestore>(),
+    ),
+  );
 }
 
 void _initAuthServices() {
@@ -147,9 +150,11 @@ void _initAuthRepository() {
   GetIt.I.registerSingleton<AuthRepository>(
     AuthRepositoryImpl(
       GetIt.I.get<AuthService>(
-          instanceName: DISingletonInstanceNames.facebookAuthService),
+        instanceName: DISingletonInstanceNames.facebookAuthService,
+      ),
       GetIt.I.get<AuthService>(
-          instanceName: DISingletonInstanceNames.googleAuthService),
+        instanceName: DISingletonInstanceNames.googleAuthService,
+      ),
     ),
   );
 }
@@ -168,6 +173,7 @@ Future<void> _initCredentialsRepository() async {
 
 void _initAnalyticsService() {
   GetIt.I.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
+
   GetIt.I.registerSingleton<AnalyticsService>(
     AnalyticsServiceImpl(
       GetIt.I.get<FirebaseAnalytics>(),
