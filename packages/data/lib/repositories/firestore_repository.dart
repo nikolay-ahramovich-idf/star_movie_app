@@ -28,11 +28,11 @@ class FirestoreRepository implements RemoteStoreRepository {
     });
 
     final document = await query?.get();
-    
-    try {
-      return document?.docs.first.data();
-    } catch (_) {
-      return null;
+
+    if (document != null) {
+      return document.docs.isNotEmpty ? document.docs.first.data() : null;
     }
+
+    return null;
   }
 }

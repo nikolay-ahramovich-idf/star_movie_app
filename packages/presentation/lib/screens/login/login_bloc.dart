@@ -66,17 +66,13 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   @override
   Future<void> onLogin() async {
     await _logSocialNetworkAuthUseCase('auth_by_login');
+
     final user = UserEntity(
       login: state.login,
       password: state.password,
     );
 
-    final userIsRegistered = await _userIsRegisteredUseCase(user);
-
-    if (userIsRegistered) {
-      await _saveCredentialsUseCase(user);
-      appNavigator.popAndPush(SuccessLoginScreen.page());
-    }
+    await _loginIfUserRegistered(user);
   }
 
   @override
@@ -89,6 +85,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
         user.login,
         user.password,
       ));
+
+      await _loginIfUserRegistered(user);
     }
   }
 
@@ -102,6 +100,17 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
         user.login,
         user.password,
       ));
+
+      await _loginIfUserRegistered(user);
+    }
+  }
+
+  Future<void> _loginIfUserRegistered(UserEntity user) async {
+    final userIsRegistered = await _userIsRegisteredUseCase(user);
+
+    if (userIsRegistered) {
+      await _saveCredentialsUseCase(user);
+      appNavigator.popAndPush(SuccessLoginScreen.page());
     }
   }
 }
