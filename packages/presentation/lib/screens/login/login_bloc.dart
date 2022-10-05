@@ -27,9 +27,13 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
       );
 
   void updateLogin(String newLogin);
+
   void updatePassword(String newPassword);
+
   Future<void> onLogin();
+
   Future<void> authByFacebook();
+
   Future<void> authByGoogle();
 }
 

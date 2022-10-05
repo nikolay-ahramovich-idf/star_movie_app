@@ -2,7 +2,9 @@ import 'package:domain/services/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuthService implements AuthService {
-  final _authProvider = GoogleSignIn();
+  final GoogleSignIn _authProvider;
+
+  GoogleAuthService(this._authProvider);
 
   @override
   Future<Map<String, dynamic>?> login() async {

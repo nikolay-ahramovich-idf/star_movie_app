@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 
 class FirestoreRepository implements RemoteStoreRepository {
-  final _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
+
+  FirestoreRepository(this._firestore);
 
   @override
   Future<Map<String, dynamic>?> getDocumentDataByValues(
@@ -26,7 +28,7 @@ class FirestoreRepository implements RemoteStoreRepository {
     });
 
     final document = await query?.get();
-
+    
     try {
       return document?.docs.first.data();
     } catch (_) {

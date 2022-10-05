@@ -2,7 +2,9 @@ import 'package:domain/services/auth_service.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class FacebookAuthService implements AuthService {
-  final _authProvider = FacebookAuth.instance;
+  final FacebookAuth _authProvider;
+
+  FacebookAuthService(this._authProvider);
 
   @override
   Future<Map<String, dynamic>?> login() async {
