@@ -28,11 +28,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
@@ -213,45 +208,55 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                   const SizedBox(
                     height: AppSizes.size24,
                   ),
-                  Expanded(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: data.movies.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
-                        crossAxisSpacing: AppSizes.size13,
-                        mainAxisSpacing:
-                            HomeScreenSizes.gridViewMainAxisSpacing,
-                      ),
-                      itemBuilder: (context, index) {
-                        final movie = data.movies[index];
+                  if (data.movies.isNotEmpty)
+                    Expanded(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.movies.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
+                          crossAxisSpacing: AppSizes.size13,
+                          mainAxisSpacing:
+                              HomeScreenSizes.gridViewMainAxisSpacing,
+                        ),
+                        itemBuilder: (context, index) {
+                          final movie = data.movies[index];
 
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            bloc.goToMovieDetailsPage(movie);
-                          },
-                          child: SingleChildScrollView(
-                            child: MovieCardWidget(
-                              movie.title,
-                              rating: movie.rating,
-                              genres: movie.genres,
-                              runtime: bloc.formatApiRuntime(
-                                movie.runtime,
-                              ),
-                              certification: movie.certification ??
-                                  appLocalizations.notRatedLabel,
-                              imageUrl: bloc.getImageUrlById(
-                                movie.imdbId,
+                          return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              bloc.goToMovieDetailsPage(movie);
+                            },
+                            child: SingleChildScrollView(
+                              child: MovieCardWidget(
+                                movie.title,
+                                rating: movie.rating,
+                                genres: movie.genres,
+                                runtime: bloc.formatApiRuntime(
+                                  movie.runtime,
+                                ),
+                                certification: movie.certification ??
+                                    appLocalizations.notRatedLabel,
+                                imageUrl: bloc.getImageUrlById(
+                                  movie.imdbId,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                  if (data.movies.isEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          appLocalizations.moviesNotAvailableErrorMessage,
+                          style: HomeScreenStyles.white24Style,
+                        ),
+                      ),
+                    )
                 ],
               );
             } else {

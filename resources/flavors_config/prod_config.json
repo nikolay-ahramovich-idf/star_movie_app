@@ -1,0 +1,5 @@
+{
+    "appTitle" : "Trakt",
+    "apiKey" : "traktApiKey",
+    "baseUrl": "https://api.trakt.tv"
+  }

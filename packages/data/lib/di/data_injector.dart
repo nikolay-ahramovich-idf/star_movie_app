@@ -9,9 +9,12 @@ import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:get_it/get_it.dart';
 
-Future<void> initDataInjector() async {
+Future<void> initDataInjector(
+  String traktApiBaseUrl,
+  String traktApiKeyConfigKey,
+) async {
   _initAppConfigService();
-  await _initTractApiService();
+  await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);
   await _initTMDBApiService();
   _initMoviesRepository();
   _initImagesRepository();
@@ -21,14 +24,20 @@ void _initAppConfigService() {
   GetIt.I.registerSingleton<AppConfigService>(AppConfigServiceImpl());
 }
 
-Future<void> _initTractApiService() async {
+Future<void> _initTractApiService(
+  String traktApiBaseUrl,
+  String traktApiKeyConfigKey,
+) async {
   final appConfigService = GetIt.I.get<AppConfigService>();
 
-  final traktApiKey = await appConfigService
-      .getConfigValue<String>(TraktApiConfig.traktApiKeyJsonConfigName);
+  final traktApiKey =
+      await appConfigService.getConfigValue<String>(traktApiKeyConfigKey);
 
   GetIt.I.registerSingleton<Dio>(
-    _buildDioForTractApi(traktApiKey),
+    _buildDioForTractApi(
+      traktApiBaseUrl,
+      traktApiKey,
+    ),
     instanceName: DISingletonInstanceNames.traktApiDio,
   );
 
@@ -79,9 +88,12 @@ void _initImagesRepository() {
   );
 }
 
-Dio _buildDioForTractApi(String traktApiKey) {
+Dio _buildDioForTractApi(
+  String traktApiBaseUrl,
+  String traktApiKey,
+) {
   final dioOptions = BaseOptions(
-    baseUrl: TraktApiConfig.apiPath,
+    baseUrl: traktApiBaseUrl,
     headers: {TraktApiConfig.traktApiKeyHeaderName: traktApiKey},
   );
 

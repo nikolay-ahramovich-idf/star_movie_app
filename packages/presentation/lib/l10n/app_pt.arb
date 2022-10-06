@@ -10,5 +10,6 @@
     "showMoreButtonLabel": "Mostrar mais",
     "showLessButtonLabel": "Mostrar Menos",
     "viewAllButtonLabel": "Ver tudo",
-    "notRatedLabel": "NR"
+    "notRatedLabel": "NR",
+    "moviesNotAvailableErrorMessage": "Os filmes não estão disponíveis devido a um erro. Recorra ao administrador!"
 }

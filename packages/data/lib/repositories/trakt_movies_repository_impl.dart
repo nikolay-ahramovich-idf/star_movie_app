@@ -1,7 +1,9 @@
 import 'package:data/const.dart';
 import 'package:data/services/api_base_service.dart';
+import 'package:dio/dio.dart';
 import 'package:domain/entities/cast_response_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
+import 'package:domain/exceptions/movies_request_exception.dart';
 import 'package:domain/repositories/movies_repository.dart';
 
 class TraktMoviesRepositoryImpl implements MoviesRepository {
@@ -45,15 +47,19 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
       ...queryParameters,
     };
 
-    final moviesResponse = await _traktApiService.get<List<dynamic>>(
-      moviesUrl,
-      queryParameters: fullQueryParameters,
-    );
+    try {
+      final moviesResponse = await _traktApiService.get<List<dynamic>>(
+        moviesUrl,
+        queryParameters: fullQueryParameters,
+      );
 
-    return MoviesResponseEntity(
-      moviesResponse.data,
-      headers: moviesResponse.headers.map,
-    );
+      return MoviesResponseEntity(
+        moviesResponse.data,
+        headers: moviesResponse.headers.map,
+      );
+    } on DioError catch (e) {
+      throw MoviesRequestException(e.message);
+    }
   }
 
   String _getPeopleApiUri(int id) {

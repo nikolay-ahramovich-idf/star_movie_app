@@ -1,6 +1,7 @@
 import 'package:domain/const.dart';
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
+import 'package:domain/exceptions/movies_request_exception.dart';
 import 'package:domain/usecases/usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -9,32 +10,40 @@ abstract class GetMoviesBaseUsecase
     implements UseCase<Future<Iterable<BaseMovieEntity>>> {
   @protected
   Future<List<BaseMovieEntity>> getMovies(
-      Future<MoviesResponseEntity> Function([Map<String, dynamic>])
-          moviesGetter) async {
-    final moviesResponse = await moviesGetter();
+    Future<MoviesResponseEntity> Function([Map<String, dynamic>]) moviesGetter,
+  ) async {
+    try {
+      final moviesResponse = await moviesGetter();
 
-    final headers = moviesResponse.headers;
-    final totalMoviesCount = int.parse(
-        headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first ?? '');
+      final headers = moviesResponse.headers;
+      final totalMoviesCount = int.parse(
+        headers[TraktApiSpecialHeaders.totalMoviesCountHeader]?.first ?? '',
+      );
 
-    int additionalMoviesCount =
-        totalMoviesCount >= TraktMovieCounts.maxMoviesCount
-            ? TraktMovieCounts.maxAdditionalMoviesCount
-            : TraktMovieCounts.minAdditionalMoviesCount;
+      int additionalMoviesCount =
+          totalMoviesCount >= TraktMovieCounts.maxMoviesCount
+              ? TraktMovieCounts.maxAdditionalMoviesCount
+              : TraktMovieCounts.minAdditionalMoviesCount;
 
-    final paginationQueryParameters = <String, dynamic>{};
-    paginationQueryParameters['page'] = 2;
-    paginationQueryParameters['limit'] = additionalMoviesCount;
+      final paginationQueryParameters = <String, dynamic>{};
+      paginationQueryParameters['page'] = 2;
+      paginationQueryParameters['limit'] = additionalMoviesCount;
 
-    final additionalMoviesResponse = await moviesGetter(
-      paginationQueryParameters,
-    );
+      final additionalMoviesResponse = await moviesGetter(
+        paginationQueryParameters,
+      );
 
-    final resultMovies = [
-      ...(moviesResponse.movies ?? []),
-      ...(additionalMoviesResponse.movies ?? []),
-    ];
+      final resultMovies = [
+        ...(moviesResponse.movies ?? []),
+        ...(additionalMoviesResponse.movies ?? []),
+      ];
 
-    return resultMovies.map((movie) => BaseMovieEntity.fromJson(movie)).toList();
+      return resultMovies
+          .map((movie) => BaseMovieEntity.fromJson(movie))
+          .toList();
+    } on MoviesRequestException catch (e) {
+      print('Log: ${e.errorMessage}');
+      return [];
+    }
   }
 }
