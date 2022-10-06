@@ -1,4 +1,4 @@
-enum Environments {
+enum Environment {
   prod,
   sandbox,
 }

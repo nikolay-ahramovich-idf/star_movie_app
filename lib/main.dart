@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:presentation/app/star_movie_app.dart';
 import 'package:star_movie_app/di/app_injector.dart';
-import 'package:star_movie_app/environments.dart';
+import 'package:star_movie_app/environment.dart';
 import 'package:star_movie_app/flavor_config.dart';
 
-Future<void> mainCommon(Environments envs) async {
+Future<void> mainCommon(Environment envs) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final flavorConfigResource = await readJson(envs.name);
