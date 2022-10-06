@@ -34,12 +34,16 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
 
   @override
   void goToHomePage() {
-    _popUntil(HomeScreen.page());
+    if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
+      _popUntil(HomeScreen.page());
+    }
   }
 
   @override
   void goToLoginPage() {
-    _push(LoginScreen.page());
+    if (appNavigator.currentPage().toString() != LoginScreen.routeName) {
+      _push(LoginScreen.page());
+    }
   }
 
   void _initNavHandler() {

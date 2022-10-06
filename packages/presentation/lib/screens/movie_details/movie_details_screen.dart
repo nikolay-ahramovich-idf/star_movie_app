@@ -31,6 +31,7 @@ class MovieDetailsScreen extends StatefulWidget {
   const MovieDetailsScreen({super.key});
 
   static const _routeName = '/MovieDetailsScreen';
+  static String get routeName => _routeName;
 
   static BasePage page(MovieDetailsScreenArguments arguments) => BasePage(
         key: const ValueKey(_routeName),

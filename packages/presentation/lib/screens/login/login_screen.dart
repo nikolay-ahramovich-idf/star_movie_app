@@ -15,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 
   static const _routeName = '/LoginScreen';
 
+  static String get routeName => _routeName;
+
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,

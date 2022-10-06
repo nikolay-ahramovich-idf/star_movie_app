@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 
   static const _routeName = '/HomeScreen';
 
+  static String get routeName => _routeName;
+
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,

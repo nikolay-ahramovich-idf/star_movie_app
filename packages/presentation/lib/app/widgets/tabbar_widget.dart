@@ -73,15 +73,13 @@ class _TabBarWidgetState extends State<TabBarWidget> {
           ),
         ],
         onTap: (tabIconIndex) {
-          if (tabIconIndex != _currentIndex) {
-            currentIndex = tabIconIndex;
-            switch (tabIconIndex) {
-              case 0:
-                widget._goToHomePage();
-                break;
-              case 3:
-                widget._goToLoginPage();
-            }
+          currentIndex = tabIconIndex;
+          switch (tabIconIndex) {
+            case 0:
+              widget._goToHomePage();
+              break;
+            case 3:
+              widget._goToLoginPage();
           }
         },
       ),
