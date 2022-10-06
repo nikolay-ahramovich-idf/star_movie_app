@@ -43,6 +43,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
         break;
       case BottomNavigationItemType.login:
         _goToLoginPage(pageIndex);
+        break;
     }
   }
 

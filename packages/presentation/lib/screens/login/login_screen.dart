@@ -95,7 +95,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           ),
                           const SizedBox(height: AppSizes.size12),
                           TextField(
-                            controller: _createTextController(data.login),
+                            controller: bloc.loginController,
                             keyboardType: TextInputType.emailAddress,
                             style: const TextStyle(
                               color: AppColors.transparentWhite50,
@@ -109,7 +109,6 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 AssetsImagesPaths.usernameIconPath,
                               ),
                             ),
-                            onChanged: bloc.updateLogin,
                           ),
                           const SizedBox(height: AppSizes.size16),
                           Text(
@@ -118,7 +117,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           ),
                           const SizedBox(height: AppSizes.size12),
                           TextField(
-                            controller: _createTextController(data.password),
+                            controller: bloc.passwordController,
                             obscureText: true,
                             style: const TextStyle(
                               color: AppColors.transparentWhite50,
@@ -132,7 +131,6 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 AssetsImagesPaths.passwordIconPath,
                               ),
                             ),
-                            onChanged: bloc.updatePassword,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -201,14 +199,4 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
           }),
     );
   }
-}
-
-TextEditingController _createTextController(String value) {
-  final textEditingController = TextEditingController(text: value);
-  textEditingController.selection = TextSelection(
-    baseOffset: value.length,
-    extentOffset: value.length,
-  );
-
-  return textEditingController;
 }

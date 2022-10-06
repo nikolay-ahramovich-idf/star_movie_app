@@ -20,7 +20,6 @@ import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,7 +29,6 @@ Future<void> initDataInjector(
   String traktApiBaseUrl,
   String traktApiKeyConfigKey,
 ) async {
-  await Firebase.initializeApp();
   _initAppConfigService();
   _initFirestoreRepository();
   await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);
