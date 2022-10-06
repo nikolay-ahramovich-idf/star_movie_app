@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 
-class TabBarWidget extends StatefulWidget {
-  final VoidCallback _goToHomePage;
-  final VoidCallback _goToLoginPage;
-
-  const TabBarWidget(this._goToHomePage, this._goToLoginPage, {super.key});
-
-  @override
-  State<TabBarWidget> createState() => _TabBarWidgetState();
+enum BottomNavigationItemType {
+  home,
+  event,
+  alarm,
+  login,
 }
 
-class _TabBarWidgetState extends State<TabBarWidget> {
-  int _currentIndex = 0;
+class TabBarWidget extends StatelessWidget {
+  final int _currentIndex;
+  final void Function(int index) loadPage;
 
-  set currentIndex(int index) => setState(() {
-        if (_currentIndex != index) {
-          _currentIndex = index;
-        }
-      });
+  const TabBarWidget(
+    this._currentIndex, {
+    required this.loadPage,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +70,7 @@ class _TabBarWidgetState extends State<TabBarWidget> {
             label: 'Single',
           ),
         ],
-        onTap: (tabIconIndex) {
-          currentIndex = tabIconIndex;
-          switch (tabIconIndex) {
-            case 0:
-              widget._goToHomePage();
-              break;
-            case 3:
-              widget._goToLoginPage();
-          }
-        },
+        onTap: loadPage,
       ),
     );
   }

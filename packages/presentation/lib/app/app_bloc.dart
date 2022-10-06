@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/app/data/app_data.dart';
+import 'package:presentation/app/widgets/tabbar_widget.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/extensions/enum.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_screen.dart';
@@ -13,8 +15,7 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
 
   void handleRemoveRouteSettings(RouteSettings value);
 
-  void goToHomePage();
-  void goToLoginPage();
+  void loadPage(int pageIndex);
 }
 
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
@@ -33,16 +34,29 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   }
 
   @override
-  void goToHomePage() {
-    if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
-      _popUntil(HomeScreen.page());
+  void loadPage(int pageIndex) {
+    final type = BottomNavigationItemTypeExt.toType(pageIndex);
+
+    switch (type) {
+      case BottomNavigationItemType.home:
+        _goToHomePage(pageIndex);
+        break;
+      case BottomNavigationItemType.login:
+        _goToLoginPage(pageIndex);
     }
   }
 
-  @override
-  void goToLoginPage() {
+  void _goToHomePage(int index) {
+    if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
+      state.currentPageIndex = index;
+      _popAllAndPush(HomeScreen.page());
+    }
+  }
+
+  void _goToLoginPage(int index) {
     if (appNavigator.currentPage().toString() != LoginScreen.routeName) {
-      _push(LoginScreen.page());
+      state.currentPageIndex = index;
+      _popAllAndPush(LoginScreen.page());
     }
   }
 

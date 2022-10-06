@@ -18,5 +18,6 @@
     "passwordInputLabel": "Password",
     "forgotPasswordButtonLabel": "Forgot Password?",
     "loginButtonLabel": "Login",
-    "loginIsSuccessLabel": "Login is success"
+    "loginIsSuccessLabel": "Login is success",
+    "authFailureMessage": "Auth Failure"
 }

@@ -44,8 +44,8 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
               bottomNavigationBar: Visibility(
                 visible: appData.pages.last.key != SplashScreen.page().key,
                 child: TabBarWidget(
-                  bloc.goToHomePage,
-                  bloc.goToLoginPage,
+                  appData.currentPageIndex,
+                  loadPage: bloc.loadPage,
                 ),
               ),
             );

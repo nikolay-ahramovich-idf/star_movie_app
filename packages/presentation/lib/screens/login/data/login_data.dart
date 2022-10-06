@@ -1,26 +1,28 @@
 class LoginData {
-  final String _login;
-  final String _password;
+  final String login;
+  final String password;
+  final bool authFailure;
 
   LoginData(
-    this._login,
-    this._password,
+    this.login,
+    this.password,
+    this.authFailure,
   );
 
-  String get login => _login;
-  String get password => _password;
-
   const LoginData.init()
-      : _login = '',
-        _password = '';
+      : login = '',
+        password = '',
+        authFailure = false;
 
   LoginData copyWith({
     String? login,
     String? password,
+    bool? authFailure,
   }) {
     return LoginData(
-      login ?? _login,
-      password ?? _password,
+      login ?? this.login,
+      password ?? this.password,
+      authFailure ?? this.authFailure,
     );
   }
 }

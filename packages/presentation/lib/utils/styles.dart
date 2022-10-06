@@ -53,6 +53,8 @@ class LoginScreenStyles {
     AppSizes.size14,
     opacity: 0.5,
   );
+
+  static final authFailureMessageStyle = AppStyles.white(AppSizes.size20);
 }
 
 class HomeScreenStyles {

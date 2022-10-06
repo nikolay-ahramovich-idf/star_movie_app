@@ -79,6 +79,13 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: AppSizes.size1),
+                      if (data.authFailure)
+                        Center(
+                          child: Text(
+                            appLocalizations.authFailureMessage,
+                            style: LoginScreenStyles.authFailureMessageStyle,
+                          ),
+                        ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

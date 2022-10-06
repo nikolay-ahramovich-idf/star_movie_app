@@ -1,7 +1,8 @@
 import 'package:domain/entities/user_entity.dart';
+import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
-import 'package:domain/usecases/log_social_network_auth_usecase.dart';
+import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
@@ -16,7 +17,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     FacebookAuthUseCase facebookAuthUseCase,
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
-    LogSocialNetworkAuthUseCase logSocialNetworkAuthUseCase,
+    LogAnalyticsEventUseCase logSocialNetworkAuthUseCase,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
@@ -43,14 +44,14 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final FacebookAuthUseCase _facebookAuthUseCase;
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
-  final LogSocialNetworkAuthUseCase _logSocialNetworkAuthUseCase;
+  final LogAnalyticsEventUseCase _logAnalyticsEventUseCase;
 
   _LoginBloc(
     this._userIsRegisteredUseCase,
     this._facebookAuthUseCase,
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
-    this._logSocialNetworkAuthUseCase,
+    this._logAnalyticsEventUseCase,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -65,7 +66,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> onLogin() async {
-    await _logSocialNetworkAuthUseCase('auth_by_login');
+    await _logAnalyticsEventUseCase('auth_by_login');
 
     final user = UserEntity(
       login: state.login,
@@ -77,31 +78,50 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByFacebook() async {
-    await _logSocialNetworkAuthUseCase('auth_by_facebook');
-    final user = await _facebookAuthUseCase();
+    await _logAnalyticsEventUseCase('auth_by_facebook');
 
-    if (user != null) {
+    try {
+      final user = await _facebookAuthUseCase();
       add(LoginData(
         user.login,
         user.password,
+        false,
       ));
 
       await _loginIfUserRegistered(user);
+    } on AuthFailureException {
+      add(
+        LoginData(
+          state.login,
+          state.password,
+          true,
+        ),
+      );
     }
   }
 
   @override
   Future<void> authByGoogle() async {
-    await _logSocialNetworkAuthUseCase('auth_by_google');
-    final user = await _googleAuthUseCase();
+    await _logAnalyticsEventUseCase('auth_by_google');
 
-    if (user != null) {
+    try {
+      final user = await _googleAuthUseCase();
+
       add(LoginData(
         user.login,
         user.password,
+        false,
       ));
 
       await _loginIfUserRegistered(user);
+    } on AuthFailureException {
+      add(
+        LoginData(
+          state.login,
+          state.password,
+          true,
+        ),
+      );
     }
   }
 
@@ -111,6 +131,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     if (userIsRegistered) {
       await _saveCredentialsUseCase(user);
       appNavigator.popAndPush(SuccessLoginScreen.page());
+    } else {
+      throw AuthFailureException();
     }
   }
 }

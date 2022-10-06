@@ -18,6 +18,7 @@
     "passwordInputLabel": "Senha",
     "forgotPasswordButtonLabel": "Esqueceu a senha?",
     "loginButtonLabel": "Conecte-se",
-    "loginIsSuccessLabel": "Login é sucesso"
+    "loginIsSuccessLabel": "Login é sucesso",
+    "authFailureMessage": "Falha de autenticação"
     
 }
