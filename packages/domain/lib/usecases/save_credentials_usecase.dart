@@ -9,10 +9,9 @@ class SaveCredentialsUseCase
   SaveCredentialsUseCase(this._credentialsRepository);
 
   @override
-  Future<void> call(UserEntity params) async {
-    await _credentialsRepository.saveCredentials(
-      params.login,
-      params.password,
-    );
-  }
+  Future<void> call(UserEntity params) =>
+      _credentialsRepository.saveCredentials(
+        params.login,
+        params.password,
+      );
 }

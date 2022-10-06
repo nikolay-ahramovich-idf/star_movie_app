@@ -7,9 +7,20 @@ class UserEntity {
     required this.password,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => UserEntity(
+  factory UserEntity.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      UserEntity(
         login: json['login'],
         password: json['password'],
+      );
+
+  factory UserEntity.fromAuthJson(
+    Map<String, dynamic> json,
+  ) =>
+      UserEntity(
+        login: json['email'],
+        password: json['id'],
       );
 
   Map<String, dynamic> toJson() => {

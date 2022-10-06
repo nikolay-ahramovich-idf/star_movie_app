@@ -1,6 +1,5 @@
+import 'package:domain/entities/user_entity.dart';
+
 abstract class RemoteStoreRepository {
-  Future<Map<String, dynamic>?> getDocumentDataByValues(
-    String collectionName,
-    Map<String, dynamic> queryMap,
-  );
+  Future<bool> checkUserExists(UserEntity user);
 }

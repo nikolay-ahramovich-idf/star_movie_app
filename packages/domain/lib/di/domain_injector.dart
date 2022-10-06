@@ -13,7 +13,7 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
-import 'package:domain/usecases/log_social_network_auth_usecase.dart';
+import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -73,7 +73,7 @@ Future<void> _initUsecaseModule() async {
     () => SaveCredentialsUseCase(GetIt.I.get<CredentialsRepository>()),
   );
 
-  GetIt.I.registerFactory<LogSocialNetworkAuthUseCase>(
-    () => LogSocialNetworkAuthUseCase(GetIt.I.get<AnalyticsService>()),
+  GetIt.I.registerFactory<LogAnalyticsEventUseCase>(
+    () => LogAnalyticsEventUseCase(GetIt.I.get<AnalyticsService>()),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -7,7 +8,7 @@ class GoogleAuthService implements AuthService {
   GoogleAuthService(this._authProvider);
 
   @override
-  Future<Map<String, dynamic>?> login() async {
+  Future<Map<String, dynamic>> login() async {
     final loginResult = await _authProvider.signIn();
 
     if (loginResult != null) {
@@ -19,6 +20,6 @@ class GoogleAuthService implements AuthService {
       return userData;
     }
 
-    return null;
+    throw AuthFailureException();
   }
 }

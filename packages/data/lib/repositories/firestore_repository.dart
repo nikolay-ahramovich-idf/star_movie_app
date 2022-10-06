@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data/const.dart';
+import 'package:domain/entities/user_entity.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 
 class FirestoreRepository implements RemoteStoreRepository {
@@ -7,32 +9,20 @@ class FirestoreRepository implements RemoteStoreRepository {
   FirestoreRepository(this._firestore);
 
   @override
-  Future<Map<String, dynamic>?> getDocumentDataByValues(
-    String collectionName,
-    Map<String, dynamic> queryMap,
-  ) async {
-    final collectionRef = _firestore.collection(collectionName);
+  Future<bool> checkUserExists(UserEntity user) async {
+    final collectionRef = _firestore.collection(FirestoreCollectionNames.users);
 
-    Query<Map<String, dynamic>>? query;
+    final document = await collectionRef
+        .where(
+          'login',
+          isEqualTo: user.login,
+        )
+        .where(
+          'password',
+          isEqualTo: user.password,
+        )
+        .get();
 
-    queryMap.forEach((key, value) {
-      query = query == null
-          ? collectionRef.where(
-              key,
-              isEqualTo: value,
-            )
-          : query?.where(
-              key,
-              isEqualTo: value,
-            );
-    });
-
-    final document = await query?.get();
-
-    if (document != null) {
-      return document.docs.isNotEmpty ? document.docs.first.data() : null;
-    }
-
-    return null;
+    return document.docs.isNotEmpty;
   }
 }

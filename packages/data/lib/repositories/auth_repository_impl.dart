@@ -12,26 +12,16 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<UserEntity?> authWithFacebook() async {
+  Future<UserEntity> authWithFacebook() async {
     final userData = await _facebookAuthService.login();
 
-    return userData != null ? userDataToUserEntity(userData) : null;
+    return UserEntity.fromAuthJson(userData);
   }
 
   @override
-  Future<UserEntity?> authWithGoogle() async {
+  Future<UserEntity> authWithGoogle() async {
     final userData = await _googleAuthService.login();
 
-    return userData != null ? userDataToUserEntity(userData) : null;
-  }
-
-  UserEntity userDataToUserEntity(Map<String, dynamic> userData) {
-    final email = userData['email'];
-    final id = userData['id'];
-
-    return UserEntity(
-      login: email,
-      password: id,
-    );
+    return UserEntity.fromAuthJson(userData);
   }
 }

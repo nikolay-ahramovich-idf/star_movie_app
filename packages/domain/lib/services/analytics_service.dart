@@ -1,3 +1,3 @@
 abstract class AnalyticsService {
-  Future<void> logClickEvent(String eventName);
+  Future<void> logEvent(String eventName);
 }

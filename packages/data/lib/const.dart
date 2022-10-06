@@ -50,3 +50,8 @@ class TMDBConfig {
   static const tmdbApiKeyQueryName = 'api_key';
   static const tmdbApiKeyJsonConfigName = 'tmdbApiKey';
 }
+
+class FirestoreCollectionNames {
+  FirestoreCollectionNames._();
+  static const users = 'users';
+}
