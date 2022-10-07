@@ -1,5 +1,7 @@
+import 'package:domain/entities/share_movie_entity.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
+import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
@@ -11,13 +13,21 @@ abstract class MovieDetailsBloc
   factory MovieDetailsBloc(
     GetImageUrlUseCase getImageUrlUseCase,
     GetMovieCastUseCase getMovieCastUseCase,
+    ShareMovieUseCase shareMovieUseCase,
   ) =>
       _MovieDetailsBloc(
         getImageUrlUseCase,
         getMovieCastUseCase,
+        shareMovieUseCase,
       );
 
   String? getImageUrlById(String? id);
+
+  Future<void> shareMovie(
+    String message,
+    String locale,
+    int tmdbId,
+  );
 
   void handleBackPressed();
 }
@@ -27,10 +37,12 @@ class _MovieDetailsBloc
     implements MovieDetailsBloc {
   final GetImageUrlUseCase _getImageUrlUseCase;
   final GetMovieCastUseCase _getMovieCastUseCase;
+  final ShareMovieUseCase _shareMovieUseCase;
 
   _MovieDetailsBloc(
     this._getImageUrlUseCase,
     this._getMovieCastUseCase,
+    this._shareMovieUseCase,
   ) : super(initState: MovieDetailsData.init());
 
   @override
@@ -43,6 +55,21 @@ class _MovieDetailsBloc
   @override
   String? getImageUrlById(String? id) {
     return id != null ? _getImageUrlUseCase(id) : id;
+  }
+
+  @override
+  Future<void> shareMovie(
+    String message,
+    String locale,
+    int tmdbId,
+  ) async {
+    final shareMovieEntity = ShareMovieEntity(
+      message,
+      locale: locale,
+      tmdbId: tmdbId,
+    );
+
+    await _shareMovieUseCase(shareMovieEntity);
   }
 
   @override

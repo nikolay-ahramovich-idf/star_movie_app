@@ -96,9 +96,18 @@ class _MovieDetailsScreenState
                               size: MovieDetailsScreenSizes.navigationIconSize,
                             ),
                           ),
-                          Image.asset(
-                            AssetsImagesPaths.respondArrow,
-                            height: MovieDetailsScreenSizes.navigationIconSize,
+                          InkWell(
+                            splashColor: Colors.green,
+                            child: Image.asset(
+                              AssetsImagesPaths.respondArrow,
+                              height:
+                                  MovieDetailsScreenSizes.navigationIconSize,
+                            ),
+                            onTap: () => bloc.shareMovie(
+                              appLocalizations.shareMovieMessage,
+                              appLocalizations.localeName,
+                              movieDetails.tmdbId ?? 0,
+                            ),
                           ),
                         ],
                       ),

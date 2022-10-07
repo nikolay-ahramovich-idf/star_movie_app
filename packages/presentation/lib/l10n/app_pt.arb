@@ -19,6 +19,7 @@
     "forgotPasswordButtonLabel": "Esqueceu a senha?",
     "loginButtonLabel": "Conecte-se",
     "loginIsSuccessLabel": "Login é sucesso",
-    "authFailureMessage": "Falha de autenticação"
+    "authFailureMessage": "Falha de autenticação",
+    "shareMovieMessage": "Olha, que filme eu encontrei!"
     
 }

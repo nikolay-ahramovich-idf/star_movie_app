@@ -7,6 +7,7 @@ class BaseMovieEntity {
   final String? overview;
   final int? traktId;
   final String? imdbId;
+  final int? tmdbId;
 
   const BaseMovieEntity(
     this.title, {
@@ -17,6 +18,7 @@ class BaseMovieEntity {
     required this.overview,
     required this.traktId,
     this.imdbId,
+    this.tmdbId,
   });
 
   factory BaseMovieEntity.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class BaseMovieEntity {
     final ids = Map.from(movieJson['ids']);
     final traktId = ids['trakt'];
     final imdbId = ids['imdb'];
+    final tmdbId = ids['tmdb'];
 
     return BaseMovieEntity(
       title,
@@ -41,6 +44,7 @@ class BaseMovieEntity {
       overview: overview,
       traktId: traktId,
       imdbId: imdbId,
+      tmdbId: tmdbId,
     );
   }
 }

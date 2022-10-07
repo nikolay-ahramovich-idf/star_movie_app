@@ -10,6 +10,7 @@ import 'package:data/services/api_base_service.dart';
 import 'package:data/services/app_config_service_impl.dart';
 import 'package:data/services/facebook_auth_service.dart';
 import 'package:data/services/google_auth_service.dart';
+import 'package:data/services/share_movie_service_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/repositories/credentials_repository.dart';
@@ -19,11 +20,13 @@ import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/auth_service.dart';
+import 'package:domain/services/share_movie_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:share_movie_plugin/share_movie_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> initDataInjector(
@@ -41,6 +44,7 @@ Future<void> initDataInjector(
   _initAuthRepository();
   await _initCredentialsRepository();
   _initAnalyticsService();
+  _initShareMovieService();
 }
 
 void _initAppConfigService() {
@@ -178,6 +182,14 @@ void _initAnalyticsService() {
     AnalyticsServiceImpl(
       GetIt.I.get<FirebaseAnalytics>(),
     ),
+  );
+}
+
+void _initShareMovieService() {
+  GetIt.I.registerSingleton<ShareMoviePlugin>(ShareMoviePlugin());
+
+  GetIt.I.registerSingleton<ShareMovieService>(
+    ShareMovieServiceImpl(GetIt.I.get<ShareMoviePlugin>()),
   );
 }
 
