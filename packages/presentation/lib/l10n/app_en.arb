@@ -11,5 +11,13 @@
     "showLessButtonLabel": "Show Less",
     "viewAllButtonLabel": "View All",
     "notRatedLabel": "NR",
-    "moviesNotAvailableErrorMessage":  "Movies are not available due to error. Turn to administrator!"
+    "moviesNotAvailableErrorMessage":  "Movies are not available due to error. Turn to administrator!",
+    "profileLabel": "Profile",
+    "signUpButtonLabel": "Sign Up",
+    "userNameInputLabel": "User Name",
+    "passwordInputLabel": "Password",
+    "forgotPasswordButtonLabel": "Forgot Password?",
+    "loginButtonLabel": "Login",
+    "loginIsSuccessLabel": "Login is success",
+    "authFailureMessage": "Auth Failure"
 }

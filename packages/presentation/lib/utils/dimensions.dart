@@ -21,11 +21,13 @@ class AppSizes {
   static const double size30 = 30;
   static const double size32 = 32;
   static const double size35 = 35;
+  static const double size44 = 44;
   static const double size45 = 45;
   static const double size49 = 49;
   static const double size50 = 50;
   static const double size56 = 56;
   static const double size57 = 57;
+  static const double size131 = 131;
   static const double size282 = 282;
 
   static const double screensHorizontalPadding = 18;

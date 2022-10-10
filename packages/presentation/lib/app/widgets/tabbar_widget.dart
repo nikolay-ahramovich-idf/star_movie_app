@@ -2,25 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 
-class TabBarWidget extends StatelessWidget {
-  final VoidCallback _pop;
+enum BottomNavigationItemType {
+  home,
+  event,
+  alarm,
+  login,
+}
 
-  const TabBarWidget(this._pop, {super.key});
+class TabBarWidget extends StatelessWidget {
+  final int _currentIndex;
+  final void Function(int index) loadPage;
+
+  const TabBarWidget(
+    this._currentIndex, {
+    required this.loadPage,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: AppSizes.size15),
       decoration: const BoxDecoration(
         color: AppColors.primaryColor,
         border: Border(
           top: BorderSide(
             width: AppSizes.size1,
-            color: AppColors.grey,
+            color: AppColors.dividersColor,
           ),
         ),
       ),
       child: BottomNavigationBar(
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -57,11 +70,7 @@ class TabBarWidget extends StatelessWidget {
             label: 'Single',
           ),
         ],
-        onTap: (tabIconIndex) {
-          if (tabIconIndex == 0) {
-            _pop();
-          }
-        },
+        onTap: loadPage,
       ),
     );
   }

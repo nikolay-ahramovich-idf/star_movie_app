@@ -11,5 +11,13 @@
     "showLessButtonLabel": "Mostrar Menos",
     "viewAllButtonLabel": "Ver tudo",
     "notRatedLabel": "NR",
-    "moviesNotAvailableErrorMessage": "Os filmes não estão disponíveis devido a um erro. Recorra ao administrador!"
+    "moviesNotAvailableErrorMessage": "Os filmes não estão disponíveis devido a um erro. Recorra ao administrador!",
+    "profileLabel": "Perfil",
+    "signUpButtonLabel": "Inscrever-se",
+    "userNameInputLabel": "Nome de usuário",
+    "passwordInputLabel": "Senha",
+    "forgotPasswordButtonLabel": "Esqueceu a senha?",
+    "loginButtonLabel": "Conecte-se",
+    "loginIsSuccessLabel": "Login é sucesso",
+    "authFailureMessage": "Falha de autenticação"
 }

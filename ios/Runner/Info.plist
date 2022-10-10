@@ -45,5 +45,28 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<string>com.googleusercontent.apps.355241989593-0cr1d7iak5oai7aav96pjl5d8u1oavl2</string>
+    		</array>
+    	</dict>
+    	<dict>
+              <key>CFBundleURLSchemes</key>
+              <array>
+                <string>fb5739474182788894</string>
+              </array>
+              </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>5739474182788894</string>
+    <key>FacebookClientToken</key>
+    <string>CLIENT-TOKEN</string>
+    <key>FacebookDisplayName</key>
+    <string>TraktTv</string>
 </dict>
 </plist>

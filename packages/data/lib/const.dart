@@ -37,6 +37,9 @@ class DISingletonInstanceNames {
   static const tmdbApiDio = 'tmdbApiDio';
   static const tmdbApiService = 'tmdbApiService';
   static const tmdbImagesRepository = 'tmdbImagesRepository';
+
+  static const facebookAuthService = 'facebookAuthService';
+  static const googleAuthService = 'googleAuthService';
 }
 
 class TMDBConfig {
@@ -46,4 +49,9 @@ class TMDBConfig {
 
   static const tmdbApiKeyQueryName = 'api_key';
   static const tmdbApiKeyJsonConfigName = 'tmdbApiKey';
+}
+
+class FirestoreCollectionNames {
+  FirestoreCollectionNames._();
+  static const users = 'users';
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:presentation/app/star_movie_app.dart';
@@ -9,6 +10,7 @@ import 'package:star_movie_app/flavor_config.dart';
 
 Future<void> mainCommon(Environment envs) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   final flavorConfigResource = await readJson(envs.name);
   final flavorConfig = FlavorConfig.fromJson(flavorConfigResource);

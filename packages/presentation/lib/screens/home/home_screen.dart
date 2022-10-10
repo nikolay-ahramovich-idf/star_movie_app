@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 
   static const _routeName = '/HomeScreen';
 
+  static String get routeName => _routeName;
+
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,
@@ -39,7 +41,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         centerTitle: false,
         title: Text(
           appLocalizations.appNameLabel,
-          style: HomeScreenStyles.appBarStyle,
+          style: AppStyles.appBarStyle,
         ),
         actions: [
           Padding(
