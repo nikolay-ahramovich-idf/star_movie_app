@@ -33,7 +33,6 @@ Future<void> initDataInjector(
   String traktApiBaseUrl,
   String traktApiKeyConfigKey,
 ) async {
-  await Firebase.initializeApp();
   _initAppConfigService();
   _initFirestoreRepository();
   await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);

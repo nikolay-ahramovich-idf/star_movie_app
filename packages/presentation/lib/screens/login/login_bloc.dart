@@ -5,6 +5,7 @@ import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/navigation/base_arguments.dart';
@@ -27,9 +28,9 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
         logSocialNetworkAuthUseCase,
       );
 
-  void updateLogin(String newLogin);
+  TextEditingController get loginController;
 
-  void updatePassword(String newPassword);
+  TextEditingController get passwordController;
 
   Future<void> onLogin();
 
@@ -46,6 +47,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final SaveCredentialsUseCase _saveCredentialsUseCase;
   final LogAnalyticsEventUseCase _logAnalyticsEventUseCase;
 
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   _LoginBloc(
     this._userIsRegisteredUseCase,
     this._facebookAuthUseCase,
@@ -55,25 +59,25 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   ) : super(initState: const LoginData.init());
 
   @override
-  void updateLogin(String newLogin) {
-    add(state.copyWith(login: newLogin));
-  }
+  TextEditingController get loginController => _loginController;
 
   @override
-  void updatePassword(String newPassword) {
-    add(state.copyWith(password: newPassword));
-  }
+  TextEditingController get passwordController => _passwordController;
 
   @override
   Future<void> onLogin() async {
     await _logAnalyticsEventUseCase('auth_by_login');
 
     final user = UserEntity(
-      login: state.login,
-      password: state.password,
+      login: _loginController.text,
+      password: _passwordController.text,
     );
 
-    await _loginIfUserRegistered(user);
+    try {
+      await _loginIfUserRegistered(user);
+    } on AuthFailureException {
+      add(LoginData(true));
+    }
   }
 
   @override
@@ -82,20 +86,15 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     try {
       final user = await _facebookAuthUseCase();
-      add(LoginData(
-        user.login,
-        user.password,
-        false,
-      ));
+
+      _updateFieldControllers(user);
+
+      add(LoginData(false));
 
       await _loginIfUserRegistered(user);
     } on AuthFailureException {
       add(
-        LoginData(
-          state.login,
-          state.password,
-          true,
-        ),
+        LoginData(true),
       );
     }
   }
@@ -107,9 +106,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     try {
       final user = await _googleAuthUseCase();
 
+      _updateFieldControllers(user);
+
       add(LoginData(
-        user.login,
-        user.password,
         false,
       ));
 
@@ -117,12 +116,15 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     } on AuthFailureException {
       add(
         LoginData(
-          state.login,
-          state.password,
           true,
         ),
       );
     }
+  }
+
+  void _updateFieldControllers(UserEntity user) {
+    _loginController.text = user.login;
+    _passwordController.text = user.password;
   }
 
   Future<void> _loginIfUserRegistered(UserEntity user) async {
