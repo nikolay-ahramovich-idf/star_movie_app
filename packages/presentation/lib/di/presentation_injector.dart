@@ -27,7 +27,7 @@ void initPresentationInjector() {
 
 void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
-    () => AppBloc(),
+    () => AppBloc(GetIt.I.get<LogAnalyticsEventUseCase>()),
   );
 
   GetIt.I.registerSingleton<AppNavigator>(
@@ -59,6 +59,7 @@ void _initHomeModule() {
       GetIt.I.get<GetNowShowingMoviesUseCase>(),
       GetIt.I.get<GetComingSoonMoviesUseCase>(),
       GetIt.I.get<GetImageUrlUseCase>(),
+      GetIt.I.get<LogAnalyticsEventUseCase>(),
     ),
   );
 }
@@ -69,6 +70,7 @@ void _initMovieDetailsModule() {
       GetIt.I.get<GetImageUrlUseCase>(),
       GetIt.I.get<GetMovieCastUseCase>(),
       GetIt.I.get<ShareMovieUseCase>(),
+      GetIt.I.get<LogAnalyticsEventUseCase>(),
     ),
   );
 }

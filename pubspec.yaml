@@ -15,6 +15,7 @@ dependencies:
     path: packages/presentation
   data:
     path: packages/data
+  firebase_crashlytics: ^2.8.13
 
 dev_dependencies:
   flutter_test:

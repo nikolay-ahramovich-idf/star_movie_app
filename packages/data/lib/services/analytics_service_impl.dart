@@ -9,7 +9,10 @@ class AnalyticsServiceImpl implements AnalyticsService {
   AnalyticsServiceImpl(this._analyticsProvider);
 
   @override
-  Future<void> logEvent(String eventName) async {
-    await _analyticsProvider.logEvent(name: eventName);
+  Future<void> logEvent(String eventName, [String? payload]) async {
+    await _analyticsProvider.logEvent(
+      name: eventName,
+      parameters: payload != null ? {'payload': payload} : null,
+    );
   }
 }

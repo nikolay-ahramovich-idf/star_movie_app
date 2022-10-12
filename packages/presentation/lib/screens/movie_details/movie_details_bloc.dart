@@ -1,6 +1,8 @@
+import 'package:domain/entities/event_entity.dart';
 import 'package:domain/entities/share_movie_entity.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
+import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
@@ -14,11 +16,13 @@ abstract class MovieDetailsBloc
     GetImageUrlUseCase getImageUrlUseCase,
     GetMovieCastUseCase getMovieCastUseCase,
     ShareMovieUseCase shareMovieUseCase,
+    LogAnalyticsEventUseCase logAnalyticsEventUseCase,
   ) =>
       _MovieDetailsBloc(
         getImageUrlUseCase,
         getMovieCastUseCase,
         shareMovieUseCase,
+        logAnalyticsEventUseCase,
       );
 
   String? getImageUrlById(String? id);
@@ -30,6 +34,8 @@ abstract class MovieDetailsBloc
   );
 
   void handleBackPressed();
+
+  void handleShowMoreLessPressed(bool isExpanded);
 }
 
 class _MovieDetailsBloc
@@ -38,11 +44,13 @@ class _MovieDetailsBloc
   final GetImageUrlUseCase _getImageUrlUseCase;
   final GetMovieCastUseCase _getMovieCastUseCase;
   final ShareMovieUseCase _shareMovieUseCase;
+  final LogAnalyticsEventUseCase _logAnalyticsEventUseCase;
 
   _MovieDetailsBloc(
     this._getImageUrlUseCase,
     this._getMovieCastUseCase,
     this._shareMovieUseCase,
+    this._logAnalyticsEventUseCase,
   ) : super(initState: MovieDetailsData.init());
 
   @override
@@ -74,7 +82,24 @@ class _MovieDetailsBloc
 
   @override
   void handleBackPressed() {
+    final event = EventEntity('btn_back_click');
+
+    _logAnalyticsEventUseCase(event);
+
     appNavigator.pop();
+  }
+
+  @override
+  void handleShowMoreLessPressed(bool isExpanded) {
+    if (isExpanded) {
+      final event = EventEntity('btn_show_less_click');
+
+      _logAnalyticsEventUseCase(event);
+    } else {
+      final event = EventEntity('btn_show_more_click');
+
+      _logAnalyticsEventUseCase(event);
+    }
   }
 
   Future<void> _getCast(MovieDetailsScreenArguments args) async {

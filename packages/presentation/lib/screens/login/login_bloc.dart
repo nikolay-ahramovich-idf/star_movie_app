@@ -1,3 +1,4 @@
+import 'package:domain/entities/event_entity.dart';
 import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
@@ -66,7 +67,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> onLogin() async {
-    await _logAnalyticsEventUseCase('auth_by_login');
+    final event = EventEntity('btn_auth_by_login_click');
+
+    _logAnalyticsEventUseCase(event);
 
     final user = UserEntity(
       login: _loginController.text,
@@ -82,7 +85,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByFacebook() async {
-    await _logAnalyticsEventUseCase('auth_by_facebook');
+    final event = EventEntity('btn_auth_by_facebook_click');
+
+    _logAnalyticsEventUseCase(event);
 
     try {
       final user = await _facebookAuthUseCase();
@@ -101,7 +106,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByGoogle() async {
-    await _logAnalyticsEventUseCase('auth_by_google');
+    final event = EventEntity('btn_auth_by_google_clicked');
+
+    _logAnalyticsEventUseCase(event);
 
     try {
       final user = await _googleAuthUseCase();
