@@ -13,6 +13,10 @@ class ShareMovieUseCase
   Future<void> call(ShareMovieEntity params) async {
     String message =
         '${params.message}\n\n${TMDBConfig.movieApiPath}/${params.tmdbId}?language=${params.locale}';
-    await _service.shareMovie(message);
+
+    await _service.shareMovie(
+      message,
+      params.intentTitle,
+    );
   }
 }

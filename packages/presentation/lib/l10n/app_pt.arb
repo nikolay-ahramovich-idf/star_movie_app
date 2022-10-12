@@ -20,6 +20,6 @@
     "loginButtonLabel": "Conecte-se",
     "loginIsSuccessLabel": "Login é sucesso",
     "authFailureMessage": "Falha de autenticação",
-    "shareMovieMessage": "Olha, que filme eu encontrei!"
-    
+    "shareMovieMessage": "Olha, que filme eu encontrei!",
+    "intentTitle": "Compartilhamento de filmes"
 }

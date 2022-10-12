@@ -1,3 +1,6 @@
 abstract class ShareMovieService {
-  Future<void> shareMovie(String message);
+  Future<void> shareMovie(
+    String message,
+    String intentTitle,
+  );
 }

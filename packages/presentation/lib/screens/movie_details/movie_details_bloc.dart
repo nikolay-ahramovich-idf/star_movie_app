@@ -31,6 +31,7 @@ abstract class MovieDetailsBloc
     String message,
     String locale,
     int tmdbId,
+    String intentTitle,
   );
 
   void handleBackPressed();
@@ -70,11 +71,13 @@ class _MovieDetailsBloc
     String message,
     String locale,
     int tmdbId,
+    String intentTitle,
   ) async {
     final shareMovieEntity = ShareMovieEntity(
       message,
       locale: locale,
       tmdbId: tmdbId,
+      intentTitle: intentTitle,
     );
 
     await _shareMovieUseCase(shareMovieEntity);

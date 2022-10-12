@@ -16,7 +16,7 @@ abstract class ShareMoviePluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> shareMovie(String message) async {
+  Future<void> shareMovie(String message, String intentTitle) async {
     throw UnimplementedError('share movie not been implimented.');
   }
 }

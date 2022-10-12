@@ -8,11 +8,14 @@ class MethodChannelShareMoviePlugin extends ShareMoviePluginPlatform {
   final methodChannel = const MethodChannel('share_movie_plugin');
 
   @override
-  Future<void> shareMovie(String message) async {
+  Future<void> shareMovie(String message, String intentTitle) async {
     try {
       await methodChannel.invokeMethod(
         'shareMovie',
-        {'message': message},
+        {
+          'message': message,
+          'intentTitle': intentTitle,
+        },
       );
     } on PlatformException catch (e) {
       print(e.toString());
