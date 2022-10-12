@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:share_movie_plugin/const.dart';
 
 import 'share_movie_plugin_platform_interface.dart';
 
@@ -12,7 +13,10 @@ class MethodChannelShareMoviePlugin extends ShareMoviePluginPlatform {
     try {
       await methodChannel.invokeMethod(
         'shareMovie',
-        {'message': message},
+        {
+          'message': message,
+          'intentTitle': ShareMoviePluginAndroid.intentTitle,
+        },
       );
     } on PlatformException catch (e) {
       print(e.toString());

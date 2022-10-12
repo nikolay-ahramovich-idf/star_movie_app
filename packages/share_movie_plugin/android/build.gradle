@@ -1,7 +1,8 @@
 group 'com.share_movie_plugin'
-version '1.0'
+version '1.0-SNAPSHOT'
 
 buildscript {
+    ext.kotlin_version = '1.6.10'
     repositories {
         google()
         mavenCentral()
@@ -9,10 +10,11 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-rootProject.allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
@@ -20,6 +22,7 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 31
@@ -29,7 +32,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 16
     }
 }
