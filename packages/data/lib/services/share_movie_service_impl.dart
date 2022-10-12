@@ -7,7 +7,13 @@ class ShareMovieServiceImpl implements ShareMovieService {
   ShareMovieServiceImpl(this._plugin);
 
   @override
-  Future<void> shareMovie(String message) async {
-    await _plugin.shareMovie(message);
+  Future<void> shareMovie(
+    String message,
+    String intentTitle,
+  ) async {
+    await _plugin.shareMovie(
+      message,
+      intentTitle,
+    );
   }
 }

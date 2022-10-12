@@ -107,6 +107,7 @@ class _MovieDetailsScreenState
                               appLocalizations.shareMovieMessage,
                               appLocalizations.localeName,
                               movieDetails.tmdbId ?? 0,
+                              appLocalizations.intentTitle,
                             ),
                           ),
                         ],
