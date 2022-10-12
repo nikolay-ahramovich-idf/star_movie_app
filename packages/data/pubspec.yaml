@@ -21,6 +21,8 @@ dependencies:
   google_sign_in: ^5.4.2
   shared_preferences: ^2.0.15
   firebase_analytics: ^9.3.7
+  share_movie_plugin:
+    path: ../share_movie_plugin
 
 dev_dependencies:
   flutter_test:

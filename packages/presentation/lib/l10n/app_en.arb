@@ -19,5 +19,7 @@
     "forgotPasswordButtonLabel": "Forgot Password?",
     "loginButtonLabel": "Login",
     "loginIsSuccessLabel": "Login is success",
-    "authFailureMessage": "Auth Failure"
+    "authFailureMessage": "Auth Failure",
+    "shareMovieMessage": "Look, what movie I found!",
+    "intentTitle": "Movie Sharing"
 }

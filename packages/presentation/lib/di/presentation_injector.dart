@@ -7,6 +7,7 @@ import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
+import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:presentation/app/app_bloc.dart';
@@ -67,6 +68,7 @@ void _initMovieDetailsModule() {
     () => MovieDetailsBloc(
       GetIt.I.get<GetImageUrlUseCase>(),
       GetIt.I.get<GetMovieCastUseCase>(),
+      GetIt.I.get<ShareMovieUseCase>(),
     ),
   );
 }

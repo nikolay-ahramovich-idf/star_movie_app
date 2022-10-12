@@ -29,4 +29,5 @@ class TraktApiSpecialHeaders {
 class TMDBConfig {
   TMDBConfig._();
   static const actorPictureApiPath = 'https://image.tmdb.org/t/p/original';
+  static const movieApiPath = 'https://www.themoviedb.org/movie';
 }
