@@ -7,6 +7,7 @@ import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/share_movie_service.dart';
+import 'package:domain/services/validation_service.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
@@ -15,6 +16,7 @@ import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_event_usecase.dart';
+import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
@@ -81,5 +83,9 @@ Future<void> _initUsecaseModule() async {
 
   GetIt.I.registerFactory<ShareMovieUseCase>(
     () => ShareMovieUseCase(GetIt.I.get<ShareMovieService>()),
+  );
+
+  GetIt.I.registerFactory<LoginValidationUseCase>(
+    () => LoginValidationUseCase(GetIt.I.get<ValidationService>()),
   );
 }

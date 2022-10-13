@@ -11,6 +11,7 @@ import 'package:data/services/app_config_service_impl.dart';
 import 'package:data/services/facebook_auth_service.dart';
 import 'package:data/services/google_auth_service.dart';
 import 'package:data/services/share_movie_service_impl.dart';
+import 'package:data/services/validation_service_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/repositories/credentials_repository.dart';
@@ -21,8 +22,8 @@ import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:domain/services/share_movie_service.dart';
+import 'package:domain/services/validation_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -35,7 +36,10 @@ Future<void> initDataInjector(
 ) async {
   _initAppConfigService();
   _initFirestoreRepository();
-  await _initTractApiService(traktApiBaseUrl, traktApiKeyConfigKey);
+  await _initTractApiService(
+    traktApiBaseUrl,
+    traktApiKeyConfigKey,
+  );
   await _initTMDBApiService();
   _initMoviesRepository();
   _initImagesRepository();
@@ -44,6 +48,7 @@ Future<void> initDataInjector(
   await _initCredentialsRepository();
   _initAnalyticsService();
   _initShareMovieService();
+  await _initValidationService();
 }
 
 void _initAppConfigService() {
@@ -189,6 +194,26 @@ void _initShareMovieService() {
 
   GetIt.I.registerSingleton<ShareMovieService>(
     ShareMovieServiceImpl(GetIt.I.get<ShareMoviePlugin>()),
+  );
+}
+
+Future<void> _initValidationService() async {
+  final appConfigService = GetIt.I.get<AppConfigService>();
+
+  final loginLength = await appConfigService.getConfigValue<int>(
+    ValidationConfig.loginValidationRuleKeyJsonConfigName,
+  );
+
+  final passwordRegularExpression =
+      await appConfigService.getConfigValue<String>(
+    ValidationConfig.passwordValidationRuleKeyJsonConfigName,
+  );
+
+  GetIt.I.registerSingleton<ValidationService>(
+    ValidationServiceImpl(
+      loginLength,
+      passwordRegularExpression,
+    ),
   );
 }
 

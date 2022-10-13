@@ -53,5 +53,14 @@ class TMDBConfig {
 
 class FirestoreCollectionNames {
   FirestoreCollectionNames._();
+
   static const users = 'users';
+}
+
+class ValidationConfig {
+  ValidationConfig._();
+
+  static const loginValidationRuleKeyJsonConfigName = 'minLoginLength';
+  static const passwordValidationRuleKeyJsonConfigName =
+      'passwordRegularExpression';
 }

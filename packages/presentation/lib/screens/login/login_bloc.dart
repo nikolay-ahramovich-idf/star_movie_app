@@ -3,6 +3,7 @@ import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
+import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,14 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     FacebookAuthUseCase facebookAuthUseCase,
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
+    LoginValidationUseCase loginValidationUseCase,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
         facebookAuthUseCase,
         googleAuthUseCase,
         saveCredentialsUseCase,
+        loginValidationUseCase,
       );
 
   TextEditingController get loginController;
@@ -44,6 +47,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final FacebookAuthUseCase _facebookAuthUseCase;
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
+  final LoginValidationUseCase _loginValidationUseCase;
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -53,6 +57,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     this._facebookAuthUseCase,
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
+    this._loginValidationUseCase,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -73,6 +78,10 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       login: _loginController.text,
       password: _passwordController.text,
     );
+
+    final formIsValid = _loginValidationUseCase(user);
+
+    print('Form is valid: $formIsValid');
 
     try {
       await _loginIfUserRegistered(user);
