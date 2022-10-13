@@ -5,6 +5,7 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
+import 'package:domain/usecases/log_analytics_screen_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
@@ -26,7 +27,7 @@ void initPresentationInjector() {
 
 void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
-    () => AppBloc(),
+    () => AppBloc(GetIt.I.get<LogAnalyticsScreenUseCase>()),
   );
 
   GetIt.I.registerSingleton<AppNavigator>(
