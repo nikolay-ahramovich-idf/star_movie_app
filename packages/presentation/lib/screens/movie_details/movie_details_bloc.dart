@@ -80,7 +80,9 @@ class _MovieDetailsBloc
 
   @override
   void handleBackPressed() {
-    final event = EventEntity('btn_back_click');
+    final event = EventEntity(
+      AnalyticsEvents.movieDetailsEvents.buttonBackClick,
+    );
 
     logAnalyticsEventUseCase(event);
 
@@ -90,11 +92,15 @@ class _MovieDetailsBloc
   @override
   void handleShowMoreLessPressed(bool isExpanded) {
     if (isExpanded) {
-      final event = EventEntity('btn_show_less_click');
+      final event = EventEntity(
+        AnalyticsEvents.movieDetailsEvents.buttonShowLessClick,
+      );
 
       logAnalyticsEventUseCase(event);
     } else {
-      final event = EventEntity('btn_show_more_click');
+      final event = EventEntity(
+        AnalyticsEvents.movieDetailsEvents.buttonShowMoreClick,
+      );
 
       logAnalyticsEventUseCase(event);
     }

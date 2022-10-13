@@ -8,6 +8,7 @@ import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
 import 'package:presentation/screens/login/success_login_screen.dart';
@@ -62,7 +63,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> onLogin() async {
-    final event = EventEntity('btn_auth_by_login_click');
+    final event = EventEntity(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByLoginClick,
+    );
 
     logAnalyticsEventUseCase(event);
 
@@ -80,7 +83,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByFacebook() async {
-    final event = EventEntity('btn_auth_by_facebook_click');
+    final event = EventEntity(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByFacebookClick,
+    );
 
     logAnalyticsEventUseCase(event);
 
@@ -101,7 +106,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   Future<void> authByGoogle() async {
-    final event = EventEntity('btn_auth_by_google_clicked');
+    final event = EventEntity(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByGoogleClick,
+    );
 
     logAnalyticsEventUseCase(event);
 

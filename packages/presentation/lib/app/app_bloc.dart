@@ -5,6 +5,7 @@ import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/const.dart';
 import 'package:presentation/extensions/enum.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
@@ -49,7 +50,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   }
 
   void _goToHomePage(int index) {
-    final event = EventEntity('btn_tabbar_home_click');
+    final event = EventEntity(AnalyticsEvents.appEvents.buttonTabbarHomeClick);
 
     logAnalyticsEventUseCase(event);
 
@@ -60,7 +61,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   }
 
   void _goToLoginPage(int index) {
-    final event = EventEntity('btn_tabbar_home_click');
+    final event = EventEntity(AnalyticsEvents.appEvents.buttonTabbarLoginClick);
 
     logAnalyticsEventUseCase(event);
 
@@ -143,8 +144,8 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
 
   void _updateData() {
     final event = EventEntity(
-      'screen_view',
-      payload: _currentPage()?.name,
+      AnalyticsEvents.appEvents.screenView,
+      {'payload': _currentPage()?.name},
     );
 
     logAnalyticsEventUseCase(event);

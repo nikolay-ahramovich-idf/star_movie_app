@@ -5,6 +5,7 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
+import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/home/data/home_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
@@ -62,7 +63,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   Future<void> showNowShowingMovies() async {
-    final event = EventEntity('btn_now_showing_movies_click');
+    final event = EventEntity(
+      AnalyticsEvents.homeScreenEvents.buttonNowShowingMoviesClick,
+    );
 
     logAnalyticsEventUseCase(event);
 
@@ -77,7 +80,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   Future<void> showComingSoonMovies() async {
-    final event = EventEntity('btn_coming_soon_movies_click');
+    final event = EventEntity(
+      AnalyticsEvents.homeScreenEvents.buttonComingSoonMoviesClick,
+    );
 
     logAnalyticsEventUseCase(event);
 
@@ -113,7 +118,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   void goToMovieDetailsPage(BaseMovieEntity movieDetails) {
-    final event = EventEntity('btn_movie_poster_click');
+    final event = EventEntity(
+      AnalyticsEvents.homeScreenEvents.buttonMoviePosterClick,
+    );
 
     logAnalyticsEventUseCase(event);
 

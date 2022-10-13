@@ -11,6 +11,6 @@ class LogAnalyticsEventUseCase
   @override
   Future<void> call(EventEntity params) => _analyticsService.logEvent(
         params.eventName,
-        params.payload,
+        parameters: params.parameters,
       );
 }

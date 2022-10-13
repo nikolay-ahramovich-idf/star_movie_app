@@ -1,6 +1,6 @@
 class EventEntity {
   final String eventName;
-  final String? payload;
+  final Map<String, dynamic>? parameters;
 
-  EventEntity(this.eventName, {this.payload});
+  EventEntity(this.eventName, [this.parameters]);
 }
