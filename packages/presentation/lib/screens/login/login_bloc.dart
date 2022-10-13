@@ -3,7 +3,6 @@ import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
-import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +18,12 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     FacebookAuthUseCase facebookAuthUseCase,
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
-    LogAnalyticsEventUseCase logSocialNetworkAuthUseCase,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
         facebookAuthUseCase,
         googleAuthUseCase,
         saveCredentialsUseCase,
-        logSocialNetworkAuthUseCase,
       );
 
   TextEditingController get loginController;
@@ -46,7 +43,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final FacebookAuthUseCase _facebookAuthUseCase;
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
-  final LogAnalyticsEventUseCase _logAnalyticsEventUseCase;
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -56,7 +52,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     this._facebookAuthUseCase,
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
-    this._logAnalyticsEventUseCase,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -69,7 +64,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   Future<void> onLogin() async {
     final event = EventEntity('btn_auth_by_login_click');
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     final user = UserEntity(
       login: _loginController.text,
@@ -87,7 +82,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   Future<void> authByFacebook() async {
     final event = EventEntity('btn_auth_by_facebook_click');
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     try {
       final user = await _facebookAuthUseCase();
@@ -108,7 +103,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   Future<void> authByGoogle() async {
     final event = EventEntity('btn_auth_by_google_clicked');
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     try {
       final user = await _googleAuthUseCase();

@@ -5,7 +5,6 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
-import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
@@ -27,7 +26,7 @@ void initPresentationInjector() {
 
 void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
-    () => AppBloc(GetIt.I.get<LogAnalyticsEventUseCase>()),
+    () => AppBloc(),
   );
 
   GetIt.I.registerSingleton<AppNavigator>(
@@ -48,7 +47,6 @@ void _initLoginModule() {
       GetIt.I.get<FacebookAuthUseCase>(),
       GetIt.I.get<GoogleAuthUseCase>(),
       GetIt.I.get<SaveCredentialsUseCase>(),
-      GetIt.I.get<LogAnalyticsEventUseCase>(),
     ),
   );
 }
@@ -59,7 +57,6 @@ void _initHomeModule() {
       GetIt.I.get<GetNowShowingMoviesUseCase>(),
       GetIt.I.get<GetComingSoonMoviesUseCase>(),
       GetIt.I.get<GetImageUrlUseCase>(),
-      GetIt.I.get<LogAnalyticsEventUseCase>(),
     ),
   );
 }
@@ -70,7 +67,6 @@ void _initMovieDetailsModule() {
       GetIt.I.get<GetImageUrlUseCase>(),
       GetIt.I.get<GetMovieCastUseCase>(),
       GetIt.I.get<ShareMovieUseCase>(),
-      GetIt.I.get<LogAnalyticsEventUseCase>(),
     ),
   );
 }

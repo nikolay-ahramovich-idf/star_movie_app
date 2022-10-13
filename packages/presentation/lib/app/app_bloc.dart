@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:domain/entities/event_entity.dart';
-import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
@@ -13,10 +12,7 @@ import 'package:presentation/screens/home/home_screen.dart';
 import 'package:presentation/screens/login/login_screen.dart';
 
 abstract class AppBloc implements Bloc<BaseArguments, AppData> {
-  factory AppBloc(
-    LogAnalyticsEventUseCase logAnalyticsEventUseCase,
-  ) =>
-      _AppBloc(logAnalyticsEventUseCase);
+  factory AppBloc() => _AppBloc();
 
   void handleRemoveRouteSettings(RouteSettings value);
 
@@ -24,9 +20,7 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
 }
 
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
-  final LogAnalyticsEventUseCase _logAnalyticsEventUseCase;
-
-  _AppBloc(this._logAnalyticsEventUseCase) : super(initState: AppData.init());
+  _AppBloc() : super(initState: AppData.init());
 
   @override
   void initState() {
@@ -57,7 +51,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   void _goToHomePage(int index) {
     final event = EventEntity('btn_tabbar_home_click');
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
       state.currentPageIndex = index;
@@ -68,7 +62,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   void _goToLoginPage(int index) {
     final event = EventEntity('btn_tabbar_home_click');
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     if (appNavigator.currentPage().toString() != LoginScreen.routeName) {
       state.currentPageIndex = index;
@@ -153,7 +147,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
       payload: _currentPage()?.name,
     );
 
-    _logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(event);
 
     super.add(state);
   }
