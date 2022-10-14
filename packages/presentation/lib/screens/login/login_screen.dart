@@ -102,6 +102,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               autovalidateMode: AutovalidateMode.disabled,
                               validator: (_) => bloc.loginValidator(
                                 appLocalizations.wrongLoginMessage,
+                                appLocalizations.requiredLoginMessage,
                               ),
                               controller: bloc.loginController,
                               keyboardType: TextInputType.emailAddress,
@@ -128,6 +129,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               autovalidateMode: AutovalidateMode.disabled,
                               validator: (_) => bloc.passwordValidator(
                                 appLocalizations.wrongPasswordMessage,
+                                appLocalizations.requiredPasswordMessage,
                               ),
                               controller: bloc.passwordController,
                               obscureText: true,

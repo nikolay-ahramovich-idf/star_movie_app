@@ -1,4 +1,3 @@
-import 'package:domain/entities/event_entity.dart';
 import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
@@ -42,9 +41,15 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   bool validateForm();
 
-  String? loginValidator(String warningMessage);
+  String? loginValidator(
+    String wrongLoginMessage,
+    String requiredLoginMessage,
+  );
 
-  String? passwordValidator(String warningMessage);
+  String? passwordValidator(
+    String wrongPasswordMessage,
+    String requiredPasswordMessage,
+  );
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -157,12 +162,36 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  String? loginValidator(String warningMessage) =>
-      state.loginIsCorrect ? null : warningMessage;
+  String? loginValidator(
+    String wrongLoginMessage,
+    String requiredLoginMessage,
+  ) {
+    if (_loginController.text.isEmpty) {
+      return requiredLoginMessage;
+    }
+
+    if (!state.loginIsCorrect) {
+      return wrongLoginMessage;
+    }
+
+    return null;
+  }
 
   @override
-  String? passwordValidator(String warningMessage) =>
-      state.passwordIsCorrect ? null : warningMessage;
+  String? passwordValidator(
+    String wrongPasswordMessage,
+    String requiredPasswordMessage,
+  ) {
+    if (_passwordController.text.isEmpty) {
+      return requiredPasswordMessage;
+    }
+
+    if (!state.passwordIsCorrect) {
+      return wrongPasswordMessage;
+    }
+
+    return null;
+  }
 
   void _updateFieldControllers(UserEntity user) {
     _loginController.text = user.login;
