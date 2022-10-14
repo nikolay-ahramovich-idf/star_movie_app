@@ -295,6 +295,7 @@ class _MovieDetailsScreenState
                                     MovieDetailsScreenStyles.showMoreStyle,
                                 lessStyle:
                                     MovieDetailsScreenStyles.showMoreStyle,
+                                callback: bloc.handleShowMoreLessPressed,
                               ),
                               const SizedBox(height: AppSizes.size32),
                               Row(

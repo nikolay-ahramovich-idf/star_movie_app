@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:presentation/bloc/base/bloc.dart';
@@ -12,6 +13,9 @@ abstract class BlocImpl<T extends BaseArguments, S> implements Bloc<T, S> {
 
   @protected
   final appNavigator = GetIt.I.get<AppNavigator>();
+
+  @protected
+  final logAnalyticsEventUseCase = GetIt.I.get<LogAnalyticsEventUseCase>();
 
   BlocImpl({required S initState}) : _state = initState;
 

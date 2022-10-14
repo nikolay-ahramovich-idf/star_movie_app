@@ -31,6 +31,8 @@ abstract class MovieDetailsBloc
   );
 
   void handleBackPressed();
+
+  void handleShowMoreLessPressed(bool isExpanded);
 }
 
 class _MovieDetailsBloc
@@ -77,7 +79,24 @@ class _MovieDetailsBloc
 
   @override
   void handleBackPressed() {
+    logAnalyticsEventUseCase(
+      AnalyticsEvents.movieDetailsEvents.buttonBackClick,
+    );
+
     appNavigator.pop();
+  }
+
+  @override
+  void handleShowMoreLessPressed(bool isExpanded) {
+    if (isExpanded) {
+      logAnalyticsEventUseCase(
+        AnalyticsEvents.movieDetailsEvents.buttonShowLessClick,
+      );
+    } else {
+      logAnalyticsEventUseCase(
+        AnalyticsEvents.movieDetailsEvents.buttonShowMoreClick,
+      );
+    }
   }
 
   Future<void> _getCast(MovieDetailsScreenArguments args) async {
