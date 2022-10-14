@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:domain/entities/event_entity.dart';
+import 'package:domain/usecases/log_analytics_screen_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
@@ -13,7 +13,10 @@ import 'package:presentation/screens/home/home_screen.dart';
 import 'package:presentation/screens/login/login_screen.dart';
 
 abstract class AppBloc implements Bloc<BaseArguments, AppData> {
-  factory AppBloc() => _AppBloc();
+  factory AppBloc(
+    LogAnalyticsScreenUseCase logAnalyticsScreenUseCase,
+  ) =>
+      _AppBloc(logAnalyticsScreenUseCase);
 
   void handleRemoveRouteSettings(RouteSettings value);
 
@@ -21,7 +24,9 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
 }
 
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
-  _AppBloc() : super(initState: AppData.init());
+  final LogAnalyticsScreenUseCase _logAnalyticsScreenUseCase;
+
+  _AppBloc(this._logAnalyticsScreenUseCase) : super(initState: AppData.init());
 
   @override
   void initState() {
@@ -50,9 +55,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   }
 
   void _goToHomePage(int index) {
-    final event = EventEntity(AnalyticsEvents.appEvents.buttonTabbarHomeClick);
-
-    logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(AnalyticsEvents.appEvents.buttonTabbarHomeClick);
 
     if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
       state.currentPageIndex = index;
@@ -61,9 +64,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   }
 
   void _goToLoginPage(int index) {
-    final event = EventEntity(AnalyticsEvents.appEvents.buttonTabbarLoginClick);
-
-    logAnalyticsEventUseCase(event);
+    logAnalyticsEventUseCase(AnalyticsEvents.appEvents.buttonTabbarLoginClick);
 
     if (appNavigator.currentPage().toString() != LoginScreen.routeName) {
       state.currentPageIndex = index;
@@ -143,12 +144,7 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   BasePage? _currentPage() => state.pages.lastOrNull;
 
   void _updateData() {
-    final event = EventEntity(
-      AnalyticsEvents.appEvents.screenView,
-      {'payload': _currentPage()?.name},
-    );
-
-    logAnalyticsEventUseCase(event);
+    _logAnalyticsScreenUseCase(_currentPage()?.name);
 
     super.add(state);
   }

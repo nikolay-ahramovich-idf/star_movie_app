@@ -1,4 +1,3 @@
-import 'package:domain/entities/event_entity.dart';
 import 'package:domain/entities/share_movie_entity.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
@@ -80,11 +79,9 @@ class _MovieDetailsBloc
 
   @override
   void handleBackPressed() {
-    final event = EventEntity(
+    logAnalyticsEventUseCase(
       AnalyticsEvents.movieDetailsEvents.buttonBackClick,
     );
-
-    logAnalyticsEventUseCase(event);
 
     appNavigator.pop();
   }
@@ -92,17 +89,13 @@ class _MovieDetailsBloc
   @override
   void handleShowMoreLessPressed(bool isExpanded) {
     if (isExpanded) {
-      final event = EventEntity(
+      logAnalyticsEventUseCase(
         AnalyticsEvents.movieDetailsEvents.buttonShowLessClick,
       );
-
-      logAnalyticsEventUseCase(event);
     } else {
-      final event = EventEntity(
+      logAnalyticsEventUseCase(
         AnalyticsEvents.movieDetailsEvents.buttonShowMoreClick,
       );
-
-      logAnalyticsEventUseCase(event);
     }
   }
 

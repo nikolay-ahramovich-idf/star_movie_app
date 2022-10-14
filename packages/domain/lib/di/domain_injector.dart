@@ -17,6 +17,7 @@ import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/login_validation_usecase.dart';
+import 'package:domain/usecases/log_analytics_screen_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
@@ -79,6 +80,10 @@ Future<void> _initUsecaseModule() async {
 
   GetIt.I.registerFactory<LogAnalyticsEventUseCase>(
     () => LogAnalyticsEventUseCase(GetIt.I.get<AnalyticsService>()),
+  );
+
+  GetIt.I.registerFactory<LogAnalyticsScreenUseCase>(
+    () => LogAnalyticsScreenUseCase(GetIt.I.get<AnalyticsService>()),
   );
 
   GetIt.I.registerFactory<ShareMovieUseCase>(

@@ -63,11 +63,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   Future<void> showNowShowingMovies() async {
-    final event = EventEntity(
+    logAnalyticsEventUseCase(
       AnalyticsEvents.homeScreenEvents.buttonNowShowingMoviesClick,
     );
-
-    logAnalyticsEventUseCase(event);
 
     add(state.copyWith(
       isLoading: true,
@@ -80,11 +78,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   Future<void> showComingSoonMovies() async {
-    final event = EventEntity(
+    logAnalyticsEventUseCase(
       AnalyticsEvents.homeScreenEvents.buttonComingSoonMoviesClick,
     );
-
-    logAnalyticsEventUseCase(event);
 
     add(state.copyWith(
       isLoading: true,
@@ -119,11 +115,9 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
 
   @override
   void goToMovieDetailsPage(BaseMovieEntity movieDetails) {
-    final event = EventEntity(
+    logAnalyticsEventUseCase(
       AnalyticsEvents.homeScreenEvents.buttonMoviePosterClick,
     );
-
-    logAnalyticsEventUseCase(event);
 
     final movieDetailsScreenArguments =
         MovieDetailsScreenArguments(movieDetails: movieDetails);
