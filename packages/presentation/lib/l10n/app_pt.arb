@@ -21,5 +21,7 @@
     "loginIsSuccessLabel": "Login é sucesso",
     "authFailureMessage": "Falha de autenticação",
     "shareMovieMessage": "Olha, que filme eu encontrei!",
-    "intentTitle": "Compartilhamento de filmes"
+    "intentTitle": "Compartilhamento de filmes",
+    "wrongLoginMessage": "O login está errado",
+    "wrongPasswordMessage": "A senha está errada"
 }

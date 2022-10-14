@@ -39,6 +39,12 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
   Future<void> authByFacebook();
 
   Future<void> authByGoogle();
+
+  bool validateForm();
+
+  String? loginValidator(String warningMessage);
+
+  String? passwordValidator(String warningMessage);
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -79,14 +85,10 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       password: _passwordController.text,
     );
 
-    final formIsValid = _loginValidationUseCase(user);
-
-    print('Form is valid: $formIsValid');
-
     try {
       await _loginIfUserRegistered(user);
     } on AuthFailureException {
-      add(LoginData(true));
+      add(state.copyWith(authFailure: true));
     }
   }
 
@@ -103,12 +105,12 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
       _updateFieldControllers(user);
 
-      add(LoginData(false));
+      add(state.copyWith(authFailure: false));
 
       await _loginIfUserRegistered(user);
     } on AuthFailureException {
       add(
-        LoginData(true),
+        state.copyWith(authFailure: true),
       );
     }
   }
@@ -126,19 +128,47 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
       _updateFieldControllers(user);
 
-      add(LoginData(
-        false,
+      add(state.copyWith(
+        authFailure: false,
       ));
 
       await _loginIfUserRegistered(user);
     } on AuthFailureException {
       add(
-        LoginData(
-          true,
+        state.copyWith(
+          authFailure: true,
         ),
       );
     }
   }
+
+  @override
+  bool validateForm() {
+    final user = UserEntity(
+      login: _loginController.text,
+      password: _passwordController.text,
+    );
+
+    final validationResult = _loginValidationUseCase(user);
+
+    add(
+      state.copyWith(
+        loginIsCorrect: validationResult.loginIsCorrect,
+        passwordIsCorrect: validationResult.passwordIsCorrect,
+      ),
+    );
+
+    return validationResult.loginIsCorrect &&
+        validationResult.passwordIsCorrect;
+  }
+
+  @override
+  String? loginValidator(String warningMessage) =>
+      state.loginIsCorrect ? null : warningMessage;
+
+  @override
+  String? passwordValidator(String warningMessage) =>
+      state.passwordIsCorrect ? null : warningMessage;
 
   void _updateFieldControllers(UserEntity user) {
     _loginController.text = user.login;

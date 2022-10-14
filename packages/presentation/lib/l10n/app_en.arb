@@ -21,5 +21,7 @@
     "loginIsSuccessLabel": "Login is success",
     "authFailureMessage": "Auth Failure",
     "shareMovieMessage": "Look, what movie I found!",
-    "intentTitle": "Movie Sharing"
+    "intentTitle": "Movie Sharing",
+    "wrongLoginMessage": "Login is wrong",
+    "wrongPasswordMessage": "Password is wrong"
 }

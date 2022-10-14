@@ -89,6 +89,7 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
     add(state.copyWith(
       isLoading: true,
     ));
+
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }
