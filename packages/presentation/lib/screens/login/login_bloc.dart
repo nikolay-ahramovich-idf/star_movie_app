@@ -44,6 +44,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
   void validateForm();
 
   String? loginValidator(
+    String invalidLoginMessage,
     String wrongLoginMessage,
     String requiredLoginMessage,
   );
@@ -76,6 +77,15 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   ) : super(initState: const LoginData.init());
 
   @override
+  void initState() {
+    super.initState();
+
+    _loginController.addListener(_resetErrorMessages);
+
+    _passwordController.addListener(_resetErrorMessages);
+  }
+
+  @override
   TextEditingController get loginController => _loginController;
 
   @override
@@ -94,8 +104,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     try {
       await _loginIfUserRegistered(user);
-    } on AuthFailureException {
-      add(state.copyWith(authFailure: true));
+    } on AuthFailureException catch (e) {
+      print(e);
     }
   }
 
@@ -110,13 +120,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
       _updateFieldControllers(user);
 
-      add(state.copyWith(authFailure: false));
-
       await _loginIfUserRegistered(user);
-    } on AuthFailureException {
-      add(
-        state.copyWith(authFailure: true),
-      );
+    } on AuthFailureException catch (e) {
+      print(e);
     }
   }
 
@@ -131,17 +137,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
       _updateFieldControllers(user);
 
-      add(state.copyWith(
-        authFailure: false,
-      ));
-
       await _loginIfUserRegistered(user);
-    } on AuthFailureException {
-      add(
-        state.copyWith(
-          authFailure: true,
-        ),
-      );
+    } on AuthFailureException catch (e) {
+      print(e);
     }
   }
 
@@ -173,9 +171,14 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   String? loginValidator(
+    String invalidLoginMessage,
     String wrongLoginMessage,
     String requiredLoginMessage,
   ) {
+    if (state.authFailure) {
+      return invalidLoginMessage;
+    }
+
     if (state.loginIsEmpty) {
       return requiredLoginMessage;
     }
@@ -196,11 +199,25 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       return requiredPasswordMessage;
     }
 
-    if (!state.passwordIsCorrect) {
+    if (!state.passwordIsCorrect || state.authFailure) {
       return wrongPasswordMessage;
     }
 
     return null;
+  }
+
+  void _resetErrorMessages() {
+    add(
+      state.copyWith(
+        authFailure: false,
+        loginIsEmpty: false,
+        loginIsCorrect: true,
+        passwordIsEmpty: false,
+        passwordIsCorrect: true,
+      ),
+    );
+
+    _formStateGlobalKey.currentState!.validate();
   }
 
   void _updateFieldControllers(UserEntity user) {
@@ -215,7 +232,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       await _saveCredentialsUseCase(user);
       appNavigator.popAndPush(SuccessLoginScreen.page());
     } else {
-      throw AuthFailureException();
+      add(state.copyWith(authFailure: true));
+      _formStateGlobalKey.currentState!.validate();
     }
   }
 }

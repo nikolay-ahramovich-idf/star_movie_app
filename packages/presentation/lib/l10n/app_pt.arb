@@ -22,6 +22,7 @@
     "authFailureMessage": "Falha de autenticação",
     "shareMovieMessage": "Olha, que filme eu encontrei!",
     "intentTitle": "Compartilhamento de filmes",
+    "invalidLoginMessage": "Login inválido",
     "wrongLoginMessage": "O campo de login deve ter pelo menos 8 símbolos",
     "requiredLoginMessage": "É necessário fazer login",
     "wrongPasswordMessage": "Senha inválida",
