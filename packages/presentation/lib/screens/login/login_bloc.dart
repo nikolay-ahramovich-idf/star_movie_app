@@ -39,7 +39,9 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   Future<void> authByGoogle();
 
-  bool validateForm();
+  GlobalKey<FormState> get formStateGlobalKey;
+
+  void validateForm();
 
   String? loginValidator(
     String wrongLoginMessage,
@@ -62,6 +64,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final _formStateGlobalKey = GlobalKey<FormState>();
 
   _LoginBloc(
     this._userIsRegisteredUseCase,
@@ -142,7 +146,10 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  bool validateForm() {
+  GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
+
+  @override
+  void validateForm() {
     final user = UserEntity(
       login: _loginController.text,
       password: _passwordController.text,
@@ -152,13 +159,21 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     add(
       state.copyWith(
+        loginIsEmpty: validationResult.loginIsEmpty,
         loginIsCorrect: validationResult.loginIsCorrect,
+        passwordIsEmpty: validationResult.passwordIsEmpty,
         passwordIsCorrect: validationResult.passwordIsCorrect,
       ),
     );
 
-    return validationResult.loginIsCorrect &&
-        validationResult.passwordIsCorrect;
+    if (!validationResult.loginIsEmpty &&
+        validationResult.loginIsCorrect &&
+        !validationResult.passwordIsEmpty &&
+        validationResult.passwordIsCorrect) {
+      onLogin();
+    }
+
+    _formStateGlobalKey.currentState!.validate();
   }
 
   @override
@@ -166,7 +181,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     String wrongLoginMessage,
     String requiredLoginMessage,
   ) {
-    if (_loginController.text.isEmpty) {
+    if (state.loginIsEmpty) {
       return requiredLoginMessage;
     }
 
@@ -182,7 +197,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     String wrongPasswordMessage,
     String requiredPasswordMessage,
   ) {
-    if (_passwordController.text.isEmpty) {
+    if (state.passwordIsEmpty) {
       return requiredPasswordMessage;
     }
 

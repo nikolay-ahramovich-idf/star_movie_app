@@ -28,8 +28,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
@@ -77,7 +75,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                     horizontal: AppSizes.screensHorizontalPadding,
                   ),
                   child: Form(
-                    key: _formKey,
+                    key: bloc.formStateGlobalKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,12 +162,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.red,
                                 ),
-                                onPressed: () {
-                                  if (bloc.validateForm()) {
-                                    bloc.onLogin();
-                                  }
-                                  _formKey.currentState!.validate();
-                                },
+                                onPressed: bloc.validateForm,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     vertical: AppSizes.size15,
