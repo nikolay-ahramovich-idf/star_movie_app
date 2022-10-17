@@ -166,14 +166,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       ),
     );
 
-    if (!validationResult.loginIsEmpty &&
-        validationResult.loginIsCorrect &&
-        !validationResult.passwordIsEmpty &&
-        validationResult.passwordIsCorrect) {
+    if (_formStateGlobalKey.currentState!.validate()) {
       onLogin();
     }
-
-    _formStateGlobalKey.currentState!.validate();
   }
 
   @override

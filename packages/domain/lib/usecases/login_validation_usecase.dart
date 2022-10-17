@@ -32,9 +32,7 @@ class LoginValidationUseCase
     );
   }
 
-  bool _validateLogin(String login) {
-    return login.length >= loginLength;
-  }
+  bool _validateLogin(String login) => login.length >= loginLength;
 
   bool _validatePassword(String password) {
     final regExp = RegExp(passwordRegExp);
