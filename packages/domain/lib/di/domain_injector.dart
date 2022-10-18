@@ -2,10 +2,12 @@ import 'package:domain/const.dart';
 import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/repositories/credentials_repository.dart';
 import 'package:domain/repositories/images_repository.dart';
+import 'package:domain/repositories/movies_database_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
+import 'package:domain/services/app_interaction_service.dart';
 import 'package:domain/services/share_movie_service.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
@@ -18,6 +20,7 @@ import 'package:domain/usecases/log_analytics_event_usecase.dart';
 import 'package:domain/usecases/log_analytics_screen_usecase.dart';
 import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
+import 'package:domain/usecases/set_last_app_interaction_time_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -33,12 +36,16 @@ Future<void> _initUsecaseModule() async {
 
   GetIt.I.registerFactory<GetNowShowingMoviesUseCase>(
     () => GetNowShowingMoviesUseCase(
+      GetIt.I.get<AppInteractionService>(),
       GetIt.I.get<MoviesRepository>(),
+      GetIt.I.get<MoviesDatabaseRepository>(),
     ),
   );
   GetIt.I.registerFactory<GetComingSoonMoviesUseCase>(
     () => GetComingSoonMoviesUseCase(
+      GetIt.I.get<AppInteractionService>(),
       GetIt.I.get<MoviesRepository>(),
+      GetIt.I.get<MoviesDatabaseRepository>(),
     ),
   );
 
@@ -91,5 +98,11 @@ Future<void> _initUsecaseModule() async {
 
   GetIt.I.registerFactory<LoginValidationUseCase>(
     () => LoginValidationUseCase(),
+  );
+
+  GetIt.I.registerFactory<SetLastAppInteractionTimeUseCase>(
+    () => SetLastAppInteractionTimeUseCase(
+      GetIt.I.get<AppInteractionService>(),
+    ),
   );
 }

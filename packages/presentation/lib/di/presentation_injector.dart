@@ -5,9 +5,10 @@ import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_movie_cast_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
-import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/log_analytics_screen_usecase.dart';
+import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
+import 'package:domain/usecases/set_last_app_interaction_time_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -28,7 +29,10 @@ void initPresentationInjector() {
 
 void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
-    () => AppBloc(GetIt.I.get<LogAnalyticsScreenUseCase>()),
+    () => AppBloc(
+      GetIt.I.get<LogAnalyticsScreenUseCase>(),
+      GetIt.I.get<SetLastAppInteractionTimeUseCase>(),
+    ),
   );
 
   GetIt.I.registerSingleton<AppNavigator>(
@@ -38,7 +42,9 @@ void _initAppModule() {
 
 void _initSplashModule() {
   GetIt.I.registerFactory<SplashBloc>(
-    () => SplashBloc(GetIt.I.get<DelayUseCase>()),
+    () => SplashBloc(
+      GetIt.I.get<DelayUseCase>(),
+    ),
   );
 }
 

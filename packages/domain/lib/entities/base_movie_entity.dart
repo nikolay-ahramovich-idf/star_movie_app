@@ -1,3 +1,8 @@
+enum MovieType {
+  nowShowing,
+  comingSoon,
+}
+
 class BaseMovieEntity {
   final String? title;
   final double? rating;
@@ -46,5 +51,20 @@ class BaseMovieEntity {
       imdbId: imdbId,
       tmdbId: tmdbId,
     );
+  }
+
+  @override
+  int get hashCode => title.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other is BaseMovieEntity &&
+        title == other.title &&
+        rating == other.rating &&
+        certification == other.certification &&
+        overview == other.overview &&
+        traktId == other.traktId &&
+        imdbId == other.imdbId &&
+        tmdbId == other.tmdbId;
   }
 }

@@ -206,6 +206,14 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     return null;
   }
 
+  @override
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
   void _resetErrorMessages() {
     add(
       state.copyWith(

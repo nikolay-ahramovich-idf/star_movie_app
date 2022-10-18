@@ -2,6 +2,7 @@ class DataConfig {
   DataConfig._();
 
   static const configPath = 'assets/json/config.json';
+  static const appDatabaseName = 'app_database.db';
 }
 
 class TraktApiConfig {

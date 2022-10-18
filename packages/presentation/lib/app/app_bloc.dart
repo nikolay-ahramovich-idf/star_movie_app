@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:domain/usecases/log_analytics_screen_usecase.dart';
+import 'package:domain/usecases/set_last_app_interaction_time_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/app/data/app_data.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
@@ -15,8 +16,12 @@ import 'package:presentation/screens/login/login_screen.dart';
 abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   factory AppBloc(
     LogAnalyticsScreenUseCase logAnalyticsScreenUseCase,
+    SetLastAppInteractionTimeUseCase setLastAppInteractionTimeUseCase,
   ) =>
-      _AppBloc(logAnalyticsScreenUseCase);
+      _AppBloc(
+        logAnalyticsScreenUseCase,
+        setLastAppInteractionTimeUseCase,
+      );
 
   void handleRemoveRouteSettings(RouteSettings value);
 
@@ -25,8 +30,12 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
 
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   final LogAnalyticsScreenUseCase _logAnalyticsScreenUseCase;
+  final SetLastAppInteractionTimeUseCase _setLastAppInteractionTimeUseCase;
 
-  _AppBloc(this._logAnalyticsScreenUseCase) : super(initState: AppData.init());
+  _AppBloc(
+    this._logAnalyticsScreenUseCase,
+    this._setLastAppInteractionTimeUseCase,
+  ) : super(initState: AppData.init());
 
   @override
   void initState() {
@@ -52,6 +61,12 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
         _goToLoginPage(pageIndex);
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    _setLastAppInteractionTimeUseCase();
+    super.dispose();
   }
 
   void _goToHomePage(int index) {
