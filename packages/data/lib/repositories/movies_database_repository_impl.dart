@@ -34,6 +34,8 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
         certification: movie.certification,
         overview: movie.overview,
         traktId: movie.traktId,
+        imdbId: movie.imdbId,
+        tmdbId: movie.tmdbId,
       );
     });
 
@@ -47,15 +49,15 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   ) async {
     for (var movieEntity in movies) {
       final movie = Movie(
-        movieEntity.title,
-        movieEntity.rating,
-        movieEntity.runtime,
-        movieEntity.certification,
-        movieEntity.overview,
-        movieEntity.traktId,
-        movieEntity.imdbId,
-        movieEntity.tmdbId,
-        moviesType.index,
+        title: movieEntity.title,
+        rating: movieEntity.rating,
+        runtime: movieEntity.runtime,
+        certification: movieEntity.certification,
+        overview: movieEntity.overview,
+        traktId: movieEntity.traktId,
+        imdbId: movieEntity.imdbId,
+        tmdbId: movieEntity.tmdbId,
+        moviesType: moviesType.index,
       );
 
       final movieId = await _movieDao.insertMovie(movie);

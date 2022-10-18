@@ -91,10 +91,15 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => bloc.loginValidator(
-                                appLocalizations.invalidLoginMessage,
-                                appLocalizations.wrongLoginMessage,
-                                appLocalizations.requiredLoginMessage,
+                              validator: (_) =>
+                                  bloc.loginViewMapper.stateToLoginErrorMessage(
+                                bloc.state,
+                                authFailureLoginMessage:
+                                    appLocalizations.authFailureLoginMessage,
+                                requiredLoginMessage:
+                                    appLocalizations.requiredLoginMessage,
+                                invalidLoginMessage:
+                                    appLocalizations.invalidLoginMessage,
                               ),
                               controller: bloc.loginController,
                               keyboardType: TextInputType.emailAddress,
@@ -119,9 +124,15 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => bloc.passwordValidator(
-                                appLocalizations.wrongPasswordMessage,
-                                appLocalizations.requiredPasswordMessage,
+                              validator: (_) => bloc.loginViewMapper
+                                  .stateToPasswordErrorMessage(
+                                bloc.state,
+                                authFailurePasswordMessage:
+                                    appLocalizations.authFailurePasswordMessage,
+                                requiredPasswordMessage:
+                                    appLocalizations.requiredPasswordMessage,
+                                invalidPasswordMessage:
+                                    appLocalizations.requiredPasswordMessage,
                               ),
                               controller: bloc.passwordController,
                               obscureText: true,

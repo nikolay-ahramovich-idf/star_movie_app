@@ -3,8 +3,11 @@ import 'package:floor/floor.dart';
 
 @dao
 abstract class MovieDao {
-  @Query('SELECT * FROM Movie WHERE movie_type = :movieType')
+  @Query('SELECT * FROM Movie WHERE moviesType = :movieType')
   Future<List<Movie>> findMoviesByType(int movieType);
+
+  @Query('DELETE FROM Movie')
+  Future<void> deleteAllMovies();
 
   @insert
   Future<int> insertMovie(Movie movie);

@@ -1,4 +1,5 @@
 import 'package:domain/entities/user_entity.dart';
+import 'package:domain/entities/validation_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
@@ -11,6 +12,7 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
+import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/success_login_screen.dart';
 
 abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
@@ -20,6 +22,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
     LoginValidationUseCase loginValidationUseCase,
+    LoginViewMapper loginViewMapper,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
@@ -27,11 +30,16 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
         googleAuthUseCase,
         saveCredentialsUseCase,
         loginValidationUseCase,
+        loginViewMapper,
       );
+
+  GlobalKey<FormState> get formStateGlobalKey;
 
   TextEditingController get loginController;
 
   TextEditingController get passwordController;
+
+  LoginViewMapper get loginViewMapper;
 
   Future<void> onLogin();
 
@@ -39,20 +47,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   Future<void> authByGoogle();
 
-  GlobalKey<FormState> get formStateGlobalKey;
-
   void validateForm();
-
-  String? loginValidator(
-    String invalidLoginMessage,
-    String wrongLoginMessage,
-    String requiredLoginMessage,
-  );
-
-  String? passwordValidator(
-    String wrongPasswordMessage,
-    String requiredPasswordMessage,
-  );
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -62,6 +57,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
   final LoginValidationUseCase _loginValidationUseCase;
+  final LoginViewMapper _loginViewMapper;
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -74,6 +70,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
     this._loginValidationUseCase,
+    this._loginViewMapper,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -86,10 +83,16 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
+  GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
+
+  @override
   TextEditingController get loginController => _loginController;
 
   @override
   TextEditingController get passwordController => _passwordController;
+
+  @override
+  LoginViewMapper get loginViewMapper => _loginViewMapper;
 
   @override
   Future<void> onLogin() async {
@@ -144,9 +147,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
-
-  @override
   void validateForm() {
     final user = UserEntity(
       login: _loginController.text,
@@ -157,10 +157,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     add(
       state.copyWith(
-        loginIsEmpty: validationResult.loginIsEmpty,
-        loginIsCorrect: validationResult.loginIsCorrect,
-        passwordIsEmpty: validationResult.passwordIsEmpty,
-        passwordIsCorrect: validationResult.passwordIsCorrect,
+        loginValidationStatus: validationResult.loginValidationStatus,
+        passwordValidationStatus: validationResult.passwordValidationStatus,
       ),
     );
 
@@ -170,45 +168,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  String? loginValidator(
-    String invalidLoginMessage,
-    String wrongLoginMessage,
-    String requiredLoginMessage,
-  ) {
-    if (state.authFailure) {
-      return invalidLoginMessage;
-    }
-
-    if (state.loginIsEmpty) {
-      return requiredLoginMessage;
-    }
-
-    if (!state.loginIsCorrect) {
-      return wrongLoginMessage;
-    }
-
-    return null;
-  }
-
-  @override
-  String? passwordValidator(
-    String wrongPasswordMessage,
-    String requiredPasswordMessage,
-  ) {
-    if (state.passwordIsEmpty) {
-      return requiredPasswordMessage;
-    }
-
-    if (!state.passwordIsCorrect || state.authFailure) {
-      return wrongPasswordMessage;
-    }
-
-    return null;
-  }
-
-  @override
   void dispose() {
     _loginController.dispose();
+
     _passwordController.dispose();
 
     super.dispose();
@@ -218,14 +180,12 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     add(
       state.copyWith(
         authFailure: false,
-        loginIsEmpty: false,
-        loginIsCorrect: true,
-        passwordIsEmpty: false,
-        passwordIsCorrect: true,
+        loginValidationStatus: LoginValidationStatus.ok,
+        passwordValidationStatus: PasswordValidationStatus.ok,
       ),
     );
 
-    _formStateGlobalKey.currentState!.validate();
+    _formStateGlobalKey.currentState?.validate();
   }
 
   void _updateFieldControllers(UserEntity user) {
@@ -241,7 +201,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       appNavigator.popAndPush(SuccessLoginScreen.page());
     } else {
       add(state.copyWith(authFailure: true));
-      _formStateGlobalKey.currentState!.validate();
+      _formStateGlobalKey.currentState?.validate();
     }
   }
 }

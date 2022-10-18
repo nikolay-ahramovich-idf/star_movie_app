@@ -7,7 +7,5 @@ class LogAnalyticsEventUseCase implements UseCaseParams<String, Future<void>> {
   LogAnalyticsEventUseCase(this._analyticsService);
 
   @override
-  Future<void> call(String params) => _analyticsService.logEvent(
-        params,
-      );
+  Future<void> call(String params) => _analyticsService.logEvent(params);
 }

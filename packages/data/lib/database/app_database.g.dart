@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `traktId` INTEGER, `imdbId` TEXT, `tmdbId` INTEGER, `movieType` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `traktId` INTEGER, `imdbId` TEXT, `tmdbId` INTEGER, `moviesType` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `movie_id` INTEGER NOT NULL, `name` TEXT NOT NULL)');
 
@@ -126,7 +126,7 @@ class _$MovieDao extends MovieDao {
                   'traktId': item.traktId,
                   'imdbId': item.imdbId,
                   'tmdbId': item.tmdbId,
-                  'movieType': item.movieType
+                  'moviesType': item.moviesType
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -139,18 +139,24 @@ class _$MovieDao extends MovieDao {
 
   @override
   Future<List<Movie>> findMoviesByType(int movieType) async {
-    return _queryAdapter.queryList('SELECT * FROM Movie WHERE movie_type = ?1',
+    return _queryAdapter.queryList('SELECT * FROM Movie WHERE moviesType = ?1',
         mapper: (Map<String, Object?> row) => Movie(
-            row['title'] as String?,
-            row['rating'] as double?,
-            row['runtime'] as int?,
-            row['certification'] as String?,
-            row['overview'] as String?,
-            row['traktId'] as int?,
-            row['imdbId'] as String?,
-            row['tmdbId'] as int?,
-            row['movieType'] as int),
+            id: row['id'] as int?,
+            title: row['title'] as String?,
+            rating: row['rating'] as double?,
+            runtime: row['runtime'] as int?,
+            certification: row['certification'] as String?,
+            overview: row['overview'] as String?,
+            traktId: row['traktId'] as int?,
+            imdbId: row['imdbId'] as String?,
+            tmdbId: row['tmdbId'] as int?,
+            moviesType: row['moviesType'] as int),
         arguments: [movieType]);
+  }
+
+  @override
+  Future<void> deleteAllMovies() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Movie');
   }
 
   @override

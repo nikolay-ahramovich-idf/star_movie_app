@@ -225,7 +225,6 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                         ),
                         itemBuilder: (context, index) {
                           final movie = data.movies[index];
-
                           return GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {

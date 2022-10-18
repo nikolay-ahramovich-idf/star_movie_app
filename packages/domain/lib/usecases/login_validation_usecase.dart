@@ -9,33 +9,39 @@ class LoginValidationUseCase
 
   @override
   ValidationEntity call(UserEntity params) {
-    final loginIsEmpty = params.login.isEmpty;
-    final passwordIsEmpty = params.password.isEmpty;
+    final loginValidationStatus = _validateLogin(params.login);
 
-    if (loginIsEmpty && passwordIsEmpty) {
-      return ValidationEntity(
-        loginIsEmpty,
-        false,
-        passwordIsEmpty,
-        false,
-      );
-    }
-
-    final loginIsValid = _validateLogin(params.login);
-    final passwordIsValid = _validatePassword(params.password);
+    final passwordValidationStatus = _validatePassword(params.password);
 
     return ValidationEntity(
-      loginIsEmpty,
-      loginIsValid,
-      passwordIsEmpty,
-      passwordIsValid,
+      loginValidationStatus,
+      passwordValidationStatus,
     );
   }
 
-  bool _validateLogin(String login) => login.length >= loginLength;
+  LoginValidationStatus _validateLogin(String login) {
+    if (login.isEmpty) {
+      return LoginValidationStatus.empty;
+    }
 
-  bool _validatePassword(String password) {
+    if (login.length < loginLength) {
+      return LoginValidationStatus.notCorrect;
+    }
+
+    return LoginValidationStatus.ok;
+  }
+
+  PasswordValidationStatus _validatePassword(String password) {
+    if (password.isEmpty) {
+      return PasswordValidationStatus.empty;
+    }
+
     final regExp = RegExp(passwordRegExp);
-    return regExp.hasMatch(password);
+
+    if (!regExp.hasMatch(password)) {
+      return PasswordValidationStatus.notCorrect;
+    }
+
+    return PasswordValidationStatus.ok;
   }
 }

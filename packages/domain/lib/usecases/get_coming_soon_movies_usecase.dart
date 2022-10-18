@@ -23,7 +23,13 @@ class GetComingSoonMoviesUseCase extends GetMoviesBaseUsecase {
         await _appInteractionService.getLastAppInteractionTime();
 
     if (lastAppInteractionTime == null) {
-      return await getMovies(_moviesRepository.getComingSoonMovies);
+      final movies = await getMovies(_moviesRepository.getComingSoonMovies);
+      await _moviesDatabaseRepository.addMovies(
+        movies,
+        MovieType.comingSoon,
+      );
+
+      return movies;
     }
 
     if (!lastAppInteractionTime.isToday) {
@@ -34,6 +40,7 @@ class GetComingSoonMoviesUseCase extends GetMoviesBaseUsecase {
       );
 
       if (!listEquals(movies, moviesFromDatabase)) {
+        // TODO add remove to DAO
         await _moviesDatabaseRepository.addMovies(
           movies,
           MovieType.comingSoon,
@@ -41,8 +48,8 @@ class GetComingSoonMoviesUseCase extends GetMoviesBaseUsecase {
       }
 
       return movies;
-    } else {
-      return await _moviesDatabaseRepository.getMovies(MovieType.comingSoon);
     }
+
+    return await _moviesDatabaseRepository.getMovies(MovieType.comingSoon);
   }
 }

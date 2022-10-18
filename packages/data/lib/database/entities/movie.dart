@@ -13,9 +13,10 @@ class Movie {
   final int? traktId;
   final String? imdbId;
   final int? tmdbId;
-  final int movieType;
+  final int moviesType;
 
-  Movie(
+  Movie({
+    this.id,
     this.title,
     this.rating,
     this.runtime,
@@ -24,6 +25,6 @@ class Movie {
     this.traktId,
     this.imdbId,
     this.tmdbId,
-    this.movieType,
-  );
+    required this.moviesType,
+  });
 }

@@ -10,6 +10,7 @@ class Genre {
     childColumns: ['owner_id'],
     parentColumns: ['id'],
     entity: Movie,
+    onDelete: ForeignKeyAction.cascade,
   )
   @ColumnInfo(name: 'movie_id')
   final int movieId;

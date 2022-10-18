@@ -16,6 +16,7 @@ import 'package:presentation/app/app_bloc.dart';
 import 'package:presentation/navigation/app_navigator.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/login/login_bloc.dart';
+import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/movie_details/movie_details_bloc.dart';
 import 'package:presentation/screens/splash/splash_bloc.dart';
 
@@ -31,7 +32,6 @@ void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
     () => AppBloc(
       GetIt.I.get<LogAnalyticsScreenUseCase>(),
-      GetIt.I.get<SetLastAppInteractionTimeUseCase>(),
     ),
   );
 
@@ -49,6 +49,8 @@ void _initSplashModule() {
 }
 
 void _initLoginModule() {
+  GetIt.I.registerFactory<LoginViewMapper>(() => LoginViewMapperImpl());
+
   GetIt.I.registerFactory<LoginBloc>(
     () => LoginBloc(
       GetIt.I.get<UserIsRegisteredUseCase>(),
@@ -56,6 +58,7 @@ void _initLoginModule() {
       GetIt.I.get<GoogleAuthUseCase>(),
       GetIt.I.get<SaveCredentialsUseCase>(),
       GetIt.I.get<LoginValidationUseCase>(),
+      GetIt.I.get<LoginViewMapper>(),
     ),
   );
 }
@@ -66,6 +69,7 @@ void _initHomeModule() {
       GetIt.I.get<GetNowShowingMoviesUseCase>(),
       GetIt.I.get<GetComingSoonMoviesUseCase>(),
       GetIt.I.get<GetImageUrlUseCase>(),
+      GetIt.I.get<SetLastAppInteractionTimeUseCase>(),
     ),
   );
 }
