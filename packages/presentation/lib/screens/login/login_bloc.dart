@@ -12,6 +12,7 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
+import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/success_login_screen.dart';
 
 abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
@@ -21,6 +22,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
     LoginValidationUseCase loginValidationUseCase,
+    LoginViewMapper loginViewMapper,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
@@ -28,6 +30,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
         googleAuthUseCase,
         saveCredentialsUseCase,
         loginValidationUseCase,
+        loginViewMapper,
       );
 
   GlobalKey<FormState> get formStateGlobalKey;
@@ -36,6 +39,8 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   TextEditingController get passwordController;
 
+  LoginViewMapper get loginViewMapper;
+
   Future<void> onLogin();
 
   Future<void> authByFacebook();
@@ -43,17 +48,6 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
   Future<void> authByGoogle();
 
   void validateForm();
-
-  String? loginValidator(
-    String invalidLoginMessage,
-    String wrongLoginMessage,
-    String requiredLoginMessage,
-  );
-
-  String? passwordValidator(
-    String wrongPasswordMessage,
-    String requiredPasswordMessage,
-  );
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -63,6 +57,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
   final LoginValidationUseCase _loginValidationUseCase;
+  final LoginViewMapper _loginViewMapper;
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -75,6 +70,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
     this._loginValidationUseCase,
+    this._loginViewMapper,
   ) : super(initState: const LoginData.init());
 
   @override
@@ -94,6 +90,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   TextEditingController get passwordController => _passwordController;
+
+  @override
+  LoginViewMapper get loginViewMapper => _loginViewMapper;
 
   @override
   Future<void> onLogin() async {
@@ -165,45 +164,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     if (_formStateGlobalKey.currentState!.validate()) {
       onLogin();
-    }
-  }
-
-  @override
-  String? loginValidator(
-    String invalidLoginMessage,
-    String wrongLoginMessage,
-    String requiredLoginMessage,
-  ) {
-    if (state.authFailure) {
-      return invalidLoginMessage;
-    }
-
-    switch (state.loginValidationStatus) {
-      case LoginValidationStatus.empty:
-        return requiredLoginMessage;
-      case LoginValidationStatus.notCorrect:
-        return wrongLoginMessage;
-      case LoginValidationStatus.ok:
-        return null;
-    }
-  }
-
-  @override
-  String? passwordValidator(
-    String wrongPasswordMessage,
-    String requiredPasswordMessage,
-  ) {
-    if (state.authFailure) {
-      return wrongPasswordMessage;
-    }
-
-    switch (state.passwordValidationStatus) {
-      case PasswordValidationStatus.empty:
-        return requiredPasswordMessage;
-      case PasswordValidationStatus.notCorrect:
-        return wrongPasswordMessage;
-      case PasswordValidationStatus.ok:
-        return null;
     }
   }
 

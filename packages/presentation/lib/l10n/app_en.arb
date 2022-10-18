@@ -22,9 +22,9 @@
     "authFailureMessage": "Auth Failure",
     "shareMovieMessage": "Look, what movie I found!",
     "intentTitle": "Movie Sharing",
-    "invalidLoginMessage": "Invalid login",
-    "wrongLoginMessage": "Login field should be at least 8 symbols",
+    "authFailureLoginMessage": "Invalid login",
+    "invalidLoginMessage": "Login field should be at least 8 symbols",
     "requiredLoginMessage": "Login is required",
-    "wrongPasswordMessage": "Invalid password",
+    "authFailurePasswordMessage": "Invalid password",
     "requiredPasswordMessage": "Password is required"
 }
