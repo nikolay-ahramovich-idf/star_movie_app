@@ -1,4 +1,5 @@
 import 'package:domain/entities/user_entity.dart';
+import 'package:domain/entities/validation_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
@@ -29,6 +30,8 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
         loginValidationUseCase,
       );
 
+  GlobalKey<FormState> get formStateGlobalKey;
+
   TextEditingController get loginController;
 
   TextEditingController get passwordController;
@@ -38,8 +41,6 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
   Future<void> authByFacebook();
 
   Future<void> authByGoogle();
-
-  GlobalKey<FormState> get formStateGlobalKey;
 
   void validateForm();
 
@@ -84,6 +85,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     _passwordController.addListener(_resetErrorMessages);
   }
+
+  @override
+  GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
 
   @override
   TextEditingController get loginController => _loginController;
@@ -144,9 +148,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   @override
-  GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
-
-  @override
   void validateForm() {
     final user = UserEntity(
       login: _loginController.text,
@@ -157,10 +158,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
     add(
       state.copyWith(
-        loginIsEmpty: validationResult.loginIsEmpty,
-        loginIsCorrect: validationResult.loginIsCorrect,
-        passwordIsEmpty: validationResult.passwordIsEmpty,
-        passwordIsCorrect: validationResult.passwordIsCorrect,
+        loginValidationStatus: validationResult.loginValidationStatus,
+        passwordValidationStatus: validationResult.passwordValidationStatus,
       ),
     );
 
@@ -179,15 +178,14 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       return invalidLoginMessage;
     }
 
-    if (state.loginIsEmpty) {
-      return requiredLoginMessage;
+    switch (state.loginValidationStatus) {
+      case LoginValidationStatus.empty:
+        return requiredLoginMessage;
+      case LoginValidationStatus.notCorrect:
+        return wrongLoginMessage;
+      case LoginValidationStatus.ok:
+        return null;
     }
-
-    if (!state.loginIsCorrect) {
-      return wrongLoginMessage;
-    }
-
-    return null;
   }
 
   @override
@@ -195,29 +193,39 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     String wrongPasswordMessage,
     String requiredPasswordMessage,
   ) {
-    if (state.passwordIsEmpty) {
-      return requiredPasswordMessage;
-    }
-
-    if (!state.passwordIsCorrect || state.authFailure) {
+    if (state.authFailure) {
       return wrongPasswordMessage;
     }
 
-    return null;
+    switch (state.passwordValidationStatus) {
+      case PasswordValidationStatus.empty:
+        return requiredPasswordMessage;
+      case PasswordValidationStatus.notCorrect:
+        return wrongPasswordMessage;
+      case PasswordValidationStatus.ok:
+        return null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _loginController.dispose();
+
+    _passwordController.dispose();
+
+    super.dispose();
   }
 
   void _resetErrorMessages() {
     add(
       state.copyWith(
         authFailure: false,
-        loginIsEmpty: false,
-        loginIsCorrect: true,
-        passwordIsEmpty: false,
-        passwordIsCorrect: true,
+        loginValidationStatus: LoginValidationStatus.ok,
+        passwordValidationStatus: PasswordValidationStatus.ok,
       ),
     );
 
-    _formStateGlobalKey.currentState!.validate();
+    _formStateGlobalKey.currentState?.validate();
   }
 
   void _updateFieldControllers(UserEntity user) {
@@ -233,7 +241,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       appNavigator.popAndPush(SuccessLoginScreen.page());
     } else {
       add(state.copyWith(authFailure: true));
-      _formStateGlobalKey.currentState!.validate();
+      _formStateGlobalKey.currentState?.validate();
     }
   }
 }

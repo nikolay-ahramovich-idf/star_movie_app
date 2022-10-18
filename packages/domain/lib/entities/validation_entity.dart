@@ -1,13 +1,21 @@
+enum LoginValidationStatus {
+  ok,
+  empty,
+  notCorrect,
+}
+
+enum PasswordValidationStatus {
+  ok,
+  empty,
+  notCorrect,
+}
+
 class ValidationEntity {
-  final bool loginIsEmpty;
-  final bool loginIsCorrect;
-  final bool passwordIsEmpty;
-  final bool passwordIsCorrect;
+  final LoginValidationStatus loginValidationStatus;
+  final PasswordValidationStatus passwordValidationStatus;
 
   ValidationEntity(
-    this.loginIsEmpty,
-    this.loginIsCorrect,
-    this.passwordIsEmpty,
-    this.passwordIsCorrect,
+    this.loginValidationStatus,
+    this.passwordValidationStatus,
   );
 }
