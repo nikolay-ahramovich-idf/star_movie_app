@@ -53,7 +53,6 @@ void _initLoginModule() {
       GetIt.I.get<GoogleAuthUseCase>(),
       GetIt.I.get<SaveCredentialsUseCase>(),
       GetIt.I.get<LoginValidationUseCase>(),
-      GetIt.I.get<LoginViewMapper>(),
     ),
   );
 }

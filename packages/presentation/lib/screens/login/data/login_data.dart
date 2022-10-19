@@ -2,8 +2,8 @@ import 'package:domain/exceptions/validation_exception.dart';
 
 class LoginData {
   final bool authFailure;
-  final ValidationExceptionStatus loginValidationStatus;
-  final ValidationExceptionStatus passwordValidationStatus;
+  final ValidationExceptionStatus? loginValidationStatus;
+  final ValidationExceptionStatus? passwordValidationStatus;
 
   LoginData(
     this.authFailure,
@@ -13,8 +13,8 @@ class LoginData {
 
   const LoginData.init()
       : authFailure = false,
-        loginValidationStatus = ValidationExceptionStatus.ok,
-        passwordValidationStatus = ValidationExceptionStatus.ok;
+        loginValidationStatus = null,
+        passwordValidationStatus = null;
 
   LoginData copyWith({
     bool? authFailure,

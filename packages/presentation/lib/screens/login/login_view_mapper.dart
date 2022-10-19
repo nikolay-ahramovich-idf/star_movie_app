@@ -34,7 +34,7 @@ class LoginViewMapperImpl implements LoginViewMapper {
         return appLocalizations.requiredLoginMessage;
       case ValidationExceptionStatus.notCorrect:
         return appLocalizations.invalidLoginMessage;
-      case ValidationExceptionStatus.ok:
+      case null:
         return null;
     }
   }
@@ -55,7 +55,7 @@ class LoginViewMapperImpl implements LoginViewMapper {
         return appLocalizations.requiredPasswordMessage;
       case ValidationExceptionStatus.notCorrect:
         return appLocalizations.requiredPasswordMessage;
-      case ValidationExceptionStatus.ok:
+      case null:
         return null;
     }
   }

@@ -5,13 +5,16 @@ import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
 import 'package:presentation/screens/login/login_bloc.dart';
+import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/widgets/auth_icon_button_widget.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/styles.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final loginViewMapper = LoginViewMapper();
+
+  LoginScreen({super.key});
 
   static const _routeName = '/LoginScreen';
 
@@ -20,7 +23,7 @@ class LoginScreen extends StatefulWidget {
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,
-        builder: (_) => const LoginScreen(),
+        builder: (_) => LoginScreen(),
       );
 
   @override
@@ -91,8 +94,8 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) =>
-                                  bloc.loginViewMapper.stateToLoginErrorMessage(
+                              validator: (_) => widget.loginViewMapper
+                                  .stateToLoginErrorMessage(
                                 bloc.state,
                                 context,
                               ),
@@ -119,7 +122,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => bloc.loginViewMapper
+                              validator: (_) => widget.loginViewMapper
                                   .stateToPasswordErrorMessage(
                                 bloc.state,
                                 context,

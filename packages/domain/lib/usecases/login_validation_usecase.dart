@@ -19,7 +19,7 @@ class LoginValidationUseCase
     );
   }
 
-  ValidationExceptionStatus _validateLogin(String login) {
+  ValidationExceptionStatus? _validateLogin(String login) {
     if (login.isEmpty) {
       return ValidationExceptionStatus.empty;
     }
@@ -28,10 +28,10 @@ class LoginValidationUseCase
       return ValidationExceptionStatus.notCorrect;
     }
 
-    return ValidationExceptionStatus.ok;
+    return null;
   }
 
-  ValidationExceptionStatus _validatePassword(String password) {
+  ValidationExceptionStatus? _validatePassword(String password) {
     if (password.isEmpty) {
       return ValidationExceptionStatus.empty;
     }
@@ -42,6 +42,6 @@ class LoginValidationUseCase
       return ValidationExceptionStatus.notCorrect;
     }
 
-    return ValidationExceptionStatus.ok;
+    return null;
   }
 }

@@ -1,12 +1,11 @@
 enum ValidationExceptionStatus {
-  ok,
   empty,
   notCorrect,
 }
 
 class ValidationException {
-  final ValidationExceptionStatus loginValidationStatus;
-  final ValidationExceptionStatus passwordValidationStatus;
+  final ValidationExceptionStatus? loginValidationStatus;
+  final ValidationExceptionStatus? passwordValidationStatus;
 
   ValidationException(
     this.loginValidationStatus,
