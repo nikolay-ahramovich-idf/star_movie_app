@@ -44,7 +44,7 @@ void _initSplashModule() {
 }
 
 void _initLoginModule() {
-  GetIt.I.registerFactory<LoginViewMapper>(() => LoginViewMapperImpl());
+  GetIt.I.registerFactory<LoginViewMapper>(() => LoginViewMapper());
 
   GetIt.I.registerFactory<LoginBloc>(
     () => LoginBloc(

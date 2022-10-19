@@ -94,12 +94,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               validator: (_) =>
                                   bloc.loginViewMapper.stateToLoginErrorMessage(
                                 bloc.state,
-                                authFailureLoginMessage:
-                                    appLocalizations.authFailureLoginMessage,
-                                requiredLoginMessage:
-                                    appLocalizations.requiredLoginMessage,
-                                invalidLoginMessage:
-                                    appLocalizations.invalidLoginMessage,
+                                context,
                               ),
                               controller: bloc.loginController,
                               keyboardType: TextInputType.emailAddress,
@@ -127,12 +122,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               validator: (_) => bloc.loginViewMapper
                                   .stateToPasswordErrorMessage(
                                 bloc.state,
-                                authFailurePasswordMessage:
-                                    appLocalizations.authFailurePasswordMessage,
-                                requiredPasswordMessage:
-                                    appLocalizations.requiredPasswordMessage,
-                                invalidPasswordMessage:
-                                    appLocalizations.requiredPasswordMessage,
+                                context,
                               ),
                               controller: bloc.passwordController,
                               obscureText: true,
