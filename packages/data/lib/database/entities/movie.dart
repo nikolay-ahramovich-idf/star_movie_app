@@ -10,7 +10,7 @@ class Movie {
   final int? runtime;
   final String? certification;
   final String? overview;
-  final int? traktId;
+  final int traktId;
   final String? imdbId;
   final int? tmdbId;
   final int moviesType;
@@ -22,7 +22,7 @@ class Movie {
     this.runtime,
     this.certification,
     this.overview,
-    this.traktId,
+    required this.traktId,
     this.imdbId,
     this.tmdbId,
     required this.moviesType,

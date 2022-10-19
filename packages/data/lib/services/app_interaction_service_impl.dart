@@ -9,19 +9,23 @@ class AppInteractionServiceImpl implements AppInteractionService {
   AppInteractionServiceImpl(this._preferencesProvider);
 
   @override
-  Future<void> addLastAppInteractionTime() async {
+  Future<void> addLastAppInteractionTime(
+    AppInteractionType interactionType,
+  ) async {
     final now = DateTime.now();
 
     await _preferencesProvider.setString(
-      _lastAppInteractionTimeKey,
+      '${_lastAppInteractionTimeKey}_${interactionType.index}',
       now.toString(),
     );
   }
 
   @override
-  Future<DateTime?> getLastAppInteractionTime() async {
-    final lastAppInteractionTime =
-        _preferencesProvider.getString(_lastAppInteractionTimeKey);
+  Future<DateTime?> getLastAppInteractionTime(
+    AppInteractionType interactionType,
+  ) async {
+    final lastAppInteractionTime = _preferencesProvider
+        .getString('${_lastAppInteractionTimeKey}_${interactionType.index}');
 
     return lastAppInteractionTime == null
         ? null

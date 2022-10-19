@@ -83,8 +83,8 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   }
 
   @override
-  Future<void> removeMovies() async {
-    await _movieDao.deleteAllMovies();
+  Future<void> removeMovies(MovieType movieType) async {
+    await _movieDao.deleteAllMoviesByType(movieType.index);
   }
 
   @override

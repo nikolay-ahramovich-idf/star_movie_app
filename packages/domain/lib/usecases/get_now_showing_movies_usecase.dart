@@ -20,11 +20,16 @@ class GetNowShowingMoviesUseCase extends GetMoviesBaseUsecase {
   @override
   Future<List<BaseMovieEntity>> call() async {
     final lastAppInteractionTime =
-        await _appInteractionService.getLastAppInteractionTime();
+        await _appInteractionService.getLastAppInteractionTime(
+      AppInteractionType.nowShowingMovies,
+    );
 
     if (lastAppInteractionTime == null) {
       final movies = await getMovies(_moviesRepository.getNowShowingMovies);
-      await _moviesDatabaseRepository.addMovies(movies, MovieType.nowShowing);
+      await _moviesDatabaseRepository.addMovies(
+        movies,
+        MovieType.nowShowing,
+      );
 
       return movies;
     }
@@ -37,15 +42,12 @@ class GetNowShowingMoviesUseCase extends GetMoviesBaseUsecase {
       );
 
       if (!listEquals(
-        movies,
-        cachedMovies,
+        movies.toList()..sort(moviesSorter),
+        cachedMovies.toList()..sort(moviesSorter),
       )) {
-        await _moviesDatabaseRepository.removeMovies();
+        await _moviesDatabaseRepository.removeMovies(MovieType.nowShowing);
 
-        final newMovieIds = movies
-            .where((movie) => movie.traktId == null)
-            .map((movie) => movie.traktId!)
-            .toList();
+        final newMovieIds = movies.map((movie) => movie.traktId).toList();
 
         await _moviesDatabaseRepository.removeCastExceptWithIds(newMovieIds);
 

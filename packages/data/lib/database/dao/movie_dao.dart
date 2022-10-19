@@ -6,8 +6,8 @@ abstract class MovieDao {
   @Query('SELECT * FROM Movie WHERE moviesType = :movieType')
   Future<List<Movie>> findMoviesByType(int movieType);
 
-  @Query('DELETE FROM Movie')
-  Future<void> deleteAllMovies();
+  @Query('DELETE FROM Movie WHERE moviesType = :movieType')
+  Future<void> deleteAllMoviesByType(int movieType);
 
   @insert
   Future<int> insertMovie(Movie movie);

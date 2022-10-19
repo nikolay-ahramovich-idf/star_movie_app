@@ -1,5 +1,12 @@
-abstract class AppInteractionService {
-  Future<void> addLastAppInteractionTime();
+enum AppInteractionType {
+  nowShowingMovies,
+  comingSoonMovies,
+}
 
-  Future<DateTime?> getLastAppInteractionTime();
+abstract class AppInteractionService {
+  Future<void> addLastAppInteractionTime(AppInteractionType interactionType);
+
+  Future<DateTime?> getLastAppInteractionTime(
+    AppInteractionType interactionType,
+  );
 }

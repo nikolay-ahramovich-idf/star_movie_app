@@ -46,4 +46,11 @@ abstract class GetMoviesBaseUsecase
       return [];
     }
   }
+
+  @protected
+  int moviesSorter(
+    BaseMovieEntity oneMovie,
+    BaseMovieEntity otherMovie,
+  ) =>
+      oneMovie.traktId.compareTo(otherMovie.traktId);
 }

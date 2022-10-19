@@ -10,7 +10,7 @@ class BaseMovieEntity {
   final int? runtime;
   final String? certification;
   final String? overview;
-  final int? traktId;
+  final int traktId;
   final String? imdbId;
   final int? tmdbId;
 

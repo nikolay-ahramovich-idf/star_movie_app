@@ -9,7 +9,7 @@ abstract class MoviesDatabaseRepository {
     MovieType moviesType,
   );
 
-  Future<void> removeMovies();
+  Future<void> removeMovies(MovieType movieType);
 
   Future<List<MovieCharacterEntity>> getCast(int movieId);
 
