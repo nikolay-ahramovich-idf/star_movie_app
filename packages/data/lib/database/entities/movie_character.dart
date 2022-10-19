@@ -15,7 +15,6 @@ class MovieCharacter {
     childColumns: ['owner_id'],
     parentColumns: ['traktId'],
     entity: Movie,
-    onDelete: ForeignKeyAction.cascade,
   )
   final int movieId;
 

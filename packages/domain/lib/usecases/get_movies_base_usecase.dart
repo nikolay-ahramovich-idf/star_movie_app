@@ -2,14 +2,60 @@ import 'package:domain/const.dart';
 import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
 import 'package:domain/exceptions/movies_request_exception.dart';
+import 'package:domain/extensions/date_helpers.dart';
+import 'package:domain/repositories/movies_database_repository.dart';
 import 'package:domain/usecases/usecase.dart';
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class GetMoviesBaseUsecase
     implements UseCase<Future<Iterable<BaseMovieEntity>>> {
-  @protected
+  final MoviesDatabaseRepository _moviesDatabaseRepository;
+
+  GetMoviesBaseUsecase(
+    this._moviesDatabaseRepository,
+  );
+
   Future<List<BaseMovieEntity>> getMovies(
+    Future<MoviesResponseEntity> Function([Map<String, dynamic>])
+        remoteMoviesGetter,
+    MovieType moviesType,
+    DateTime? lastInteractionTime,
+  ) async {
+    if (lastInteractionTime == null) {
+      final movies = await _getRemoteMovies(remoteMoviesGetter);
+      await _moviesDatabaseRepository.addMovies(
+        movies,
+        MovieType.nowShowing,
+      );
+
+      return movies;
+    }
+
+    final cachedMovies = await _moviesDatabaseRepository.getMovies(moviesType);
+
+    if (cachedMovies.isEmpty || !lastInteractionTime.isToday) {
+      final movies = await _getRemoteMovies(remoteMoviesGetter);
+
+      if (!listEquals(
+        movies.toList()..sort(_moviesSorter),
+        cachedMovies.toList()..sort(_moviesSorter),
+      )) {
+        await _moviesDatabaseRepository.removeMovies(moviesType);
+
+        final newMovieIds = movies.map((movie) => movie.traktId).toList();
+
+        await _moviesDatabaseRepository.removeCastExceptWithIds(newMovieIds);
+
+        await _moviesDatabaseRepository.addMovies(movies, moviesType);
+      }
+
+      return movies;
+    }
+
+    return cachedMovies;
+  }
+
+  Future<List<BaseMovieEntity>> _getRemoteMovies(
     Future<MoviesResponseEntity> Function([Map<String, dynamic>]) moviesGetter,
   ) async {
     try {
@@ -47,8 +93,7 @@ abstract class GetMoviesBaseUsecase
     }
   }
 
-  @protected
-  int moviesSorter(
+  int _moviesSorter(
     BaseMovieEntity oneMovie,
     BaseMovieEntity otherMovie,
   ) =>
