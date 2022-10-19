@@ -1,17 +1,22 @@
 import 'package:data/database/dao/genre_dao.dart';
+import 'package:data/database/dao/movie_character_dao.dart';
 import 'package:data/database/dao/movie_dao.dart';
 import 'package:data/database/entities/genre.dart';
 import 'package:data/database/entities/movie.dart';
+import 'package:data/database/entities/movie_character.dart';
 import 'package:domain/entities/base_movie_entity.dart';
+import 'package:domain/entities/movie_character_entity.dart';
 import 'package:domain/repositories/movies_database_repository.dart';
 
 class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   final MovieDao _movieDao;
   final GenreDao _genreDao;
+  final MovieCharacterDao _movieCharacterDao;
 
   MoviesDatabaseRepositoryImpl(
     this._movieDao,
     this._genreDao,
+    this._movieCharacterDao,
   );
 
   @override
@@ -65,8 +70,8 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
       final genres = movieEntity.genres
           ?.map(
             (genre) => Genre(
-              movieId,
-              genre,
+              movieId: movieId,
+              name: genre,
             ),
           )
           .toList();
@@ -75,5 +80,53 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
         await _genreDao.insertGenres(genres);
       }
     }
+  }
+
+  @override
+  Future<void> removeMovies() async {
+    await _movieDao.deleteAllMovies();
+  }
+
+  @override
+  Future<void> addCast(
+    int movieId,
+    List<MovieCharacterEntity> cast,
+  ) async {
+    final List<MovieCharacter> castModel = [];
+
+    for (final castItem in cast) {
+      final movieCharacterModel = MovieCharacter(
+        characterName: castItem.characterName,
+        actorName: castItem.actorName,
+        tmdbId: castItem.tmdbId,
+        posterPath: castItem.posterPath,
+        movieId: movieId,
+      );
+
+      castModel.add(movieCharacterModel);
+    }
+
+    await _movieCharacterDao.insertCast(castModel);
+  }
+
+  @override
+  Future<List<MovieCharacterEntity>> getCast(int movieId) async {
+    final cast = await _movieCharacterDao.findMovieCast(movieId);
+
+    return cast
+        .map(
+          ((castItem) => MovieCharacterEntity(
+                characterName: castItem.characterName,
+                actorName: castItem.actorName,
+                tmdbId: castItem.tmdbId,
+                posterPath: castItem.posterPath,
+              )),
+        )
+        .toList();
+  }
+
+  @override
+  Future<void> removeCastExceptWithIds(List<int> movieIds) async {
+    await _movieCharacterDao.deleteCastsExceptWithIds(movieIds);
   }
 }

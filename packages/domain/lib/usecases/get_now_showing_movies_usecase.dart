@@ -32,11 +32,23 @@ class GetNowShowingMoviesUseCase extends GetMoviesBaseUsecase {
     if (!lastAppInteractionTime.isToday) {
       final movies = await getMovies(_moviesRepository.getNowShowingMovies);
 
-      final moviesFromDatabase = await _moviesDatabaseRepository.getMovies(
+      final cachedMovies = await _moviesDatabaseRepository.getMovies(
         MovieType.nowShowing,
       );
-      if (!listEquals(movies, moviesFromDatabase)) {
-        // TODO add remove to DAO
+
+      if (!listEquals(
+        movies,
+        cachedMovies,
+      )) {
+        await _moviesDatabaseRepository.removeMovies();
+
+        final newMovieIds = movies
+            .where((movie) => movie.traktId == null)
+            .map((movie) => movie.traktId!)
+            .toList();
+
+        await _moviesDatabaseRepository.removeCastExceptWithIds(newMovieIds);
+
         await _moviesDatabaseRepository.addMovies(
           movies,
           MovieType.nowShowing,

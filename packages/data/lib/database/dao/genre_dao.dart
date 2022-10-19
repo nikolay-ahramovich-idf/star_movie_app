@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 
 @dao
 abstract class GenreDao {
-  @Query('SELECT * FROM Genre WHERE movie_id = :movieId')
+  @Query('SELECT * FROM Genre WHERE movieId = :movieId')
   Future<List<Genre>> findMovieGenres(int movieId);
 
   @insert

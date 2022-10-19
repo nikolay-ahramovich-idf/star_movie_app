@@ -10,15 +10,14 @@ class Genre {
     childColumns: ['owner_id'],
     parentColumns: ['id'],
     entity: Movie,
-    onDelete: ForeignKeyAction.cascade,
   )
-  @ColumnInfo(name: 'movie_id')
   final int movieId;
 
   final String name;
 
-  Genre(
-    this.movieId,
-    this.name,
-  );
+  Genre({
+    this.id,
+    required this.movieId,
+    required this.name,
+  });
 }

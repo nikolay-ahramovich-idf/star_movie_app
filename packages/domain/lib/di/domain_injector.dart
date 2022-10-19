@@ -58,14 +58,13 @@ Future<void> _initUsecaseModule() async {
   GetIt.I.registerFactory<GetMovieCastUseCase>(
     () => GetMovieCastUseCase(
       GetIt.I.get<MoviesRepository>(),
+      GetIt.I.get<MoviesDatabaseRepository>(),
       GetIt.I.get<ImagesRepository>(),
     ),
   );
 
   GetIt.I.registerFactory<GetImageUrlUseCase>(
-    () => GetImageUrlUseCase(
-      imdbApiKey.toString(),
-    ),
+    () => GetImageUrlUseCase(imdbApiKey.toString()),
   );
 
   GetIt.I.registerFactory<UserIsRegisteredUseCase>(

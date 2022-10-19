@@ -1,6 +1,7 @@
 import 'package:domain/const.dart';
 import 'package:domain/entities/movie_character_entity.dart';
 import 'package:domain/repositories/images_repository.dart';
+import 'package:domain/repositories/movies_database_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/usecases/usecase.dart';
 
@@ -17,10 +18,12 @@ class GetMovieCastUseCaseParams {
 class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUseCaseParams,
     Future<List<MovieCharacterEntity>>> {
   final MoviesRepository _moviesRepository;
+  final MoviesDatabaseRepository _moviesDatabaseRepository;
   final ImagesRepository _imagesRepository;
 
   GetMovieCastUseCase(
     this._moviesRepository,
+    this._moviesDatabaseRepository,
     this._imagesRepository,
   );
 
@@ -28,25 +31,36 @@ class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUseCaseParams,
   Future<List<MovieCharacterEntity>> call(
     GetMovieCastUseCaseParams params,
   ) async {
-    final castResponse = await _moviesRepository.getCast(params.movieId);
+    final cachedCast = await _moviesDatabaseRepository.getCast(params.movieId);
 
-    final updatingCastWithPosters = castResponse.cast
-        .where(
-            (castItem) => List<String>.from(castItem['characters']).isNotEmpty)
-        .map((castItem) => MovieCharacterEntity.fromJson(castItem))
-        .take(params.maxNumberOfActors)
-        .map((actor) async {
-      final actorProfiles =
-          await _imagesRepository.getActorsProfiles(actor.tmdbId);
+    if (cachedCast.isEmpty) {
+      final castResponse = await _moviesRepository.getCast(params.movieId);
 
-      actorProfiles?.sort(((a, b) => a['height'].compareTo(b['height'])));
+      final updatingCastWithPosters = castResponse.cast
+          .where((castItem) =>
+              List<String>.from(castItem['characters']).isNotEmpty)
+          .map((castItem) => MovieCharacterEntity.fromJson(castItem))
+          .take(params.maxNumberOfActors)
+          .map((actor) async {
+        final actorProfiles =
+            await _imagesRepository.getActorsProfiles(actor.tmdbId);
 
-      final posterPath = _getActorProfileUrl(actorProfiles?.first['file_path']);
+        actorProfiles?.sort(((a, b) => a['height'].compareTo(b['height'])));
 
-      return posterPath != null ? actor.updatePosterPath(posterPath) : actor;
-    });
+        final posterPath =
+            _getActorProfileUrl(actorProfiles?.first['file_path']);
 
-    return await Future.wait(updatingCastWithPosters);
+        return posterPath != null ? actor.updatePosterPath(posterPath) : actor;
+      });
+
+      final cast = await Future.wait(updatingCastWithPosters);
+
+      await _moviesDatabaseRepository.addCast(params.movieId, cast);
+
+      return cast;
+    }
+
+    return cachedCast;
   }
 
   String? _getActorProfileUrl(String? filePath) {

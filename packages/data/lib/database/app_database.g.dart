@@ -65,6 +65,8 @@ class _$AppDatabase extends AppDatabase {
 
   GenreDao? _genreDaoInstance;
 
+  MovieCharacterDao? _movieCharacterDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -89,7 +91,9 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `traktId` INTEGER, `imdbId` TEXT, `tmdbId` INTEGER, `moviesType` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `movie_id` INTEGER NOT NULL, `name` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `movieId` INTEGER NOT NULL, `name` TEXT NOT NULL)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `MovieCharacter` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `characterName` TEXT NOT NULL, `actorName` TEXT NOT NULL, `tmdbId` INTEGER NOT NULL, `posterPath` TEXT, `movieId` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -105,6 +109,12 @@ class _$AppDatabase extends AppDatabase {
   @override
   GenreDao get genreDao {
     return _genreDaoInstance ??= _$GenreDao(database, changeListener);
+  }
+
+  @override
+  MovieCharacterDao get movieCharacterDao {
+    return _movieCharacterDaoInstance ??=
+        _$MovieCharacterDao(database, changeListener);
   }
 }
 
@@ -176,7 +186,7 @@ class _$GenreDao extends GenreDao {
             'Genre',
             (Genre item) => <String, Object?>{
                   'id': item.id,
-                  'movie_id': item.movieId,
+                  'movieId': item.movieId,
                   'name': item.name
                 });
 
@@ -190,14 +200,75 @@ class _$GenreDao extends GenreDao {
 
   @override
   Future<List<Genre>> findMovieGenres(int movieId) async {
-    return _queryAdapter.queryList('SELECT * FROM Genre WHERE movie_id = ?1',
-        mapper: (Map<String, Object?> row) =>
-            Genre(row['movie_id'] as int, row['name'] as String),
+    return _queryAdapter.queryList('SELECT * FROM Genre WHERE movieId = ?1',
+        mapper: (Map<String, Object?> row) => Genre(
+            id: row['id'] as int?,
+            movieId: row['movieId'] as int,
+            name: row['name'] as String),
         arguments: [movieId]);
   }
 
   @override
   Future<void> insertGenres(List<Genre> genres) async {
     await _genreInsertionAdapter.insertList(genres, OnConflictStrategy.abort);
+  }
+}
+
+class _$MovieCharacterDao extends MovieCharacterDao {
+  _$MovieCharacterDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _movieCharacterInsertionAdapter = InsertionAdapter(
+            database,
+            'MovieCharacter',
+            (MovieCharacter item) => <String, Object?>{
+                  'id': item.id,
+                  'characterName': item.characterName,
+                  'actorName': item.actorName,
+                  'tmdbId': item.tmdbId,
+                  'posterPath': item.posterPath,
+                  'movieId': item.movieId
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<MovieCharacter> _movieCharacterInsertionAdapter;
+
+  @override
+  Future<List<MovieCharacter>> findMovieCast(int movieId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM MovieCharacter WHERE movieId = ?1',
+        mapper: (Map<String, Object?> row) => MovieCharacter(
+            id: row['id'] as int?,
+            characterName: row['characterName'] as String,
+            actorName: row['actorName'] as String,
+            tmdbId: row['tmdbId'] as int,
+            posterPath: row['posterPath'] as String?,
+            movieId: row['movieId'] as int),
+        arguments: [movieId]);
+  }
+
+  @override
+  Future<void> deleteCastsExceptWithIds(List<int> movieIds) async {
+    const offset = 1;
+    final _sqliteVariablesForMovieIds =
+        Iterable<String>.generate(movieIds.length, (i) => '?${i + offset}')
+            .join(',');
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM MovieCharacter WHERE movieId NOT IN (' +
+            _sqliteVariablesForMovieIds +
+            ')',
+        arguments: [...movieIds]);
+  }
+
+  @override
+  Future<void> insertCast(List<MovieCharacter> cast) async {
+    await _movieCharacterInsertionAdapter.insertList(
+        cast, OnConflictStrategy.abort);
   }
 }

@@ -124,6 +124,7 @@ Future<void> _initMoviesRepository() async {
     MoviesDatabaseRepositoryImpl(
       appDatabase.movieDao,
       appDatabase.genreDao,
+      appDatabase.movieCharacterDao,
     ),
   );
 }
