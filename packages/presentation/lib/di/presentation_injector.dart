@@ -49,7 +49,7 @@ void _initSplashModule() {
 }
 
 void _initLoginModule() {
-  GetIt.I.registerFactory<LoginViewMapper>(() => LoginViewMapperImpl());
+  GetIt.I.registerFactory<LoginViewMapper>(() => LoginViewMapper());
 
   GetIt.I.registerFactory<LoginBloc>(
     () => LoginBloc(
@@ -58,7 +58,6 @@ void _initLoginModule() {
       GetIt.I.get<GoogleAuthUseCase>(),
       GetIt.I.get<SaveCredentialsUseCase>(),
       GetIt.I.get<LoginValidationUseCase>(),
-      GetIt.I.get<LoginViewMapper>(),
     ),
   );
 }
