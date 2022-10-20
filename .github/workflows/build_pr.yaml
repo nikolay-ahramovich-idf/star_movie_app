@@ -1,7 +1,7 @@
 name: build-apps
 
 on:
-  push:
+  pull_request:
     branches:
       - master
       - feature/io-751-github-actions-ci-cd
@@ -30,7 +30,7 @@ jobs:
         env:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Build APK
-        run: flutter build apk --flavor prod lib/main_prod.dart
+        run: flutter build apk --debug --flavor sandbox lib/main_sandbox.dart
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.5
         with:
