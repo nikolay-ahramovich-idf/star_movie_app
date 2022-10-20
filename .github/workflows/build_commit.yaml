@@ -1,0 +1,50 @@
+name: build-apps
+
+on:
+  push:
+    branches:
+      - master
+      - feature/io-751-github-actions-ci-cd
+jobs:
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.3.4'
+          channel: 'stable'
+      - run: flutter --version
+      - run: flutter upgrade
+      - run: mkdir assets/json
+      - run: echo $SECRETS_FILE_CONTENT | base64 -d > assets/json/config.json
+        env:
+          SECRETS_FILE_CONTENT: ${{ secrets.SECRETS_FILE_CONTENT }}
+      - run: flutter pub get
+      - run: echo $GOOGLE_SERVICES_FILE_CONTENT | base64 -d > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
+      - name: Build APK
+        run: flutter build apk --release --flavor prod lib/main_prod.dart
+      - name: Create Github Release
+        id: create-new-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
+        with:
+          tag_name: v${{github.run_number}}
+          release_name: Release V${{github.run_number}}
+      - name: Upload asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
+        with:
+          upload_url: ${{steps.create-new-release.outputs.upload_url}}
+          asset_name: app-prod-releasev${{github.run_number}}.apk
+          asset_path: build/app/outputs/flutter-apk/app-prod-release.apk
+          asset_content_type: application/apk
