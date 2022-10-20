@@ -1,5 +1,6 @@
 import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
+import 'package:domain/exceptions/validation_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/login_validation_usecase.dart';
@@ -166,23 +167,19 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   void _resetLoginErrorMessages() {
-    add(
-      state.copyWith(
-        authFailure: false,
-        loginValidationStatus: null,
-      ),
-    );
+    add(LoginData(
+      null,
+      state.passwordValidationStatus,
+    ));
 
     _formStateGlobalKey.currentState?.validate();
   }
 
   void _resetPasswordErrorMessages() {
-    add(
-      state.copyWith(
-        authFailure: false,
-        loginValidationStatus: null,
-      ),
-    );
+    add(LoginData(
+      state.loginValidationStatus,
+      null,
+    ));
 
     _formStateGlobalKey.currentState?.validate();
   }
@@ -199,7 +196,11 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       await _saveCredentialsUseCase(user);
       appNavigator.popAndPush(SuccessLoginScreen.page());
     } else {
-      add(state.copyWith(authFailure: true));
+      add(state.copyWith(
+        loginValidationStatus: ValidationExceptionStatus.authFailed,
+        passwordValidationStatus: ValidationExceptionStatus.authFailed,
+      ));
+
       _formStateGlobalKey.currentState?.validate();
     }
   }

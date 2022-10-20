@@ -1,6 +1,7 @@
 enum ValidationExceptionStatus {
   empty,
   notCorrect,
+  authFailed,
 }
 
 class ValidationException {

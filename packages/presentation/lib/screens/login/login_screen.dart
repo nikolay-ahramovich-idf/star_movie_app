@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
@@ -12,7 +13,7 @@ import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/styles.dart';
 
 class LoginScreen extends StatefulWidget {
-  final loginViewMapper = LoginViewMapper();
+  final loginViewMapper = GetIt.I.get<LoginViewMapper>();
 
   LoginScreen({super.key});
 
@@ -88,7 +89,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              appLocalizations.userNameInputLabel.toUpperCase(),
+                              appLocalizations.userNameInputLabel,
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),
@@ -116,7 +117,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             ),
                             const SizedBox(height: AppSizes.size16),
                             Text(
-                              appLocalizations.passwordInputLabel.toUpperCase(),
+                              appLocalizations.passwordInputLabel,
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),

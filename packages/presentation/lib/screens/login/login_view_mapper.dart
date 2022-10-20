@@ -25,15 +25,13 @@ class LoginViewMapperImpl implements LoginViewMapper {
   ) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    if (state.authFailure) {
-      return appLocalizations.authFailureLoginMessage;
-    }
-
     switch (state.loginValidationStatus) {
       case ValidationExceptionStatus.empty:
         return appLocalizations.requiredLoginMessage;
       case ValidationExceptionStatus.notCorrect:
         return appLocalizations.invalidLoginMessage;
+      case ValidationExceptionStatus.authFailed:
+        return appLocalizations.authFailureLoginMessage;
       case null:
         return null;
     }
@@ -46,15 +44,13 @@ class LoginViewMapperImpl implements LoginViewMapper {
   ) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    if (state.authFailure) {
-      return appLocalizations.authFailurePasswordMessage;
-    }
-
     switch (state.passwordValidationStatus) {
       case ValidationExceptionStatus.empty:
         return appLocalizations.requiredPasswordMessage;
       case ValidationExceptionStatus.notCorrect:
         return appLocalizations.requiredPasswordMessage;
+      case ValidationExceptionStatus.authFailed:
+        return appLocalizations.authFailurePasswordMessage;
       case null:
         return null;
     }
