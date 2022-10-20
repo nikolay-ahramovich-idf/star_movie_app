@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feature/io-751-github-actions-ci-cd
 jobs:
   apk:
     name: Generate APK
@@ -19,8 +18,6 @@ jobs:
         with:
           flutter-version: '3.3.4'
           channel: 'stable'
-      - run: flutter --version
-      - run: flutter upgrade
       - run: mkdir assets/json
       - run: echo $SECRETS_FILE_CONTENT | base64 -d > assets/json/config.json
         env:
@@ -30,11 +27,21 @@ jobs:
         env:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Build APK
-        run: flutter build apk --flavor prod lib/main_prod.dart
-      - name: upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.5
+        run: flutter build apk --flavor prod -t lib/main_prod.dart --release
+      - name: Create Github Release
+        id: create-new-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
         with:
-          appId: ${{secrets.FIREBASE_ANDROID_APP_ID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-prod-release.apk
+          tag_name: v${{github.run_number}}
+          release_name: Release V${{github.run_number}}
+      - name: Upload asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
+        with:
+          upload_url: ${{steps.create-new-release.outputs.upload_url}}
+          asset_name: app-prod-releasev${{github.run_number}}.apk
+          asset_path: build/app/outputs/flutter-apk/app-prod-release.apk
+          asset_content_type: application/apk

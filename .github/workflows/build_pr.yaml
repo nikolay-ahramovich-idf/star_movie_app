@@ -1,0 +1,37 @@
+name: build-apps
+
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.3.4'
+          channel: 'stable'
+      - run: mkdir assets/json
+      - run: echo $SECRETS_FILE_CONTENT | base64 -d > assets/json/config.json
+        env:
+          SECRETS_FILE_CONTENT: ${{ secrets.SECRETS_FILE_CONTENT }}
+      - run: flutter pub get
+      - run: echo $GOOGLE_SERVICES_FILE_CONTENT | base64 -d > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
+      - name: Build APK
+        run: flutter build apk --flavor sandbox -t lib/main_sandbox.dart --debug
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.5
+        with:
+          appId: ${{secrets.FIREBASE_ANDROID_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-sandbox-debug.apk
