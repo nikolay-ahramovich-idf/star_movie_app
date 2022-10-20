@@ -1,4 +1,3 @@
-import 'package:data/database/entities/movie.dart';
 import 'package:floor/floor.dart';
 
 @entity
@@ -10,12 +9,6 @@ class MovieCharacter {
   final String actorName;
   final int tmdbId;
   final String? posterPath;
-
-  @ForeignKey(
-    childColumns: ['owner_id'],
-    parentColumns: ['traktId'],
-    entity: Movie,
-  )
   final int movieId;
 
   MovieCharacter({

@@ -25,11 +25,8 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
 
     final movieEntities = movies.map((movie) async {
       final genres = await _genreDao.findMovieGenres(movie.id!);
-      final genreNames = genres
-          .map(
-            (genre) => genre.name,
-          )
-          .toList();
+
+      final genreNames = genres.map((genre) => genre.name).toList();
 
       return BaseMovieEntity(
         movie.title,
