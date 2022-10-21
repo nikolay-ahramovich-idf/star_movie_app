@@ -90,6 +90,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     final user = await _facebookAuthUseCase();
 
     _updateFieldControllers(user);
+
+    onLogin();
   }
 
   @override
@@ -101,6 +103,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     final user = await _googleAuthUseCase();
 
     _updateFieldControllers(user);
+
+    onLogin();
   }
 
   @override
@@ -114,16 +118,8 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       password: _passwordController.text,
     );
 
-    final validationResult = _loginValidationUseCase(user);
-
     try {
-      if (validationResult.loginValidationStatus != null ||
-          validationResult.passwordValidationStatus != null) {
-        throw ValidationException(
-          validationResult.loginValidationStatus,
-          validationResult.passwordValidationStatus,
-        );
-      }
+      _loginValidationUseCase(user);
 
       await _loginIfUserRegistered(user);
     } on ValidationException catch (e) {
@@ -171,16 +167,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   Future<void> _loginIfUserRegistered(UserEntity user) async {
-    final userIsRegistered = await _userIsRegisteredUseCase(user);
+    await _userIsRegisteredUseCase(user);
+    await _saveCredentialsUseCase(user);
 
-    if (userIsRegistered) {
-      await _saveCredentialsUseCase(user);
-      appNavigator.popAndPush(SuccessLoginScreen.page());
-    } else {
-      throw ValidationException(
-        ValidationExceptionStatus.authFailed,
-        ValidationExceptionStatus.authFailed,
-      );
-    }
+    appNavigator.popAndPush(SuccessLoginScreen.page());
   }
 }
