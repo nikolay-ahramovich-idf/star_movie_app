@@ -25,7 +25,7 @@ class LoginValidationUseCase
     }
 
     if (login.length < loginLength) {
-      return ValidationExceptionStatus.notCorrect;
+      return ValidationExceptionStatus.minLength;
     }
 
     return null;
@@ -39,7 +39,7 @@ class LoginValidationUseCase
     final regExp = RegExp(passwordRegExp);
 
     if (!regExp.hasMatch(password)) {
-      return ValidationExceptionStatus.notCorrect;
+      return ValidationExceptionStatus.regExp;
     }
 
     return null;

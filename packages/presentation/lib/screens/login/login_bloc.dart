@@ -1,5 +1,4 @@
 import 'package:domain/entities/user_entity.dart';
-import 'package:domain/exceptions/auth_failure_exception.dart';
 import 'package:domain/exceptions/validation_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
@@ -36,13 +35,11 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   TextEditingController get passwordController;
 
-  Future<void> onLogin();
-
   Future<void> authByFacebook();
 
   Future<void> authByGoogle();
 
-  void validateForm();
+  Future<void> onLogin();
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -85,6 +82,28 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   TextEditingController get passwordController => _passwordController;
 
   @override
+  Future<void> authByFacebook() async {
+    logAnalyticsEventUseCase(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByFacebookClick,
+    );
+
+    final user = await _facebookAuthUseCase();
+
+    _updateFieldControllers(user);
+  }
+
+  @override
+  Future<void> authByGoogle() async {
+    logAnalyticsEventUseCase(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByGoogleClick,
+    );
+
+    final user = await _googleAuthUseCase();
+
+    _updateFieldControllers(user);
+  }
+
+  @override
   Future<void> onLogin() async {
     logAnalyticsEventUseCase(
       AnalyticsEvents.loginScreenEvents.buttonAuthByLoginClick,
@@ -95,65 +114,27 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       password: _passwordController.text,
     );
 
-    try {
-      await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  Future<void> authByFacebook() async {
-    logAnalyticsEventUseCase(
-      AnalyticsEvents.loginScreenEvents.buttonAuthByFacebookClick,
-    );
-
-    try {
-      final user = await _facebookAuthUseCase();
-
-      _updateFieldControllers(user);
-
-      await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  Future<void> authByGoogle() async {
-    logAnalyticsEventUseCase(
-      AnalyticsEvents.loginScreenEvents.buttonAuthByGoogleClick,
-    );
-
-    try {
-      final user = await _googleAuthUseCase();
-
-      _updateFieldControllers(user);
-
-      await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void validateForm() {
-    final user = UserEntity(
-      login: _loginController.text,
-      password: _passwordController.text,
-    );
-
     final validationResult = _loginValidationUseCase(user);
 
-    add(
-      state.copyWith(
-        loginValidationStatus: validationResult.loginValidationStatus,
-        passwordValidationStatus: validationResult.passwordValidationStatus,
-      ),
-    );
+    try {
+      if (validationResult.loginValidationStatus != null ||
+          validationResult.passwordValidationStatus != null) {
+        throw ValidationException(
+          validationResult.loginValidationStatus,
+          validationResult.passwordValidationStatus,
+        );
+      }
 
-    if (_formStateGlobalKey.currentState?.validate() ?? false) {
-      onLogin();
+      await _loginIfUserRegistered(user);
+    } on ValidationException catch (e) {
+      add(
+        state.copyWith(
+          loginValidationStatus: e.loginValidationStatus,
+          passwordValidationStatus: e.passwordValidationStatus,
+        ),
+      );
+
+      _formStateGlobalKey.currentState?.validate();
     }
   }
 
@@ -196,12 +177,10 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       await _saveCredentialsUseCase(user);
       appNavigator.popAndPush(SuccessLoginScreen.page());
     } else {
-      add(state.copyWith(
-        loginValidationStatus: ValidationExceptionStatus.authFailed,
-        passwordValidationStatus: ValidationExceptionStatus.authFailed,
-      ));
-
-      _formStateGlobalKey.currentState?.validate();
+      throw ValidationException(
+        ValidationExceptionStatus.authFailed,
+        ValidationExceptionStatus.authFailed,
+      );
     }
   }
 }
