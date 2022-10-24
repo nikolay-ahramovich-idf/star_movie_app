@@ -54,11 +54,6 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void _goToHomePage(int index) {
     logAnalyticsEventUseCase(AnalyticsEvents.appEvents.buttonTabbarHomeClick);
 
