@@ -1,4 +1,5 @@
 import 'package:domain/entities/base_movie_entity.dart';
+import 'package:domain/entities/event_entity.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
@@ -84,6 +85,7 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
     add(state.copyWith(
       isLoading: true,
     ));
+
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);
   }

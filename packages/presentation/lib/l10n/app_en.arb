@@ -14,12 +14,17 @@
     "moviesNotAvailableErrorMessage":  "Movies are not available due to error. Turn to administrator!",
     "profileLabel": "Profile",
     "signUpButtonLabel": "Sign Up",
-    "userNameInputLabel": "User Name",
-    "passwordInputLabel": "Password",
+    "userNameInputLabel": "USER NAME",
+    "passwordInputLabel": "PASSWORD",
     "forgotPasswordButtonLabel": "Forgot Password?",
     "loginButtonLabel": "Login",
     "loginIsSuccessLabel": "Login is success",
     "authFailureMessage": "Auth Failure",
     "shareMovieMessage": "Look, what movie I found!",
-    "intentTitle": "Movie Sharing"
+    "intentTitle": "Movie Sharing",
+    "authFailureLoginMessage": "Invalid login",
+    "invalidLoginMessage": "Login field should be at least 8 symbols",
+    "requiredLoginMessage": "Login is required",
+    "authFailurePasswordMessage": "Invalid password",
+    "requiredPasswordMessage": "Password is required"
 }

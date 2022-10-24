@@ -14,12 +14,17 @@
     "moviesNotAvailableErrorMessage": "Os filmes não estão disponíveis devido a um erro. Recorra ao administrador!",
     "profileLabel": "Perfil",
     "signUpButtonLabel": "Inscrever-se",
-    "userNameInputLabel": "Nome de usuário",
-    "passwordInputLabel": "Senha",
+    "userNameInputLabel": "NOME DE USUÁRIO",
+    "passwordInputLabel": "SENHA",
     "forgotPasswordButtonLabel": "Esqueceu a senha?",
     "loginButtonLabel": "Conecte-se",
     "loginIsSuccessLabel": "Login é sucesso",
     "authFailureMessage": "Falha de autenticação",
     "shareMovieMessage": "Olha, que filme eu encontrei!",
-    "intentTitle": "Compartilhamento de filmes"
+    "intentTitle": "Compartilhamento de filmes",
+    "authFailureLoginMessage": "Login inválido",
+    "invalidLoginMessage": "O campo de login deve ter pelo menos 8 símbolos",
+    "requiredLoginMessage": "É necessário fazer login",
+    "authFailurePasswordMessage": "Senha inválida",
+    "requiredPasswordMessage": "Senha requerida"
 }

@@ -53,5 +53,6 @@ class TMDBConfig {
 
 class FirestoreCollectionNames {
   FirestoreCollectionNames._();
+
   static const users = 'users';
 }
