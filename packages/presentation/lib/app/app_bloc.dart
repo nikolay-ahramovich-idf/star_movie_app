@@ -16,9 +16,7 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   factory AppBloc(
     LogAnalyticsScreenUseCase logAnalyticsScreenUseCase,
   ) =>
-      _AppBloc(
-        logAnalyticsScreenUseCase,
-      );
+      _AppBloc(logAnalyticsScreenUseCase);
 
   void handleRemoveRouteSettings(RouteSettings value);
 
@@ -28,9 +26,7 @@ abstract class AppBloc implements Bloc<BaseArguments, AppData> {
 class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
   final LogAnalyticsScreenUseCase _logAnalyticsScreenUseCase;
 
-  _AppBloc(
-    this._logAnalyticsScreenUseCase,
-  ) : super(initState: AppData.init());
+  _AppBloc(this._logAnalyticsScreenUseCase) : super(initState: AppData.init());
 
   @override
   void initState() {

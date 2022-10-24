@@ -6,21 +6,14 @@ import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/home/home_screen.dart';
 
 abstract class SplashBloc implements Bloc<BaseArguments, BaseState> {
-  factory SplashBloc(
-    DelayUseCase delayUsecase,
-  ) =>
-      _SplashBloc(
-        delayUsecase,
-      );
+  factory SplashBloc(DelayUseCase delayUsecase) => _SplashBloc(delayUsecase);
 }
 
 class _SplashBloc extends BlocImpl<BaseArguments, BaseState>
     implements SplashBloc {
   final DelayUseCase _delayUsecase;
 
-  _SplashBloc(
-    this._delayUsecase,
-  ) : super(initState: const BaseState.init());
+  _SplashBloc(this._delayUsecase) : super(initState: const BaseState.init());
 
   @override
   void initState() {

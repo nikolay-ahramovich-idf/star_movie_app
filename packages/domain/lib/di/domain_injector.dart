@@ -30,9 +30,7 @@ Future<void> initDomainInjector() async {
 }
 
 Future<void> _initUsecaseModule() async {
-  GetIt.I.registerFactory<DelayUseCase>(
-    () => DelayUseCase(),
-  );
+  GetIt.I.registerFactory<DelayUseCase>(() => DelayUseCase());
 
   GetIt.I.registerFactory<GetNowShowingMoviesUseCase>(
     () => GetNowShowingMoviesUseCase(

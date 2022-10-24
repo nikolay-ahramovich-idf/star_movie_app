@@ -11,9 +11,7 @@ abstract class GetMoviesBaseUsecase
     implements UseCase<Future<Iterable<BaseMovieEntity>>> {
   final MoviesDatabaseRepository _moviesDatabaseRepository;
 
-  GetMoviesBaseUsecase(
-    this._moviesDatabaseRepository,
-  );
+  GetMoviesBaseUsecase(this._moviesDatabaseRepository);
 
   Future<List<BaseMovieEntity>> getMovies(
     Future<MoviesResponseEntity> Function([Map<String, dynamic>])
