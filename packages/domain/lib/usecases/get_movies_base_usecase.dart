@@ -31,12 +31,10 @@ abstract class GetMoviesBaseUsecase
       return movies;
     }
 
-    if (!lastInteractionTime.isToday) {
-      final movies = await _getRemoteMovies(remoteMoviesGetter);
+    final cachedMovies = await _moviesDatabaseRepository.getMovies(moviesType);
 
-      final cachedMovies = await _moviesDatabaseRepository.getMovies(
-        moviesType,
-      );
+    if (cachedMovies.isEmpty || !lastInteractionTime.isToday) {
+      final movies = await _getRemoteMovies(remoteMoviesGetter);
 
       if (!listEquals(
         movies.toList()..sort(_moviesSorter),
@@ -54,7 +52,7 @@ abstract class GetMoviesBaseUsecase
       return movies;
     }
 
-    return await _moviesDatabaseRepository.getMovies(moviesType);
+    return cachedMovies;
   }
 
   Future<List<BaseMovieEntity>> _getRemoteMovies(

@@ -1,47 +1,48 @@
 import 'package:domain/entities/user_entity.dart';
-import 'package:domain/entities/validation_entity.dart';
+import 'package:domain/exceptions/validation_exception.dart';
 import 'package:domain/usecases/usecase.dart';
 
-class LoginValidationUseCase
-    implements UseCaseParams<UserEntity, ValidationEntity> {
+class LoginValidationUseCase implements UseCaseParams<UserEntity, void> {
   final loginLength = 8;
   final passwordRegExp = r'^[a-zA-Z0-9]{7,}$';
 
   @override
-  ValidationEntity call(UserEntity params) {
+  void call(UserEntity params) {
     final loginValidationStatus = _validateLogin(params.login);
 
     final passwordValidationStatus = _validatePassword(params.password);
 
-    return ValidationEntity(
-      loginValidationStatus,
-      passwordValidationStatus,
-    );
+    if (loginValidationStatus != null || passwordValidationStatus != null) {
+      throw ValidationException(
+        loginValidationStatus,
+        passwordValidationStatus,
+      );
+    }
   }
 
-  LoginValidationStatus _validateLogin(String login) {
+  ValidationExceptionStatus? _validateLogin(String login) {
     if (login.isEmpty) {
-      return LoginValidationStatus.empty;
+      return ValidationExceptionStatus.empty;
     }
 
     if (login.length < loginLength) {
-      return LoginValidationStatus.notCorrect;
+      return ValidationExceptionStatus.minLength;
     }
 
-    return LoginValidationStatus.ok;
+    return null;
   }
 
-  PasswordValidationStatus _validatePassword(String password) {
+  ValidationExceptionStatus? _validatePassword(String password) {
     if (password.isEmpty) {
-      return PasswordValidationStatus.empty;
+      return ValidationExceptionStatus.empty;
     }
 
     final regExp = RegExp(passwordRegExp);
 
     if (!regExp.hasMatch(password)) {
-      return PasswordValidationStatus.notCorrect;
+      return ValidationExceptionStatus.regExp;
     }
 
-    return PasswordValidationStatus.ok;
+    return null;
   }
 }

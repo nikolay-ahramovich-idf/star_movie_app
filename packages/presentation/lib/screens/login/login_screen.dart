@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
 import 'package:presentation/screens/login/login_bloc.dart';
+import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/widgets/auth_icon_button_widget.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/styles.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final loginViewMapper = GetIt.I.get<LoginViewMapper>();
+
+  LoginScreen({super.key});
 
   static const _routeName = '/LoginScreen';
 
@@ -20,7 +24,7 @@ class LoginScreen extends StatefulWidget {
   static BasePage page() => BasePage(
         key: const ValueKey(_routeName),
         name: _routeName,
-        builder: (_) => const LoginScreen(),
+        builder: (_) => LoginScreen(),
       );
 
   @override
@@ -85,21 +89,16 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              appLocalizations.userNameInputLabel.toUpperCase(),
+                              appLocalizations.userNameInputLabel,
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) =>
-                                  bloc.loginViewMapper.stateToLoginErrorMessage(
+                              validator: (_) => widget.loginViewMapper
+                                  .stateToLoginErrorMessage(
                                 bloc.state,
-                                authFailureLoginMessage:
-                                    appLocalizations.authFailureLoginMessage,
-                                requiredLoginMessage:
-                                    appLocalizations.requiredLoginMessage,
-                                invalidLoginMessage:
-                                    appLocalizations.invalidLoginMessage,
+                                context,
                               ),
                               controller: bloc.loginController,
                               keyboardType: TextInputType.emailAddress,
@@ -118,21 +117,16 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                             ),
                             const SizedBox(height: AppSizes.size16),
                             Text(
-                              appLocalizations.passwordInputLabel.toUpperCase(),
+                              appLocalizations.passwordInputLabel,
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),
                             TextFormField(
                               autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => bloc.loginViewMapper
+                              validator: (_) => widget.loginViewMapper
                                   .stateToPasswordErrorMessage(
                                 bloc.state,
-                                authFailurePasswordMessage:
-                                    appLocalizations.authFailurePasswordMessage,
-                                requiredPasswordMessage:
-                                    appLocalizations.requiredPasswordMessage,
-                                invalidPasswordMessage:
-                                    appLocalizations.requiredPasswordMessage,
+                                context,
                               ),
                               controller: bloc.passwordController,
                               obscureText: true,
@@ -167,7 +161,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.red,
                                 ),
-                                onPressed: bloc.validateForm,
+                                onPressed: bloc.onLogin,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     vertical: AppSizes.size15,

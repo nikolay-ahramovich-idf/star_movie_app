@@ -1,6 +1,5 @@
 import 'package:domain/entities/user_entity.dart';
-import 'package:domain/entities/validation_entity.dart';
-import 'package:domain/exceptions/auth_failure_exception.dart';
+import 'package:domain/exceptions/validation_exception.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/login_validation_usecase.dart';
@@ -12,7 +11,6 @@ import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
 import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/screens/login/data/login_data.dart';
-import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/success_login_screen.dart';
 
 abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
@@ -22,7 +20,6 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
     GoogleAuthUseCase googleAuthUseCase,
     SaveCredentialsUseCase saveCredentialsUseCase,
     LoginValidationUseCase loginValidationUseCase,
-    LoginViewMapper loginViewMapper,
   ) =>
       _LoginBloc(
         userIsRegisteredUseCase,
@@ -30,7 +27,6 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
         googleAuthUseCase,
         saveCredentialsUseCase,
         loginValidationUseCase,
-        loginViewMapper,
       );
 
   GlobalKey<FormState> get formStateGlobalKey;
@@ -39,15 +35,11 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
 
   TextEditingController get passwordController;
 
-  LoginViewMapper get loginViewMapper;
-
-  Future<void> onLogin();
-
   Future<void> authByFacebook();
 
   Future<void> authByGoogle();
 
-  void validateForm();
+  Future<void> onLogin();
 }
 
 class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
@@ -57,7 +49,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final GoogleAuthUseCase _googleAuthUseCase;
   final SaveCredentialsUseCase _saveCredentialsUseCase;
   final LoginValidationUseCase _loginValidationUseCase;
-  final LoginViewMapper _loginViewMapper;
 
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -70,16 +61,15 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     this._googleAuthUseCase,
     this._saveCredentialsUseCase,
     this._loginValidationUseCase,
-    this._loginViewMapper,
   ) : super(initState: const LoginData.init());
 
   @override
   void initState() {
     super.initState();
 
-    _loginController.addListener(_resetErrorMessages);
+    _loginController.addListener(_resetLoginErrorMessages);
 
-    _passwordController.addListener(_resetErrorMessages);
+    _passwordController.addListener(_resetPasswordErrorMessages);
   }
 
   @override
@@ -92,7 +82,30 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   TextEditingController get passwordController => _passwordController;
 
   @override
-  LoginViewMapper get loginViewMapper => _loginViewMapper;
+  Future<void> authByFacebook() async {
+    logAnalyticsEventUseCase(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByFacebookClick,
+    );
+
+    final user = await _facebookAuthUseCase();
+
+    _updateFieldControllers(user);
+
+    onLogin();
+  }
+
+  @override
+  Future<void> authByGoogle() async {
+    logAnalyticsEventUseCase(
+      AnalyticsEvents.loginScreenEvents.buttonAuthByGoogleClick,
+    );
+
+    final user = await _googleAuthUseCase();
+
+    _updateFieldControllers(user);
+
+    onLogin();
+  }
 
   @override
   Future<void> onLogin() async {
@@ -106,64 +119,18 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     );
 
     try {
-      await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  Future<void> authByFacebook() async {
-    logAnalyticsEventUseCase(
-      AnalyticsEvents.loginScreenEvents.buttonAuthByFacebookClick,
-    );
-
-    try {
-      final user = await _facebookAuthUseCase();
-
-      _updateFieldControllers(user);
+      _loginValidationUseCase(user);
 
       await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
+    } on ValidationException catch (e) {
+      add(
+        state.copyWith(
+          loginValidationStatus: e.loginValidationStatus,
+          passwordValidationStatus: e.passwordValidationStatus,
+        ),
+      );
 
-  @override
-  Future<void> authByGoogle() async {
-    logAnalyticsEventUseCase(
-      AnalyticsEvents.loginScreenEvents.buttonAuthByGoogleClick,
-    );
-
-    try {
-      final user = await _googleAuthUseCase();
-
-      _updateFieldControllers(user);
-
-      await _loginIfUserRegistered(user);
-    } on AuthFailureException catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void validateForm() {
-    final user = UserEntity(
-      login: _loginController.text,
-      password: _passwordController.text,
-    );
-
-    final validationResult = _loginValidationUseCase(user);
-
-    add(
-      state.copyWith(
-        loginValidationStatus: validationResult.loginValidationStatus,
-        passwordValidationStatus: validationResult.passwordValidationStatus,
-      ),
-    );
-
-    if (_formStateGlobalKey.currentState!.validate()) {
-      onLogin();
+      _formStateGlobalKey.currentState?.validate();
     }
   }
 
@@ -176,14 +143,20 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
     super.dispose();
   }
 
-  void _resetErrorMessages() {
-    add(
-      state.copyWith(
-        authFailure: false,
-        loginValidationStatus: LoginValidationStatus.ok,
-        passwordValidationStatus: PasswordValidationStatus.ok,
-      ),
-    );
+  void _resetLoginErrorMessages() {
+    add(LoginData(
+      null,
+      state.passwordValidationStatus,
+    ));
+
+    _formStateGlobalKey.currentState?.validate();
+  }
+
+  void _resetPasswordErrorMessages() {
+    add(LoginData(
+      state.loginValidationStatus,
+      null,
+    ));
 
     _formStateGlobalKey.currentState?.validate();
   }
@@ -194,14 +167,9 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   }
 
   Future<void> _loginIfUserRegistered(UserEntity user) async {
-    final userIsRegistered = await _userIsRegisteredUseCase(user);
+    await _userIsRegisteredUseCase(user);
+    await _saveCredentialsUseCase(user);
 
-    if (userIsRegistered) {
-      await _saveCredentialsUseCase(user);
-      appNavigator.popAndPush(SuccessLoginScreen.page());
-    } else {
-      add(state.copyWith(authFailure: true));
-      _formStateGlobalKey.currentState?.validate();
-    }
+    appNavigator.popAndPush(SuccessLoginScreen.page());
   }
 }
