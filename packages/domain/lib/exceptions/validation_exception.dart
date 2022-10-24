@@ -1,10 +1,11 @@
 enum ValidationExceptionStatus {
   empty,
-  notCorrect,
+  minLength,
+  regExp,
   authFailed,
 }
 
-class ValidationException {
+class ValidationException implements Exception {
   final ValidationExceptionStatus? loginValidationStatus;
   final ValidationExceptionStatus? passwordValidationStatus;
 

@@ -9,8 +9,6 @@ class SetLastAppInteractionTimeUseCase
 
   @override
   Future<void> call(AppInteractionType params) async {
-    await _appInteractionService.addLastAppInteractionTime(
-      params,
-    );
+    await _appInteractionService.addLastAppInteractionTime(params);
   }
 }

@@ -161,7 +161,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.red,
                                 ),
-                                onPressed: bloc.validateForm,
+                                onPressed: bloc.onLogin,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     vertical: AppSizes.size15,

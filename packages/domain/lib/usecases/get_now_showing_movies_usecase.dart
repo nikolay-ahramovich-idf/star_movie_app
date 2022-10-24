@@ -12,9 +12,7 @@ class GetNowShowingMoviesUseCase extends GetMoviesBaseUsecase {
     this._appInteractionService,
     this._moviesRepository,
     MoviesDatabaseRepository moviesDatabaseRepository,
-  ) : super(
-          moviesDatabaseRepository,
-        );
+  ) : super(moviesDatabaseRepository);
 
   @override
   Future<List<BaseMovieEntity>> call() async {

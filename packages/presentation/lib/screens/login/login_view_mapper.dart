@@ -28,7 +28,7 @@ class LoginViewMapperImpl implements LoginViewMapper {
     switch (state.loginValidationStatus) {
       case ValidationExceptionStatus.empty:
         return appLocalizations.requiredLoginMessage;
-      case ValidationExceptionStatus.notCorrect:
+      case ValidationExceptionStatus.minLength:
         return appLocalizations.invalidLoginMessage;
       case ValidationExceptionStatus.authFailed:
         return appLocalizations.authFailureLoginMessage;
@@ -47,7 +47,7 @@ class LoginViewMapperImpl implements LoginViewMapper {
     switch (state.passwordValidationStatus) {
       case ValidationExceptionStatus.empty:
         return appLocalizations.requiredPasswordMessage;
-      case ValidationExceptionStatus.notCorrect:
+      case ValidationExceptionStatus.regExp:
         return appLocalizations.requiredPasswordMessage;
       case ValidationExceptionStatus.authFailed:
         return appLocalizations.authFailurePasswordMessage;

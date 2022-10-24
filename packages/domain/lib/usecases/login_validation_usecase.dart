@@ -2,21 +2,22 @@ import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/validation_exception.dart';
 import 'package:domain/usecases/usecase.dart';
 
-class LoginValidationUseCase
-    implements UseCaseParams<UserEntity, ValidationException> {
+class LoginValidationUseCase implements UseCaseParams<UserEntity, void> {
   final loginLength = 8;
   final passwordRegExp = r'^[a-zA-Z0-9]{7,}$';
 
   @override
-  ValidationException call(UserEntity params) {
+  void call(UserEntity params) {
     final loginValidationStatus = _validateLogin(params.login);
 
     final passwordValidationStatus = _validatePassword(params.password);
 
-    return ValidationException(
-      loginValidationStatus,
-      passwordValidationStatus,
-    );
+    if (loginValidationStatus != null || passwordValidationStatus != null) {
+      throw ValidationException(
+        loginValidationStatus,
+        passwordValidationStatus,
+      );
+    }
   }
 
   ValidationExceptionStatus? _validateLogin(String login) {
@@ -25,7 +26,7 @@ class LoginValidationUseCase
     }
 
     if (login.length < loginLength) {
-      return ValidationExceptionStatus.notCorrect;
+      return ValidationExceptionStatus.minLength;
     }
 
     return null;
@@ -39,7 +40,7 @@ class LoginValidationUseCase
     final regExp = RegExp(passwordRegExp);
 
     if (!regExp.hasMatch(password)) {
-      return ValidationExceptionStatus.notCorrect;
+      return ValidationExceptionStatus.regExp;
     }
 
     return null;
