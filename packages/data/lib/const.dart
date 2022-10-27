@@ -57,3 +57,9 @@ class FirestoreCollectionNames {
 
   static const users = 'users';
 }
+
+class DatabaseConfig {
+  DatabaseConfig._();
+  
+  static const version = 1;
+}

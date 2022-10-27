@@ -76,9 +76,7 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
       AppInteractionType.nowShowingMovies,
     );
 
-    add(state.copyWith(
-      isLoading: true,
-    ));
+    add(state.copyWith(isLoading: true));
 
     final movies = await _getNowShowingMoviesUseCase();
 
@@ -95,9 +93,7 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
       AppInteractionType.comingSoonMovies,
     );
 
-    add(state.copyWith(
-      isLoading: true,
-    ));
+    add(state.copyWith(isLoading: true));
 
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);

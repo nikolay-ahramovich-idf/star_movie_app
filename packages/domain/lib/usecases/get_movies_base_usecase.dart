@@ -11,9 +11,7 @@ abstract class GetMoviesBaseUsecase
     implements UseCase<Future<Iterable<BaseMovieEntity>>> {
   final MoviesDatabaseRepository _moviesDatabaseRepository;
 
-  GetMoviesBaseUsecase(
-    this._moviesDatabaseRepository,
-  );
+  GetMoviesBaseUsecase(this._moviesDatabaseRepository);
 
   Future<List<BaseMovieEntity>> getMovies(
     Future<MoviesResponseEntity> Function([Map<String, dynamic>])
@@ -37,8 +35,8 @@ abstract class GetMoviesBaseUsecase
       final movies = await _getRemoteMovies(remoteMoviesGetter);
 
       if (!listEquals(
-        movies.toList()..sort(_moviesSorter),
-        cachedMovies.toList()..sort(_moviesSorter),
+        movies,
+        cachedMovies,
       )) {
         await _moviesDatabaseRepository.removeMovies(moviesType);
 
@@ -92,10 +90,4 @@ abstract class GetMoviesBaseUsecase
       return [];
     }
   }
-
-  int _moviesSorter(
-    BaseMovieEntity oneMovie,
-    BaseMovieEntity otherMovie,
-  ) =>
-      oneMovie.traktId.compareTo(otherMovie.traktId);
 }

@@ -2,9 +2,9 @@ import 'package:domain/services/app_interaction_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppInteractionServiceImpl implements AppInteractionService {
-  final SharedPreferences _preferencesProvider;
+  static const _lastAppInteractionTimeKey = 'last_app_iteraction_time';
 
-  final _lastAppInteractionTimeKey = 'last_app_iteraction_time';
+  final SharedPreferences _preferencesProvider;
 
   AppInteractionServiceImpl(this._preferencesProvider);
 

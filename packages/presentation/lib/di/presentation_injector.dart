@@ -35,16 +35,12 @@ void _initAppModule() {
     ),
   );
 
-  GetIt.I.registerSingleton<AppNavigator>(
-    AppNavigator(),
-  );
+  GetIt.I.registerSingleton<AppNavigator>(AppNavigator());
 }
 
 void _initSplashModule() {
   GetIt.I.registerFactory<SplashBloc>(
-    () => SplashBloc(
-      GetIt.I.get<DelayUseCase>(),
-    ),
+    () => SplashBloc(GetIt.I.get<DelayUseCase>()),
   );
 }
 
