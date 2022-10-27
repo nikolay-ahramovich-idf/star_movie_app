@@ -13,7 +13,9 @@ abstract class MoviesDatabaseRepository {
 
   Future<void> removeMoviesWithIds(List<int> movieIds);
 
-  Future<List<Genre>> getGenres(List<int> movieIds);
+  Future<List<Genre>> getGenres(
+    List<int> movieIds,
+  );
 
   Future<List<MovieCharacter>> getCast(int movieId);
 

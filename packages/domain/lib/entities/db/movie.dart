@@ -1,8 +1,7 @@
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(primaryKeys: ['id'])
 class Movie {
-  @PrimaryKey()
   final int id;
   final String? title;
   final double? rating;

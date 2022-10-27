@@ -213,10 +213,12 @@ void _initShareMovieService() {
 }
 
 Future<void> _initAppInteractionService() async {
+  final appDatabase = await $FloorAppDatabase
+      .databaseBuilder(DataConfig.appDatabaseName)
+      .build();
+
   GetIt.I.registerSingleton<AppInteractionService>(
-    AppInteractionServiceImpl(
-      await GetIt.I.getAsync<SharedPreferences>(),
-    ),
+    AppInteractionServiceImpl(appDatabase.appInteractionDao),
   );
 }
 

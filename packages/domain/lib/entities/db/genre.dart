@@ -15,12 +15,12 @@ class Genre {
   @PrimaryKey(autoGenerate: true)
   int? id;
 
-  final int movieId;
   final String name;
+  final int movieId;
 
   Genre({
     this.id,
-    required this.movieId,
     required this.name,
+    required this.movieId,
   });
 }

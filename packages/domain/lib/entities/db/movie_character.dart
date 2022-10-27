@@ -1,4 +1,3 @@
-
 import 'package:domain/entities/db/movie.dart';
 import 'package:floor/floor.dart';
 

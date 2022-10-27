@@ -24,10 +24,16 @@ abstract class GetMoviesBaseUsecase
     if (lastInteractionTime == null) {
       final remoteMovies = await _getRemoteMovies(remoteMoviesGetter);
 
-      final movies = _mapToDatabaseMovies(remoteMovies, moviesType);
+      final movies = _mapToDatabaseMovies(
+        remoteMovies,
+        moviesType,
+      );
       final genres = _mapToDatabaseGenres(remoteMovies);
 
-      await _moviesDatabaseRepository.addMovies(movies, genres);
+      await _moviesDatabaseRepository.addMovies(
+        movies,
+        genres,
+      );
 
       return remoteMovies;
     }
@@ -39,7 +45,7 @@ abstract class GetMoviesBaseUsecase
     if (cachedMovies.isEmpty || !lastInteractionTime.isToday) {
       final remoteMovies = await _getRemoteMovies(remoteMoviesGetter);
 
-      if (!listEquals(
+      if (!_moviesListsEqual(
         remoteMovies,
         cachedMovies,
       )) {
@@ -53,8 +59,10 @@ abstract class GetMoviesBaseUsecase
         final cachedMovieIdsToRemove =
             cachedMovieIds.difference(movieIds).toList();
 
-        await _moviesDatabaseRepository
-            .removeMoviesWithIds(cachedMovieIdsToRemove);
+        if (cachedMovieIdsToRemove.isNotEmpty) {
+          await _moviesDatabaseRepository
+              .removeMoviesWithIds(cachedMovieIdsToRemove);
+        }
 
         final movieIdsToAdd = movieIds.difference(cachedMovieIds);
 
@@ -66,7 +74,10 @@ abstract class GetMoviesBaseUsecase
             )
             .toList();
 
-        final movies = _mapToDatabaseMovies(moviesToAdd, moviesType);
+        final movies = _mapToDatabaseMovies(
+          moviesToAdd,
+          moviesType,
+        );
         final genres = _mapToDatabaseGenres(moviesToAdd);
 
         await _moviesDatabaseRepository.addMovies(
@@ -121,6 +132,21 @@ abstract class GetMoviesBaseUsecase
     }
   }
 
+  bool _moviesListsEqual(
+    List<BaseMovieEntity> remoteMovies,
+    List<BaseMovieEntity> cachedMovies,
+  ) {
+    final removeMoviesSortedCopy =
+        remoteMovies.map((movie) => movie.traktId).toList()..sort();
+    final cachedMoviesSortedCopy =
+        cachedMovies.map((movie) => movie.traktId).toList()..sort();
+
+    return listEquals(
+      removeMoviesSortedCopy,
+      cachedMoviesSortedCopy,
+    );
+  }
+
   List<Movie> _mapToDatabaseMovies(
     List<BaseMovieEntity> movies,
     MoviesType moviesType,
@@ -146,8 +172,8 @@ abstract class GetMoviesBaseUsecase
     for (final movie in movies) {
       genres.addAll(movie.genres
               ?.map((genre) => Genre(
-                    movieId: movie.traktId,
                     name: genre,
+                    movieId: movie.traktId,
                   ))
               .toList() ??
           []);
@@ -176,7 +202,7 @@ abstract class GetMoviesBaseUsecase
 
     for (final movie in movies) {
       final movieGenres = genres
-          .where((genre) => genre.id == movie.traktId)
+          .where((genre) => genre.movieId == movie.traktId)
           .map((genre) => genre.name)
           .toList();
 

@@ -28,9 +28,10 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
     List<Movie> movies,
     List<Genre> genres,
   ) async {
-    // TODO transation
-    await _movieDao.insertMovies(movies);
-    await _genreDao.insertGenres(genres);
+    await _movieDao.insertMoviesWithGenres(
+      movies,
+      genres,
+    );
   }
 
   @override
@@ -39,7 +40,9 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   }
 
   @override
-  Future<List<Genre>> getGenres(List<int> moviesIds) async {
+  Future<List<Genre>> getGenres(
+    List<int> moviesIds,
+  ) async {
     return await _genreDao.findMoviesGenres(moviesIds);
   }
 

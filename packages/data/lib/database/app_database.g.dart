@@ -67,6 +67,8 @@ class _$AppDatabase extends AppDatabase {
 
   MovieCharacterDao? _movieCharacterDaoInstance;
 
+  AppInteractionDao? _appInteractionDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -91,9 +93,11 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER NOT NULL, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `imdbId` TEXT, `tmdbId` INTEGER, `moviesType` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `movieId` INTEGER NOT NULL, `name` TEXT NOT NULL, FOREIGN KEY (`movieId`) REFERENCES `Movie` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
+            'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `movieId` INTEGER NOT NULL, FOREIGN KEY (`movieId`) REFERENCES `Movie` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `MovieCharacter` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `characterName` TEXT NOT NULL, `actorName` TEXT NOT NULL, `tmdbId` INTEGER NOT NULL, `posterPath` TEXT, `movieId` INTEGER NOT NULL, FOREIGN KEY (`movieId`) REFERENCES `Movie` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `AppInteraction` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `interactionType` INTEGER NOT NULL, `lastTime` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -116,6 +120,12 @@ class _$AppDatabase extends AppDatabase {
     return _movieCharacterDaoInstance ??=
         _$MovieCharacterDao(database, changeListener);
   }
+
+  @override
+  AppInteractionDao get appInteractionDao {
+    return _appInteractionDaoInstance ??=
+        _$AppInteractionDao(database, changeListener);
+  }
 }
 
 class _$MovieDao extends MovieDao {
@@ -136,6 +146,14 @@ class _$MovieDao extends MovieDao {
                   'imdbId': item.imdbId,
                   'tmdbId': item.tmdbId,
                   'moviesType': item.moviesType
+                }),
+        _genreInsertionAdapter = InsertionAdapter(
+            database,
+            'Genre',
+            (Genre item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'movieId': item.movieId
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -145,6 +163,8 @@ class _$MovieDao extends MovieDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Movie> _movieInsertionAdapter;
+
+  final InsertionAdapter<Genre> _genreInsertionAdapter;
 
   @override
   Future<List<Movie>> findMoviesByType(int movieType) async {
@@ -175,7 +195,30 @@ class _$MovieDao extends MovieDao {
 
   @override
   Future<void> insertMovies(List<Movie> movies) async {
-    await _movieInsertionAdapter.insertList(movies, OnConflictStrategy.abort);
+    await _movieInsertionAdapter.insertList(movies, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> insertGenres(List<Genre> genres) async {
+    await _genreInsertionAdapter.insertList(genres, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> insertMoviesWithGenres(
+    List<Movie> movies,
+    List<Genre> genres,
+  ) async {
+    if (database is sqflite.Transaction) {
+      await super.insertMoviesWithGenres(movies, genres);
+    } else {
+      await (database as sqflite.Database)
+          .transaction<void>((transaction) async {
+        final transactionDatabase = _$AppDatabase(changeListener)
+          ..database = transaction;
+        await transactionDatabase.movieDao
+            .insertMoviesWithGenres(movies, genres);
+      });
+    }
   }
 }
 
@@ -183,23 +226,13 @@ class _$GenreDao extends GenreDao {
   _$GenreDao(
     this.database,
     this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database),
-        _genreInsertionAdapter = InsertionAdapter(
-            database,
-            'Genre',
-            (Genre item) => <String, Object?>{
-                  'id': item.id,
-                  'movieId': item.movieId,
-                  'name': item.name
-                });
+  ) : _queryAdapter = QueryAdapter(database);
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
   final QueryAdapter _queryAdapter;
-
-  final InsertionAdapter<Genre> _genreInsertionAdapter;
 
   @override
   Future<List<Genre>> findMoviesGenres(List<int> moviesIds) async {
@@ -213,14 +246,9 @@ class _$GenreDao extends GenreDao {
             ')',
         mapper: (Map<String, Object?> row) => Genre(
             id: row['id'] as int?,
-            movieId: row['movieId'] as int,
-            name: row['name'] as String),
+            name: row['name'] as String,
+            movieId: row['movieId'] as int),
         arguments: [...moviesIds]);
-  }
-
-  @override
-  Future<void> insertGenres(List<Genre> genres) async {
-    await _genreInsertionAdapter.insertList(genres, OnConflictStrategy.abort);
   }
 }
 
@@ -264,21 +292,58 @@ class _$MovieCharacterDao extends MovieCharacterDao {
   }
 
   @override
-  Future<void> deleteCastsExceptWithIds(List<int> movieIds) async {
-    const offset = 1;
-    final _sqliteVariablesForMovieIds =
-        Iterable<String>.generate(movieIds.length, (i) => '?${i + offset}')
-            .join(',');
-    await _queryAdapter.queryNoReturn(
-        'DELETE FROM MovieCharacter WHERE movieId NOT IN (' +
-            _sqliteVariablesForMovieIds +
-            ')',
-        arguments: [...movieIds]);
-  }
-
-  @override
   Future<void> insertCast(List<MovieCharacter> cast) async {
     await _movieCharacterInsertionAdapter.insertList(
         cast, OnConflictStrategy.abort);
+  }
+}
+
+class _$AppInteractionDao extends AppInteractionDao {
+  _$AppInteractionDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _appInteractionInsertionAdapter = InsertionAdapter(
+            database,
+            'AppInteraction',
+            (AppInteraction item) => <String, Object?>{
+                  'id': item.id,
+                  'interactionType': item.interactionType,
+                  'lastTime': item.lastTime
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<AppInteraction> _appInteractionInsertionAdapter;
+
+  @override
+  Future<AppInteraction?> findLastInteractionTime(int interactionType) async {
+    return _queryAdapter.query(
+        'SELECT * FROM AppInteraction WHERE interactionType = (?1)',
+        mapper: (Map<String, Object?> row) => AppInteraction(
+            id: row['id'] as int?,
+            interactionType: row['interactionType'] as int,
+            lastTime: row['lastTime'] as String),
+        arguments: [interactionType]);
+  }
+
+  @override
+  Future<void> updateLastTime(
+    String newTime,
+    int interactionType,
+  ) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE AppInteraction SET lastTime = ?1 WHERE interactionType = ?2',
+        arguments: [newTime, interactionType]);
+  }
+
+  @override
+  Future<void> insertAppInteraction(AppInteraction appInteraction) async {
+    await _appInteractionInsertionAdapter.insert(
+        appInteraction, OnConflictStrategy.abort);
   }
 }
