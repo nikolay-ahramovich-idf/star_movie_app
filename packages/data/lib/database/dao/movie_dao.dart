@@ -1,4 +1,4 @@
-import 'package:data/database/entities/movie.dart';
+import 'package:domain/entities/db/movie.dart';
 import 'package:floor/floor.dart';
 
 @dao
@@ -10,5 +10,5 @@ abstract class MovieDao {
   Future<void> deleteMoviesWithIds(List<int> ids);
 
   @insert
-  Future<int> insertMovie(Movie movie);
+  Future<void> insertMovies(List<Movie> movies);
 }

@@ -1,4 +1,4 @@
-import 'package:data/database/entities/movie_character.dart';
+import 'package:domain/entities/db/movie_character.dart';
 import 'package:floor/floor.dart';
 
 @dao

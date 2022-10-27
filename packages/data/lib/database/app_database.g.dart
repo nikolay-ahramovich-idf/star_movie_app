@@ -89,11 +89,11 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `traktId` INTEGER NOT NULL, `imdbId` TEXT, `tmdbId` INTEGER, `moviesType` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER NOT NULL, `title` TEXT, `rating` REAL, `runtime` INTEGER, `certification` TEXT, `overview` TEXT, `imdbId` TEXT, `tmdbId` INTEGER, `moviesType` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Genre` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `movieId` INTEGER NOT NULL, `name` TEXT NOT NULL, FOREIGN KEY (`movieId`) REFERENCES `Movie` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MovieCharacter` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `characterName` TEXT NOT NULL, `actorName` TEXT NOT NULL, `tmdbId` INTEGER NOT NULL, `posterPath` TEXT, `movieId` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `MovieCharacter` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `characterName` TEXT NOT NULL, `actorName` TEXT NOT NULL, `tmdbId` INTEGER NOT NULL, `posterPath` TEXT, `movieId` INTEGER NOT NULL, FOREIGN KEY (`movieId`) REFERENCES `Movie` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -133,7 +133,6 @@ class _$MovieDao extends MovieDao {
                   'runtime': item.runtime,
                   'certification': item.certification,
                   'overview': item.overview,
-                  'traktId': item.traktId,
                   'imdbId': item.imdbId,
                   'tmdbId': item.tmdbId,
                   'moviesType': item.moviesType
@@ -151,13 +150,12 @@ class _$MovieDao extends MovieDao {
   Future<List<Movie>> findMoviesByType(int movieType) async {
     return _queryAdapter.queryList('SELECT * FROM Movie WHERE moviesType = ?1',
         mapper: (Map<String, Object?> row) => Movie(
-            id: row['id'] as int?,
+            id: row['id'] as int,
             title: row['title'] as String?,
             rating: row['rating'] as double?,
             runtime: row['runtime'] as int?,
             certification: row['certification'] as String?,
             overview: row['overview'] as String?,
-            traktId: row['traktId'] as int,
             imdbId: row['imdbId'] as String?,
             tmdbId: row['tmdbId'] as int?,
             moviesType: row['moviesType'] as int),
@@ -165,15 +163,19 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
-  Future<void> deleteMoviesWithIds(int movieType) async {
-    await _queryAdapter.queryNoReturn('DELETE FROM Movie WHERE moviesType = ?1',
-        arguments: [movieType]);
+  Future<void> deleteMoviesWithIds(List<int> ids) async {
+    const offset = 1;
+    final _sqliteVariablesForIds =
+        Iterable<String>.generate(ids.length, (i) => '?${i + offset}')
+            .join(',');
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM Movie WHERE id in (' + _sqliteVariablesForIds + ')',
+        arguments: [...ids]);
   }
 
   @override
-  Future<int> insertMovie(Movie movie) {
-    return _movieInsertionAdapter.insertAndReturnId(
-        movie, OnConflictStrategy.abort);
+  Future<void> insertMovies(List<Movie> movies) async {
+    await _movieInsertionAdapter.insertList(movies, OnConflictStrategy.abort);
   }
 }
 
@@ -200,13 +202,20 @@ class _$GenreDao extends GenreDao {
   final InsertionAdapter<Genre> _genreInsertionAdapter;
 
   @override
-  Future<List<Genre>> findMovieGenres(int movieId) async {
-    return _queryAdapter.queryList('SELECT * FROM Genre WHERE movieId = ?1',
+  Future<List<Genre>> findMoviesGenres(List<int> moviesIds) async {
+    const offset = 1;
+    final _sqliteVariablesForMoviesIds =
+        Iterable<String>.generate(moviesIds.length, (i) => '?${i + offset}')
+            .join(',');
+    return _queryAdapter.queryList(
+        'SELECT * FROM Genre WHERE movieId IN (' +
+            _sqliteVariablesForMoviesIds +
+            ')',
         mapper: (Map<String, Object?> row) => Genre(
             id: row['id'] as int?,
             movieId: row['movieId'] as int,
             name: row['name'] as String),
-        arguments: [movieId]);
+        arguments: [...moviesIds]);
   }
 
   @override

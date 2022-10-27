@@ -2,6 +2,7 @@ import 'package:floor/floor.dart';
 
 @entity
 class Movie {
+  @PrimaryKey()
   final int id;
   final String? title;
   final double? rating;

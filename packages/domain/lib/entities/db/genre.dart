@@ -1,4 +1,4 @@
-import 'package:data/database/entities/movie.dart';
+import 'package:domain/entities/db/movie.dart';
 import 'package:floor/floor.dart';
 
 @Entity(

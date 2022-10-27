@@ -23,7 +23,6 @@ dependencies:
   firebase_analytics: ^9.3.7
   share_movie_plugin:
     path: ../share_movie_plugin
-  floor: ^1.3.0
 
 dev_dependencies:
   flutter_test:
