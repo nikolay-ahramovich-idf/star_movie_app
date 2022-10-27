@@ -1,4 +1,4 @@
-enum MovieType {
+enum MoviesType {
   nowShowing,
   comingSoon,
 }

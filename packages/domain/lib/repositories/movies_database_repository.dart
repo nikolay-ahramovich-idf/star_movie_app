@@ -2,14 +2,14 @@ import 'package:domain/entities/base_movie_entity.dart';
 import 'package:domain/entities/movie_character_entity.dart';
 
 abstract class MoviesDatabaseRepository {
-  Future<List<BaseMovieEntity>> getMovies(MovieType movieType);
+  Future<List<BaseMovieEntity>> getMovies(MoviesType movieType);
 
   Future<void> addMovies(
     List<BaseMovieEntity> movies,
-    MovieType moviesType,
+    MoviesType moviesType,
   );
 
-  Future<void> removeMovies(MovieType movieType);
+  Future<void> removeMoviesWithIds(List<int> movieIds);
 
   Future<List<MovieCharacterEntity>> getCast(int movieId);
 
@@ -17,6 +17,4 @@ abstract class MoviesDatabaseRepository {
     int movieId,
     List<MovieCharacterEntity> cast,
   );
-
-  Future<void> removeCastExceptWithIds(List<int> movieIds);
 }

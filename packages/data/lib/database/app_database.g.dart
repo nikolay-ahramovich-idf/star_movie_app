@@ -165,7 +165,7 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
-  Future<void> deleteAllMoviesByType(int movieType) async {
+  Future<void> deleteMoviesWithIds(int movieType) async {
     await _queryAdapter.queryNoReturn('DELETE FROM Movie WHERE moviesType = ?1',
         arguments: [movieType]);
   }

@@ -20,7 +20,7 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   );
 
   @override
-  Future<List<BaseMovieEntity>> getMovies(MovieType movieType) async {
+  Future<List<BaseMovieEntity>> getMovies(MoviesType movieType) async {
     final movies = await _movieDao.findMoviesByType(movieType.index);
 
     final movieEntities = movies.map((movie) async {
@@ -35,7 +35,7 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
         runtime: movie.runtime,
         certification: movie.certification,
         overview: movie.overview,
-        traktId: movie.traktId,
+        traktId: movie.id,
         imdbId: movie.imdbId,
         tmdbId: movie.tmdbId,
       );
@@ -47,16 +47,16 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   @override
   Future<void> addMovies(
     List<BaseMovieEntity> movies,
-    MovieType moviesType,
+    MoviesType moviesType,
   ) async {
     for (var movieEntity in movies) {
       final movie = Movie(
+        id: movieEntity.traktId,
         title: movieEntity.title,
         rating: movieEntity.rating,
         runtime: movieEntity.runtime,
         certification: movieEntity.certification,
         overview: movieEntity.overview,
-        traktId: movieEntity.traktId,
         imdbId: movieEntity.imdbId,
         tmdbId: movieEntity.tmdbId,
         moviesType: moviesType.index,
@@ -80,8 +80,8 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   }
 
   @override
-  Future<void> removeMovies(MovieType movieType) async {
-    await _movieDao.deleteAllMoviesByType(movieType.index);
+  Future<void> removeMoviesWithIds(List<int> movieIds) async {
+    await _movieDao.deleteMoviesWithIds(movieIds);
   }
 
   @override
@@ -120,10 +120,5 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
               )),
         )
         .toList();
-  }
-
-  @override
-  Future<void> removeCastExceptWithIds(List<int> movieIds) async {
-    await _movieCharacterDao.deleteCastsExceptWithIds(movieIds);
   }
 }

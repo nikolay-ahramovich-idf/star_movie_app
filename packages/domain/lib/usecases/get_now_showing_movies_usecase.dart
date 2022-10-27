@@ -23,7 +23,7 @@ class GetNowShowingMoviesUseCase extends GetMoviesBaseUsecase {
 
     return await getMovies(
       _moviesRepository.getNowShowingMovies,
-      MovieType.nowShowing,
+      MoviesType.nowShowing,
       lastAppInteractionTime,
     );
   }

@@ -16,14 +16,14 @@ abstract class GetMoviesBaseUsecase
   Future<List<BaseMovieEntity>> getMovies(
     Future<MoviesResponseEntity> Function([Map<String, dynamic>])
         remoteMoviesGetter,
-    MovieType moviesType,
+    MoviesType moviesType,
     DateTime? lastInteractionTime,
   ) async {
     if (lastInteractionTime == null) {
       final movies = await _getRemoteMovies(remoteMoviesGetter);
       await _moviesDatabaseRepository.addMovies(
         movies,
-        MovieType.nowShowing,
+        moviesType,
       );
 
       return movies;
@@ -38,13 +38,33 @@ abstract class GetMoviesBaseUsecase
         movies,
         cachedMovies,
       )) {
-        await _moviesDatabaseRepository.removeMovies(moviesType);
+        final movieIds = movies.map((movie) => movie.traktId).toSet();
+        final cachedMovieIds = cachedMovies
+            .map(
+              (cachedMovie) => cachedMovie.traktId,
+            )
+            .toSet();
 
-        final newMovieIds = movies.map((movie) => movie.traktId).toList();
+        final cachedMovieIdsToRemove =
+            cachedMovieIds.difference(movieIds).toList();
 
-        await _moviesDatabaseRepository.removeCastExceptWithIds(newMovieIds);
+        await _moviesDatabaseRepository
+            .removeMoviesWithIds(cachedMovieIdsToRemove);
 
-        await _moviesDatabaseRepository.addMovies(movies, moviesType);
+        final movieIdsToAdd = movieIds.difference(cachedMovieIds);
+
+        final moviesToAdd = movies
+            .where(
+              (movie) => movieIdsToAdd.contains(
+                movie.traktId,
+              ),
+            )
+            .toList();
+
+        await _moviesDatabaseRepository.addMovies(
+          moviesToAdd,
+          moviesType,
+        );
       }
 
       return movies;

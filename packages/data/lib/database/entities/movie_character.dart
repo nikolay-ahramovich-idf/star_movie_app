@@ -1,6 +1,14 @@
+import 'package:data/database/entities/movie.dart';
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(foreignKeys: [
+  ForeignKey(
+    childColumns: ['movieId'],
+    parentColumns: ['id'],
+    entity: Movie,
+    onDelete: ForeignKeyAction.cascade,
+  ),
+])
 class MovieCharacter {
   @PrimaryKey(autoGenerate: true)
   int? id;

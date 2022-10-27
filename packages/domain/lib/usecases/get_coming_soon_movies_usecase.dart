@@ -23,7 +23,7 @@ class GetComingSoonMoviesUseCase extends GetMoviesBaseUsecase {
 
     return await getMovies(
       _moviesRepository.getComingSoonMovies,
-      MovieType.comingSoon,
+      MoviesType.comingSoon,
       lastAppInteractionTime,
     );
   }

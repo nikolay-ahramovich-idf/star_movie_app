@@ -16,7 +16,6 @@ class Genre {
   int? id;
 
   final int movieId;
-
   final String name;
 
   Genre({
