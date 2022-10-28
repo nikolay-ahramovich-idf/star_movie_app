@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data/const.dart';
+import 'package:data/database/app_database.dart';
 import 'package:data/repositories/auth_repository_impl.dart';
 import 'package:data/repositories/credentials_repository_impl.dart';
 import 'package:data/repositories/firestore_repository.dart';
+import 'package:data/repositories/movies_database_repository_impl.dart';
 import 'package:data/repositories/tmdb_images_repository_impl.dart';
 import 'package:data/repositories/trakt_movies_repository_impl.dart';
 import 'package:data/services/analytics_service_impl.dart';
 import 'package:data/services/api_base_service.dart';
 import 'package:data/services/app_config_service_impl.dart';
+import 'package:data/services/app_interaction_service_impl.dart';
 import 'package:data/services/facebook_auth_service.dart';
 import 'package:data/services/google_auth_service.dart';
 import 'package:data/services/share_movie_service_impl.dart';
@@ -15,10 +18,12 @@ import 'package:dio/dio.dart';
 import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/repositories/credentials_repository.dart';
 import 'package:domain/repositories/images_repository.dart';
+import 'package:domain/repositories/movies_database_repository.dart';
 import 'package:domain/repositories/movies_repository.dart';
 import 'package:domain/repositories/remote_store_repository.dart';
 import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
+import 'package:domain/services/app_interaction_service.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:domain/services/share_movie_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -39,13 +44,14 @@ Future<void> initDataInjector(
     traktApiKeyConfigKey,
   );
   await _initTMDBApiService();
-  _initMoviesRepository();
+  await _initMoviesRepository();
   _initImagesRepository();
   _initAuthServices();
   _initAuthRepository();
   await _initCredentialsRepository();
   _initAnalyticsService();
   _initShareMovieService();
+  await _initAppInteractionService();
 }
 
 void _initAppConfigService() {
@@ -101,12 +107,24 @@ Future<void> _initTMDBApiService() async {
   );
 }
 
-void _initMoviesRepository() {
+Future<void> _initMoviesRepository() async {
   GetIt.I.registerSingleton<MoviesRepository>(
     TraktMoviesRepositoryImpl(
       GetIt.I.get<ApiBaseService>(
         instanceName: DISingletonInstanceNames.traktApiService,
       ),
+    ),
+  );
+
+  final appDatabase = await $FloorAppDatabase
+      .databaseBuilder(DataConfig.appDatabaseName)
+      .build();
+
+  GetIt.I.registerSingleton<MoviesDatabaseRepository>(
+    MoviesDatabaseRepositoryImpl(
+      appDatabase.movieDao,
+      appDatabase.genreDao,
+      appDatabase.movieCharacterDao,
     ),
   );
 }
@@ -191,6 +209,16 @@ void _initShareMovieService() {
 
   GetIt.I.registerSingleton<ShareMovieService>(
     ShareMovieServiceImpl(GetIt.I.get<ShareMoviePlugin>()),
+  );
+}
+
+Future<void> _initAppInteractionService() async {
+  final appDatabase = await $FloorAppDatabase
+      .databaseBuilder(DataConfig.appDatabaseName)
+      .build();
+
+  GetIt.I.registerSingleton<AppInteractionService>(
+    AppInteractionServiceImpl(appDatabase.appInteractionDao),
   );
 }
 

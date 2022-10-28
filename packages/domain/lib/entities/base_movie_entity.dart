@@ -1,18 +1,23 @@
+enum MoviesType {
+  nowShowing,
+  comingSoon,
+}
+
 class BaseMovieEntity {
   final String? title;
   final double? rating;
-  final List<String>? genres;
+  List<String>? genres;
   final int? runtime;
   final String? certification;
   final String? overview;
-  final int? traktId;
+  final int traktId;
   final String? imdbId;
   final int? tmdbId;
 
-  const BaseMovieEntity(
+  BaseMovieEntity(
     this.title, {
     required this.rating,
-    required this.genres,
+    this.genres,
     required this.runtime,
     required this.certification,
     required this.overview,
@@ -46,5 +51,20 @@ class BaseMovieEntity {
       imdbId: imdbId,
       tmdbId: tmdbId,
     );
+  }
+
+  @override
+  int get hashCode => title.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other is BaseMovieEntity &&
+        title == other.title &&
+        rating == other.rating &&
+        certification == other.certification &&
+        overview == other.overview &&
+        traktId == other.traktId &&
+        imdbId == other.imdbId &&
+        tmdbId == other.tmdbId;
   }
 }

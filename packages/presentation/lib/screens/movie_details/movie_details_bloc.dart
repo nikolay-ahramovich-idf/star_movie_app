@@ -102,22 +102,20 @@ class _MovieDetailsBloc
   Future<void> _getCast(MovieDetailsScreenArguments args) async {
     final traktId = args.movieDetails.traktId;
 
-    if (traktId != null) {
-      final getMovieCastUsecaseParams = GetMovieCastUseCaseParams(
-        traktId,
-        MovieDetailsScreenConfig.maxCastCount,
-      );
+    final getMovieCastUsecaseParams = GetMovieCastUseCaseParams(
+      traktId,
+      MovieDetailsScreenConfig.maxCastCount,
+    );
 
-      final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
+    final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
 
-      final newState = MovieDetailsData(
-        args.movieDetails,
-        _formatApiRuntime(args.movieDetails.runtime),
-        movieCast,
-      );
+    final newState = MovieDetailsData(
+      args.movieDetails,
+      _formatApiRuntime(args.movieDetails.runtime),
+      movieCast,
+    );
 
-      add(newState);
-    }
+    add(newState);
   }
 
   String? _formatApiRuntime(int? runtime) {

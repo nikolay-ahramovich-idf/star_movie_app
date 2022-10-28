@@ -2,6 +2,7 @@ class DataConfig {
   DataConfig._();
 
   static const configPath = 'assets/json/config.json';
+  static const appDatabaseName = 'app_database.db';
 }
 
 class TraktApiConfig {
@@ -55,4 +56,10 @@ class FirestoreCollectionNames {
   FirestoreCollectionNames._();
 
   static const users = 'users';
+}
+
+class DatabaseConfig {
+  DatabaseConfig._();
+  
+  static const version = 1;
 }

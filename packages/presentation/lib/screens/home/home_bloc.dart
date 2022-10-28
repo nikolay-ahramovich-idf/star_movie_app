@@ -1,8 +1,9 @@
 import 'package:domain/entities/base_movie_entity.dart';
-import 'package:domain/entities/event_entity.dart';
+import 'package:domain/services/app_interaction_service.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
+import 'package:domain/usecases/set_last_app_interaction_time_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
@@ -15,11 +16,13 @@ abstract class HomeBloc implements Bloc<BaseArguments, HomeData> {
     GetNowShowingMoviesUseCase getNowShowingMoviesUseCase,
     GetComingSoonMoviesUseCase getComingSoonMoviesUseCase,
     GetImageUrlUseCase getImageUrlUseCase,
+    SetLastAppInteractionTimeUseCase setLastAppInteractionTimeUseCase,
   ) =>
       _HomeBloc(
         getNowShowingMoviesUseCase,
         getComingSoonMoviesUseCase,
         getImageUrlUseCase,
+        setLastAppInteractionTimeUseCase,
       );
 
   void changeMoviesType(SelectedMoviesType newType);
@@ -39,11 +42,13 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
   final GetNowShowingMoviesUseCase _getNowShowingMoviesUseCase;
   final GetComingSoonMoviesUseCase _getComingSoonMoviesUseCase;
   final GetImageUrlUseCase _getImageUrlUseCase;
+  final SetLastAppInteractionTimeUseCase _setLastAppInteractionTimeUseCase;
 
   _HomeBloc(
     this._getNowShowingMoviesUseCase,
     this._getComingSoonMoviesUseCase,
     this._getImageUrlUseCase,
+    this._setLastAppInteractionTimeUseCase,
   ) : super(initState: const HomeData.init());
 
   @override
@@ -67,9 +72,11 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
       AnalyticsEvents.homeScreenEvents.buttonNowShowingMoviesClick,
     );
 
-    add(state.copyWith(
-      isLoading: true,
-    ));
+    await _setLastAppInteractionTimeUseCase(
+      AppInteractionType.nowShowingMovies,
+    );
+
+    add(state.copyWith(isLoading: true));
 
     final movies = await _getNowShowingMoviesUseCase();
 
@@ -82,9 +89,11 @@ class _HomeBloc extends BlocImpl<BaseArguments, HomeData> implements HomeBloc {
       AnalyticsEvents.homeScreenEvents.buttonComingSoonMoviesClick,
     );
 
-    add(state.copyWith(
-      isLoading: true,
-    ));
+    await _setLastAppInteractionTimeUseCase(
+      AppInteractionType.comingSoonMovies,
+    );
+
+    add(state.copyWith(isLoading: true));
 
     final movies = await _getComingSoonMoviesUseCase();
     _updateHomeDataWithMovies(movies);

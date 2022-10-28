@@ -35,6 +35,7 @@ class LoginViewMapperImpl implements LoginViewMapper {
       case null:
         return null;
     }
+    return null;
   }
 
   @override
@@ -54,5 +55,6 @@ class LoginViewMapperImpl implements LoginViewMapper {
       case null:
         return null;
     }
+    return null;
   }
 }

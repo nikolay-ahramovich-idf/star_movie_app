@@ -8,6 +8,7 @@ import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_screen_usecase.dart';
 import 'package:domain/usecases/login_validation_usecase.dart';
 import 'package:domain/usecases/save_credentials_usecase.dart';
+import 'package:domain/usecases/set_last_app_interaction_time_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -29,12 +30,12 @@ void initPresentationInjector() {
 
 void _initAppModule() {
   GetIt.I.registerFactory<AppBloc>(
-    () => AppBloc(GetIt.I.get<LogAnalyticsScreenUseCase>()),
+    () => AppBloc(
+      GetIt.I.get<LogAnalyticsScreenUseCase>(),
+    ),
   );
 
-  GetIt.I.registerSingleton<AppNavigator>(
-    AppNavigator(),
-  );
+  GetIt.I.registerSingleton<AppNavigator>(AppNavigator());
 }
 
 void _initSplashModule() {
@@ -63,6 +64,7 @@ void _initHomeModule() {
       GetIt.I.get<GetNowShowingMoviesUseCase>(),
       GetIt.I.get<GetComingSoonMoviesUseCase>(),
       GetIt.I.get<GetImageUrlUseCase>(),
+      GetIt.I.get<SetLastAppInteractionTimeUseCase>(),
     ),
   );
 }
