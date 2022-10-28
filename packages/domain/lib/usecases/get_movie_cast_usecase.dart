@@ -1,4 +1,5 @@
 import 'package:domain/const.dart';
+import 'package:domain/entities/db/movie_character.dart';
 import 'package:domain/entities/movie_character_entity.dart';
 import 'package:domain/repositories/images_repository.dart';
 import 'package:domain/repositories/movies_database_repository.dart';
@@ -55,17 +56,48 @@ class GetMovieCastUseCase extends UseCaseParams<GetMovieCastUseCaseParams,
 
       final cast = await Future.wait(updatingCastWithPosters);
 
-      await _moviesDatabaseRepository.addCast(params.movieId, cast);
+      final cachedCast = cast
+          .map(
+            (castItem) => _mapToMovieCharacter(
+              castItem,
+              params.movieId,
+            ),
+          )
+          .toList();
+
+      await _moviesDatabaseRepository.addCast(cachedCast);
 
       return cast;
     }
 
-    return cachedCast;
+    return cachedCast.map(_mapToMovieCharacterEntity).toList();
   }
 
   String? _getActorProfileUrl(String? filePath) {
     return filePath == null
         ? null
         : '${TMDBConfig.actorPictureApiPath}$filePath';
+  }
+
+  MovieCharacter _mapToMovieCharacter(
+    MovieCharacterEntity castItem,
+    int movieId,
+  ) {
+    return MovieCharacter(
+      characterName: castItem.characterName,
+      actorName: castItem.actorName,
+      tmdbId: castItem.tmdbId,
+      posterPath: castItem.posterPath,
+      movieId: movieId,
+    );
+  }
+
+  MovieCharacterEntity _mapToMovieCharacterEntity(MovieCharacter castItem) {
+    return MovieCharacterEntity(
+      characterName: castItem.characterName,
+      actorName: castItem.actorName,
+      tmdbId: castItem.tmdbId,
+      posterPath: castItem.posterPath,
+    );
   }
 }

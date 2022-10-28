@@ -1,4 +1,4 @@
-enum MovieType {
+enum MoviesType {
   nowShowing,
   comingSoon,
 }
@@ -6,7 +6,7 @@ enum MovieType {
 class BaseMovieEntity {
   final String? title;
   final double? rating;
-  final List<String>? genres;
+  List<String>? genres;
   final int? runtime;
   final String? certification;
   final String? overview;
@@ -14,10 +14,10 @@ class BaseMovieEntity {
   final String? imdbId;
   final int? tmdbId;
 
-  const BaseMovieEntity(
+  BaseMovieEntity(
     this.title, {
     required this.rating,
-    required this.genres,
+    this.genres,
     required this.runtime,
     required this.certification,
     required this.overview,
