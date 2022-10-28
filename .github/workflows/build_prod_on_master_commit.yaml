@@ -3,7 +3,7 @@ name: build-apps
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   apk:
     name: Generate APK
@@ -28,20 +28,12 @@ jobs:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Build APK
         run: flutter build apk --flavor prod -t lib/main_prod.dart --release
-      - name: Create Github Release
-        id: create-new-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v${{github.run_number}}
-          release_name: Release V${{github.run_number}}
-      - name: Upload asset to GitHub Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}
-        with:
-          upload_url: ${{steps.create-new-release.outputs.upload_url}}
-          asset_name: app-prod-releasev${{github.run_number}}.apk
-          asset_path: build/app/outputs/flutter-apk/app-prod-release.apk
-          asset_content_type: application/apk
+          artifacts: "build/app/outputs/flutter-apk/app-prod-release.apk"
+          tag: v1.${{ github.run_number }}
+          token: ${{ secrets.TOKEN_GITHUB }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}

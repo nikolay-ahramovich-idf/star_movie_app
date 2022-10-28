@@ -3,7 +3,7 @@ name: build-apps
 on:
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   apk:
     name: Generate APK
