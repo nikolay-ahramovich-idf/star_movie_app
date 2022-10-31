@@ -118,10 +118,8 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const SizedBox(
-                                      width: AppSizes.size18,
-                                    ),
                                     if (selectedType ==
                                         SelectedMoviesType.nowShowing)
                                       const Image(
@@ -175,10 +173,8 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const SizedBox(
-                                      width: AppSizes.size18,
-                                    ),
                                     if (selectedType ==
                                         SelectedMoviesType.comingSoon)
                                       const Image(
