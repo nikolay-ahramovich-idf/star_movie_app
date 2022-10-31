@@ -25,4 +25,6 @@ flutter:
         pluginClass: ShareMoviePlugin
       ios:
         pluginClass: ShareMoviePlugin
+      macos:
+        pluginClass: ShareMoviePlugin
 
