@@ -5,6 +5,7 @@ import 'package:presentation/app/app_bloc.dart';
 import 'package:presentation/app/widgets/tabbar_widget.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
 import 'package:presentation/screens/splash/splash_screen.dart';
+import 'package:presentation/utils/responsive.dart';
 
 class StarMovieApp extends StatefulWidget {
   final String title;
@@ -31,22 +32,32 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
       home: StreamBuilder(
         stream: bloc.stream,
         builder: (context, snapshot) {
+          final screenType = Responsive.getScreenType(context);
+
           final appData = snapshot.data;
+
           if (appData != null) {
+            final tabBarWidget = TabBarWidget(
+              appData.currentPageIndex,
+              loadPage: bloc.loadPage,
+            );
+
             return Scaffold(
+              drawer: screenType == ScreenType.desktop ? tabBarWidget : null,
               body: Navigator(
-                onPopPage: (Route<dynamic> route, dynamic result) {
+                onPopPage: (
+                  Route<dynamic> route,
+                  dynamic result,
+                ) {
                   bloc.handleRemoveRouteSettings(route.settings);
                   return route.didPop(result);
                 },
                 pages: appData.pages.toList(),
               ),
               bottomNavigationBar: Visibility(
-                visible: appData.pages.last.key != SplashScreen.page().key,
-                child: TabBarWidget(
-                  appData.currentPageIndex,
-                  loadPage: bloc.loadPage,
-                ),
+                visible: screenType == ScreenType.mobile &&
+                    appData.pages.last.key != SplashScreen.page().key,
+                child: tabBarWidget,
               ),
             );
           }

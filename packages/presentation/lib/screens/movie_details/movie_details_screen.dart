@@ -13,6 +13,7 @@ import 'package:presentation/screens/movie_details/movie_details_bloc.dart';
 import 'package:presentation/screens/movie_details/widgets/shimmer_loader_widget.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/responsive.dart';
 import 'package:presentation/utils/styles.dart';
 import 'package:presentation/widgets/image_widget.dart';
 import 'package:presentation/widgets/rating_widget.dart';
@@ -49,6 +50,9 @@ class _MovieDetailsScreenState
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
+
+    final screenType = Responsive.getScreenType(context);
+    final currentHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
@@ -116,7 +120,9 @@ class _MovieDetailsScreenState
                   ),
                 ),
                 Positioned(
-                  top: AppSizes.size282,
+                  top: screenType == ScreenType.desktop
+                      ? currentHeight - AppSizes.size282
+                      : AppSizes.size282,
                   left: AppSizes.size0,
                   right: AppSizes.size0,
                   bottom: AppSizes.size0,
@@ -272,123 +278,147 @@ class _MovieDetailsScreenState
                             ),
                           ),
                           const SizedBox(height: AppSizes.size32),
-                          Column(
+                          Flex(
+                            direction: screenType == ScreenType.desktop
+                                ? Axis.horizontal
+                                : Axis.vertical,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                appLocalizations.synopsisHeaderLabel,
-                                style: MovieDetailsScreenStyles
-                                    .movieDescriptionHeaderStyle,
-                              ),
-                              const SizedBox(height: AppSizes.size14),
-                              ReadMoreText(
-                                movieDetails.overview ?? '',
-                                style: MovieDetailsScreenStyles
-                                    .movieDescriptionBodyStyle,
-                                trimLines: 4,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText:
-                                    appLocalizations.showMoreButtonLabel,
-                                trimExpandedText:
-                                    ' ${appLocalizations.showLessButtonLabel}',
-                                moreStyle:
-                                    MovieDetailsScreenStyles.showMoreStyle,
-                                lessStyle:
-                                    MovieDetailsScreenStyles.showMoreStyle,
-                                callback: bloc.handleShowMoreLessPressed,
+                              Expanded(
+                                flex: screenType == ScreenType.desktop ? 1 : 0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      appLocalizations.synopsisHeaderLabel,
+                                      style: MovieDetailsScreenStyles
+                                          .movieDescriptionHeaderStyle,
+                                    ),
+                                    const SizedBox(height: AppSizes.size14),
+                                    ReadMoreText(
+                                      movieDetails.overview ?? '',
+                                      style: MovieDetailsScreenStyles
+                                          .movieDescriptionBodyStyle,
+                                      trimLines: 4,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText:
+                                          appLocalizations.showMoreButtonLabel,
+                                      trimExpandedText:
+                                          ' ${appLocalizations.showLessButtonLabel}',
+                                      moreStyle: MovieDetailsScreenStyles
+                                          .showMoreStyle,
+                                      lessStyle: MovieDetailsScreenStyles
+                                          .showMoreStyle,
+                                      callback: bloc.handleShowMoreLessPressed,
+                                    )
+                                  ],
+                                ),
                               ),
                               const SizedBox(height: AppSizes.size32),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    appLocalizations.castAndCrewHeaderLabel,
-                                    style: MovieDetailsScreenStyles
-                                        .movieDescriptionHeaderStyle,
-                                  ),
-                                  Text(
-                                    appLocalizations.viewAllButtonLabel,
-                                    style:
-                                        MovieDetailsScreenStyles.showMoreStyle,
-                                  ),
-                                ],
+                              Expanded(
+                                flex: screenType == ScreenType.desktop ? 1 : 0,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          appLocalizations
+                                              .castAndCrewHeaderLabel,
+                                          style: MovieDetailsScreenStyles
+                                              .movieDescriptionHeaderStyle,
+                                        ),
+                                        Text(
+                                          appLocalizations.viewAllButtonLabel,
+                                          style: MovieDetailsScreenStyles
+                                              .showMoreStyle,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: AppSizes.size24),
+                                    Table(
+                                      // defaultColumnWidth: const IntrinsicColumnWidth(),
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      columnWidths: const {
+                                        0: FixedColumnWidth(AppSizes.size49),
+                                        1: FixedColumnWidth(AppSizes.size12),
+                                        2: FlexColumnWidth(),
+                                        3: FixedColumnWidth(AppSizes.size20),
+                                        4: FixedColumnWidth(AppSizes.size24),
+                                      },
+                                      children: [
+                                        if (cast != null)
+                                          for (final castItem in cast)
+                                            TableRow(
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage:
+                                                          castItem.posterPath !=
+                                                                  null
+                                                              ? NetworkImage(
+                                                                  castItem
+                                                                      .posterPath!,
+                                                                )
+                                                              : null,
+                                                      radius:
+                                                          AppSizes.size49 / 2,
+                                                    ),
+                                                    const SizedBox(
+                                                        height:
+                                                            AppSizes.size18),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                    width: AppSizes.size12),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      castItem.actorName,
+                                                      style: MovieDetailsScreenStyles
+                                                          .movieDescriptionCastNameStyle,
+                                                    ),
+                                                    const SizedBox(
+                                                        height:
+                                                            AppSizes.size18),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    _getThreeDotsWidget(),
+                                                    const SizedBox(
+                                                        height: AppSizes.size18)
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                    width: AppSizes.size24),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      castItem.characterName
+                                                          .toUpperCase(),
+                                                      style: MovieDetailsScreenStyles
+                                                          .movieDescriptionRoleNameStyle,
+                                                    ),
+                                                    const SizedBox(
+                                                        height:
+                                                            AppSizes.size18),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: AppSizes.size24),
-                              Table(
-                                // defaultColumnWidth: const IntrinsicColumnWidth(),
-                                defaultVerticalAlignment:
-                                    TableCellVerticalAlignment.middle,
-                                columnWidths: const {
-                                  0: FixedColumnWidth(AppSizes.size49),
-                                  1: FixedColumnWidth(AppSizes.size12),
-                                  2: FlexColumnWidth(),
-                                  3: FixedColumnWidth(AppSizes.size20),
-                                  4: FixedColumnWidth(AppSizes.size24),
-                                },
-                                children: [
-                                  if (cast != null)
-                                    for (final castItem in cast)
-                                      TableRow(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundImage:
-                                                    castItem.posterPath != null
-                                                        ? NetworkImage(
-                                                            castItem
-                                                                .posterPath!,
-                                                          )
-                                                        : null,
-                                                radius: AppSizes.size49 / 2,
-                                              ),
-                                              const SizedBox(
-                                                  height: AppSizes.size18),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                              width: AppSizes.size12),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                castItem.actorName,
-                                                style: MovieDetailsScreenStyles
-                                                    .movieDescriptionCastNameStyle,
-                                              ),
-                                              const SizedBox(
-                                                  height: AppSizes.size18),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              _getThreeDotsWidget(),
-                                              const SizedBox(
-                                                  height: AppSizes.size18)
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                              width: AppSizes.size24),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                castItem.characterName
-                                                    .toUpperCase(),
-                                                style: MovieDetailsScreenStyles
-                                                    .movieDescriptionRoleNameStyle,
-                                              ),
-                                              const SizedBox(
-                                                  height: AppSizes.size18),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                ],
-                              )
                             ],
                           ),
                         ],

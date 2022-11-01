@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/responsive.dart';
 
 enum BottomNavigationItemType {
   home,
@@ -21,8 +22,56 @@ class TabBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenType = Responsive.getScreenType(context);
+
+    if (screenType == ScreenType.desktop) {
+      return NavigationRail(
+        backgroundColor: AppColors.primaryColor,
+        destinations: const [
+          NavigationRailDestination(
+            icon: Icon(
+              Icons.support,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text('Movie Reel'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(
+              Icons.airplane_ticket_rounded,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text('Event Ticket'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(
+              Icons.notifications,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text('Alarm'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(
+              Icons.person,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text(
+              'Single',
+            ),
+          ),
+        ],
+        selectedIndex: _currentIndex,
+        elevation: null,
+        onDestinationSelected: loadPage,
+        unselectedIconTheme: const IconThemeData(
+          color: HomeScreenColors.bottomNavBarIconColorInactive,
+        ),
+      );
+    }
+
     return Container(
-      padding: const EdgeInsets.only(bottom: AppSizes.size15),
+      padding: screenType == ScreenType.mobile
+          ? const EdgeInsets.only(bottom: AppSizes.size15)
+          : null,
       decoration: const BoxDecoration(
         color: AppColors.primaryColor,
         border: Border(

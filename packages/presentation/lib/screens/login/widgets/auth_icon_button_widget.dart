@@ -4,20 +4,22 @@ import 'package:presentation/utils/dimensions.dart';
 class AuthIconButtonWidget extends StatelessWidget {
   final String imagePath;
   final Color color;
+  final double? scalerCoefficient;
   final VoidCallback? onPressAction;
 
   const AuthIconButtonWidget(
     this.imagePath, {
     super.key,
     required this.color,
+    this.scalerCoefficient = 1,
     this.onPressAction,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppSizes.size44,
-      height: AppSizes.size44,
+      width: AppSizes.size44 * (scalerCoefficient ?? 1),
+      height: AppSizes.size44 * (scalerCoefficient ?? 1),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,

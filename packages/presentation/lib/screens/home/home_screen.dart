@@ -9,6 +9,7 @@ import 'package:presentation/screens/home/widgets/movie_card_widget.dart';
 import 'package:presentation/screens/home/widgets/shimmer_loader.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/responsive.dart';
 import 'package:presentation/utils/styles.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,36 +34,51 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
+    final screenType = Responsive.getScreenType(context);
+
+    final drawerWidget = getDrawerWidget(context);
+
     return Scaffold(
+      drawer: drawerWidget != null && screenType == ScreenType.desktop
+          ? Drawer(
+              width: AppSizes.size70,
+              child: drawerWidget,
+            )
+          : null,
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
         centerTitle: false,
-        title: Text(
-          appLocalizations.appNameLabel,
-          style: AppStyles.appBarStyle,
+        title: Padding(
+          padding: const EdgeInsets.only(left: AppSizes.size6),
+          child: Text(
+            appLocalizations.appNameLabel,
+            style: AppStyles.appBarStyle,
+          ),
         ),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               right: AppSizes.size10,
             ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.search,
-                size: HomeScreenSizes.searchIconSize,
-              ),
+            child: Icon(
+              Icons.search,
+              size: HomeScreenSizes.searchIconSize,
               color: HomeScreenColors.searchIconButtonColor,
             ),
           )
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.screensHorizontalPadding,
-        ),
+        padding: screenType == ScreenType.mobile
+            ? const EdgeInsets.symmetric(
+                horizontal: AppSizes.screensHorizontalPadding,
+              )
+            : const EdgeInsets.only(
+                left: AppSizes.size80,
+                right: AppSizes.size50,
+              ),
         child: StreamBuilder<HomeData?>(
           stream: bloc.stream,
           builder: (context, snapshot) {
@@ -118,7 +134,10 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      screenType == ScreenType.mobile
+                                          ? MainAxisAlignment.center
+                                          : MainAxisAlignment.start,
                                   children: [
                                     if (selectedType ==
                                         SelectedMoviesType.nowShowing)
@@ -173,7 +192,10 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      screenType == ScreenType.mobile
+                                          ? MainAxisAlignment.center
+                                          : MainAxisAlignment.start,
                                   children: [
                                     if (selectedType ==
                                         SelectedMoviesType.comingSoon)
@@ -211,9 +233,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                       child: GridView.builder(
                         shrinkWrap: true,
                         itemCount: data.movies.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              Responsive.moviesCountPerScreenSize(context),
                           childAspectRatio: HomeScreenSizes.gridChildAspecRatio,
                           crossAxisSpacing: AppSizes.size13,
                           mainAxisSpacing:
@@ -263,5 +285,10 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         ),
       ),
     );
+  }
+
+  Widget? getDrawerWidget(BuildContext context) {
+    final ancestorScaffold = context.findAncestorWidgetOfExactType<Scaffold>();
+    return ancestorScaffold?.drawer;
   }
 }

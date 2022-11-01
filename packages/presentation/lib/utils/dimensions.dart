@@ -27,6 +27,8 @@ class AppSizes {
   static const double size50 = 50;
   static const double size56 = 56;
   static const double size57 = 57;
+  static const double size70 = 70;
+  static const double size80 = 80;
   static const double size131 = 131;
   static const double size282 = 282;
 
@@ -49,4 +51,12 @@ class MovieDetailsScreenSizes {
   MovieDetailsScreenSizes._();
   static const double ratingStarSize = 24;
   static const double navigationIconSize = 21;
+}
+
+class LoginScreenSizes {
+  LoginScreenSizes._();
+  static const double maxButtonSize = 400;
+  static const double maxFieldSize = 400;
+
+  static const iconsScalerCoefficient = 1.5;
 }
