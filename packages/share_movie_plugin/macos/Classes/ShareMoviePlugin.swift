@@ -10,9 +10,10 @@ public class ShareMoviePlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if call.method == "shareMovie" {
-            let arguments = call.arguments as! [String: Any]
-            let message = arguments["message"] as! String
-            shareMovie(message)
+            if let arguments = call.arguments as? [String: Any], 
+                let message = arguments["message"] as? String {
+                shareMovie(message)
+            }
             result(nil)
         } else {
             result(FlutterMethodNotImplemented)
@@ -22,10 +23,8 @@ public class ShareMoviePlugin: NSObject, FlutterPlugin {
     private func shareMovie(_ message: String) {
         let picker = NSSharingServicePicker(items: [message])
         
-        DispatchQueue.main.async {
-            if let contentView = NSApplication.shared.keyWindow?.contentView {
-                picker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
-            }
+        if let contentView = NSApplication.shared.keyWindow?.contentView {
+            picker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
         }
     }
 }
