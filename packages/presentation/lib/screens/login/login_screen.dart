@@ -65,7 +65,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
           builder: (context, snapshot) {
             final data = snapshot.data;
 
-            final screenType = Responsive.getScreenType(context);
+            final isDesktop = Responsive.isDesktop(context);
 
             if (data != null) {
               return Container(
@@ -90,7 +90,7 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                       children: [
                         const SizedBox(height: AppSizes.size1),
                         Column(
-                          crossAxisAlignment: screenType == ScreenType.mobile
+                          crossAxisAlignment: !isDesktop
                               ? CrossAxisAlignment.start
                               : CrossAxisAlignment.center,
                           children: [
@@ -206,30 +206,24 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.twitterIconPath,
                                 color: LoginScreenColors.twitterColor,
-                                scalerCoefficient: screenType ==
-                                        ScreenType.desktop
-                                    ? LoginScreenSizes.iconsScalerCoefficient
-                                    : null,
+                                scalerCoefficient:
+                                    Responsive.adaptiveSize44(context),
                                 onPressAction: null,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.facebookIconPath,
                                 color: LoginScreenColors.facebookColor,
-                                scalerCoefficient: screenType ==
-                                        ScreenType.desktop
-                                    ? LoginScreenSizes.iconsScalerCoefficient
-                                    : null,
+                                scalerCoefficient:
+                                    Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByFacebook,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.googleIconPath,
                                 color: LoginScreenColors.googleColor,
-                                scalerCoefficient: screenType ==
-                                        ScreenType.desktop
-                                    ? LoginScreenSizes.iconsScalerCoefficient
-                                    : null,
+                                scalerCoefficient:
+                                    Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByGoogle,
                               ),
                             ],

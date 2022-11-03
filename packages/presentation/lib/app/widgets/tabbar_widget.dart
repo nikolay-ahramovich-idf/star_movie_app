@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
-import 'package:presentation/utils/responsive.dart';
 
 enum BottomNavigationItemType {
   home,
@@ -13,65 +13,63 @@ enum BottomNavigationItemType {
 class TabBarWidget extends StatelessWidget {
   final int _currentIndex;
   final void Function(int index) loadPage;
+  final bool isDesktop;
 
   const TabBarWidget(
     this._currentIndex, {
     required this.loadPage,
+    required this.isDesktop,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenType = Responsive.getScreenType(context);
+    final appLocalizations = AppLocalizations.of(context)!;
 
-    if (screenType == ScreenType.desktop) {
+    if (isDesktop) {
       return NavigationRail(
         backgroundColor: AppColors.primaryColor,
-        destinations: const [
+        destinations: [
           NavigationRailDestination(
-            icon: Icon(
+            icon: const Icon(
               Icons.support,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: Text('Movie Reel'),
+            label: Text(appLocalizations.menuMovieReelButtonLabel),
           ),
           NavigationRailDestination(
-            icon: Icon(
+            icon: const Icon(
               Icons.airplane_ticket_rounded,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: Text('Event Ticket'),
+            label: Text(appLocalizations.menuEventTicketButtonLabel),
           ),
           NavigationRailDestination(
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: Text('Alarm'),
+            label: Text(appLocalizations.menuAlarmButtonLabel),
           ),
           NavigationRailDestination(
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: Text(
-              'Single',
-            ),
+            label: Text(appLocalizations.menuSingleButtonLabel),
           ),
         ],
         selectedIndex: _currentIndex,
         elevation: null,
         onDestinationSelected: loadPage,
         unselectedIconTheme: const IconThemeData(
-          color: HomeScreenColors.bottomNavBarIconColorInactive,
+          color: Colors.white,
         ),
       );
     }
 
     return Container(
-      padding: screenType == ScreenType.mobile
-          ? const EdgeInsets.only(bottom: AppSizes.size15)
-          : null,
+      padding: const EdgeInsets.only(bottom: AppSizes.size15),
       decoration: const BoxDecoration(
         color: AppColors.primaryColor,
         border: Border(
@@ -89,34 +87,34 @@ class TabBarWidget extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         unselectedItemColor: HomeScreenColors.bottomNavBarIconColorInactive,
         elevation: AppSizes.size0,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.support,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Movie Reel',
+            label: appLocalizations.menuMovieReelButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.airplane_ticket_rounded,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Event Ticket',
+            label: appLocalizations.menuEventTicketButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Alarm',
+            label: appLocalizations.menuAlarmButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Single',
+            label: appLocalizations.menuSingleButtonLabel,
           ),
         ],
         onTap: loadPage,

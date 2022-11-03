@@ -34,17 +34,12 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    final screenType = Responsive.getScreenType(context);
+    final isDesktop = Responsive.isDesktop(context);
 
     final drawerWidget = getDrawerWidget(context);
 
     return Scaffold(
-      drawer: drawerWidget != null && screenType == ScreenType.desktop
-          ? Drawer(
-              width: AppSizes.size70,
-              child: drawerWidget,
-            )
-          : null,
+      drawer: drawerWidget,
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         elevation: 0,
@@ -71,7 +66,7 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
         ],
       ),
       body: Padding(
-        padding: screenType == ScreenType.mobile
+        padding: !isDesktop
             ? const EdgeInsets.symmetric(
                 horizontal: AppSizes.screensHorizontalPadding,
               )
@@ -134,10 +129,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
-                                  mainAxisAlignment:
-                                      screenType == ScreenType.mobile
-                                          ? MainAxisAlignment.center
-                                          : MainAxisAlignment.start,
+                                  mainAxisAlignment: !isDesktop
+                                      ? MainAxisAlignment.center
+                                      : MainAxisAlignment.start,
                                   children: [
                                     if (selectedType ==
                                         SelectedMoviesType.nowShowing)
@@ -192,10 +186,9 @@ class _HomeScreenState extends BlocScreenState<HomeScreen, HomeBloc> {
                                   }
                                 },
                                 child: Row(
-                                  mainAxisAlignment:
-                                      screenType == ScreenType.mobile
-                                          ? MainAxisAlignment.center
-                                          : MainAxisAlignment.start,
+                                  mainAxisAlignment: !isDesktop
+                                      ? MainAxisAlignment.center
+                                      : MainAxisAlignment.start,
                                   children: [
                                     if (selectedType ==
                                         SelectedMoviesType.comingSoon)

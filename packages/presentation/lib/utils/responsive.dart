@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/utils/dimensions.dart';
 
 enum ScreenType {
   mobile,
@@ -6,14 +7,10 @@ enum ScreenType {
 }
 
 class Responsive {
-  static ScreenType getScreenType(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    if (width < 500) {
-      return ScreenType.mobile;
-    }
-
-    return ScreenType.desktop;
+  static double adaptiveSize44(BuildContext context) {
+    return isDesktop(context)
+        ? AppSizes.size44 * AppSizes.iconsScalerCoefficient
+        : AppSizes.size44;
   }
 
   static int moviesCountPerScreenSize(BuildContext context) {
@@ -28,5 +25,19 @@ class Responsive {
     } else {
       return 8;
     }
+  }
+
+  static bool isDesktop(BuildContext context) {
+    return _getScreenType(context) == ScreenType.desktop;
+  }
+
+  static ScreenType _getScreenType(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    if (width < 500) {
+      return ScreenType.mobile;
+    }
+
+    return ScreenType.desktop;
   }
 }

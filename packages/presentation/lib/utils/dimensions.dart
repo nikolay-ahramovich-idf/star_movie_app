@@ -33,6 +33,8 @@ class AppSizes {
   static const double size282 = 282;
 
   static const double screensHorizontalPadding = 18;
+
+  static const iconsScalerCoefficient = 1.5;
 }
 
 class HomeScreenSizes {
@@ -57,6 +59,4 @@ class LoginScreenSizes {
   LoginScreenSizes._();
   static const double maxButtonSize = 400;
   static const double maxFieldSize = 400;
-
-  static const iconsScalerCoefficient = 1.5;
 }

@@ -26,5 +26,9 @@
     "invalidLoginMessage": "O campo de login deve ter pelo menos 8 símbolos",
     "requiredLoginMessage": "É necessário fazer login",
     "authFailurePasswordMessage": "Senha inválida",
-    "requiredPasswordMessage": "Senha requerida"
+    "requiredPasswordMessage": "Senha requerida",
+    "menuMovieReelButtonLabel": "Carretel de filme",
+    "menuEventTicketButtonLabel": "Ingresso do evento",
+    "menuAlarmButtonLabel": "Alarme",
+    "menuSingleButtonLabel": "Solteira"
 }

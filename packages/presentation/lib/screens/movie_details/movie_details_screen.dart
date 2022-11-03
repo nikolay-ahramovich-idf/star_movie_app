@@ -51,7 +51,7 @@ class _MovieDetailsScreenState
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    final screenType = Responsive.getScreenType(context);
+    final isDesktop = Responsive.isDesktop(context);
     final currentHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -120,7 +120,7 @@ class _MovieDetailsScreenState
                   ),
                 ),
                 Positioned(
-                  top: screenType == ScreenType.desktop
+                  top: isDesktop
                       ? currentHeight - AppSizes.size282
                       : AppSizes.size282,
                   left: AppSizes.size0,
@@ -279,13 +279,12 @@ class _MovieDetailsScreenState
                           ),
                           const SizedBox(height: AppSizes.size32),
                           Flex(
-                            direction: screenType == ScreenType.desktop
-                                ? Axis.horizontal
-                                : Axis.vertical,
+                            direction:
+                                isDesktop ? Axis.horizontal : Axis.vertical,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: screenType == ScreenType.desktop ? 1 : 0,
+                                flex: isDesktop ? 1 : 0,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -316,7 +315,7 @@ class _MovieDetailsScreenState
                               ),
                               const SizedBox(height: AppSizes.size32),
                               Expanded(
-                                flex: screenType == ScreenType.desktop ? 1 : 0,
+                                flex: isDesktop ? 1 : 0,
                                 child: Column(
                                   children: [
                                     Row(

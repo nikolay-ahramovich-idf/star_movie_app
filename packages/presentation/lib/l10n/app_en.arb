@@ -26,5 +26,9 @@
     "invalidLoginMessage": "Login field should be at least 8 symbols",
     "requiredLoginMessage": "Login is required",
     "authFailurePasswordMessage": "Invalid password",
-    "requiredPasswordMessage": "Password is required"
+    "requiredPasswordMessage": "Password is required",
+    "menuMovieReelButtonLabel": "Movie Reel",
+    "menuEventTicketButtonLabel": "Event Ticket",
+    "menuAlarmButtonLabel": "Alarm",
+    "menuSingleButtonLabel": "Single"
 }
