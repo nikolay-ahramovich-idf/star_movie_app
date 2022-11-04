@@ -206,24 +206,21 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.twitterIconPath,
                                 color: LoginScreenColors.twitterColor,
-                                scalerCoefficient:
-                                    Responsive.adaptiveSize44(context),
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: null,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.facebookIconPath,
                                 color: LoginScreenColors.facebookColor,
-                                scalerCoefficient:
-                                    Responsive.adaptiveSize44(context),
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByFacebook,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.googleIconPath,
                                 color: LoginScreenColors.googleColor,
-                                scalerCoefficient:
-                                    Responsive.adaptiveSize44(context),
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByGoogle,
                               ),
                             ],
