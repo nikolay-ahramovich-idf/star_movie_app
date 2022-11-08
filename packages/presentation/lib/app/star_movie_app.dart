@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:presentation/app/app_bloc.dart';
-import 'package:presentation/app/widgets/tabbar_widget.dart';
+import 'package:presentation/app/widgets/desktop_root_widget.dart';
+import 'package:presentation/app/widgets/mobile_root_widget.dart';
 import 'package:presentation/bloc/base/bloc_screen.dart';
-import 'package:presentation/screens/splash/splash_screen.dart';
+import 'package:presentation/utils/responsive.dart';
 
 class StarMovieApp extends StatefulWidget {
   final String title;
@@ -31,23 +32,20 @@ class _StarMovieAppState extends BlocScreenState<StarMovieApp, AppBloc> {
       home: StreamBuilder(
         stream: bloc.stream,
         builder: (context, snapshot) {
+          final isDesktop = Responsive.isDesktop(context);
+
           final appData = snapshot.data;
+
           if (appData != null) {
-            return Scaffold(
-              body: Navigator(
-                onPopPage: (Route<dynamic> route, dynamic result) {
-                  bloc.handleRemoveRouteSettings(route.settings);
-                  return route.didPop(result);
-                },
-                pages: appData.pages.toList(),
-              ),
-              bottomNavigationBar: Visibility(
-                visible: appData.pages.last.key != SplashScreen.page().key,
-                child: TabBarWidget(
-                  appData.currentPageIndex,
-                  loadPage: bloc.loadPage,
-                ),
-              ),
+            if (isDesktop) {
+              return DesktopRootWidget(
+                data: appData,
+                bloc: bloc,
+              );
+            }
+            return MobileRootWidget(
+              data: appData,
+              bloc: bloc,
             );
           }
           return Container();

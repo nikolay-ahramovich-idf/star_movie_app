@@ -15,8 +15,10 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
   Future<MoviesResponseEntity> getNowShowingMovies([
     Map<String, dynamic> queryParameters = const {},
   ]) async {
-    final moviesResponse =
-        await _getMovies(TraktApiPaths.nowShowingMovies, queryParameters);
+    final moviesResponse = await _getMovies(
+      TraktApiPaths.nowShowingMovies,
+      queryParameters,
+    );
 
     return moviesResponse;
   }
@@ -25,15 +27,19 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
   Future<MoviesResponseEntity> getComingSoonMovies([
     Map<String, dynamic> queryParameters = const {},
   ]) async {
-    return await _getMovies(TraktApiPaths.comingSoonMovies, queryParameters);
+    return await _getMovies(
+      TraktApiPaths.comingSoonMovies,
+      queryParameters,
+    );
   }
 
   @override
   Future<CastResponseEntity> getCast(int movieId) async {
     final peopleApiUri = _getPeopleApiUri(movieId);
 
-    final peopleResponse =
-        await _traktApiService.get<Map<String, dynamic>>(peopleApiUri);
+    final peopleResponse = await _traktApiService.get<Map<String, dynamic>>(
+      peopleApiUri,
+    );
 
     return CastResponseEntity.fromJson(peopleResponse.data ?? {});
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 
@@ -12,15 +13,61 @@ enum BottomNavigationItemType {
 class TabBarWidget extends StatelessWidget {
   final int _currentIndex;
   final void Function(int index) loadPage;
+  final bool isDesktop;
 
   const TabBarWidget(
     this._currentIndex, {
     required this.loadPage,
+    required this.isDesktop,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+
+    if (isDesktop) {
+      return NavigationRail(
+        backgroundColor: AppColors.primaryColor,
+        destinations: [
+          NavigationRailDestination(
+            icon: const Icon(
+              Icons.support,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text(appLocalizations.menuMovieReelButtonLabel),
+          ),
+          NavigationRailDestination(
+            icon: const Icon(
+              Icons.airplane_ticket_rounded,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text(appLocalizations.menuEventTicketButtonLabel),
+          ),
+          NavigationRailDestination(
+            icon: const Icon(
+              Icons.notifications,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text(appLocalizations.menuAlarmButtonLabel),
+          ),
+          NavigationRailDestination(
+            icon: const Icon(
+              Icons.person,
+              size: HomeScreenSizes.bottomNavBarIconSize,
+            ),
+            label: Text(appLocalizations.menuSingleButtonLabel),
+          ),
+        ],
+        selectedIndex: _currentIndex,
+        elevation: null,
+        onDestinationSelected: loadPage,
+        unselectedIconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.only(bottom: AppSizes.size15),
       decoration: const BoxDecoration(
@@ -40,34 +87,34 @@ class TabBarWidget extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         unselectedItemColor: HomeScreenColors.bottomNavBarIconColorInactive,
         elevation: AppSizes.size0,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.support,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Movie Reel',
+            label: appLocalizations.menuMovieReelButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.airplane_ticket_rounded,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Event Ticket',
+            label: appLocalizations.menuEventTicketButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Alarm',
+            label: appLocalizations.menuAlarmButtonLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               size: HomeScreenSizes.bottomNavBarIconSize,
             ),
-            label: 'Single',
+            label: appLocalizations.menuSingleButtonLabel,
           ),
         ],
         onTap: loadPage,

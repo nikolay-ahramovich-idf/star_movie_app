@@ -10,6 +10,7 @@ import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/login/widgets/auth_icon_button_widget.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
+import 'package:presentation/utils/responsive.dart';
 import 'package:presentation/utils/styles.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -63,6 +64,9 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
           stream: bloc.stream,
           builder: (context, snapshot) {
             final data = snapshot.data;
+
+            final isDesktop = Responsive.isDesktop(context);
+
             if (data != null) {
               return Container(
                 decoration: const BoxDecoration(
@@ -86,32 +90,39 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                       children: [
                         const SizedBox(height: AppSizes.size1),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: !isDesktop
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.center,
                           children: [
                             Text(
                               appLocalizations.userNameInputLabel,
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),
-                            TextFormField(
-                              autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => widget.loginViewMapper
-                                  .stateToLoginErrorMessage(
-                                bloc.state,
-                                context,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                maxWidth: LoginScreenSizes.maxFieldSize,
                               ),
-                              controller: bloc.loginController,
-                              keyboardType: TextInputType.emailAddress,
-                              style: const TextStyle(
-                                color: AppColors.transparentWhite50,
-                              ),
-                              decoration: InputDecoration(
-                                disabledBorder: InputBorder.none,
-                                filled: true,
-                                fillColor:
-                                    LoginScreenColors.inputFieldBackgroundColor,
-                                prefixIcon: Image.asset(
-                                  AssetsImagesPaths.usernameIconPath,
+                              child: TextFormField(
+                                autovalidateMode: AutovalidateMode.disabled,
+                                validator: (_) => widget.loginViewMapper
+                                    .stateToLoginErrorMessage(
+                                  bloc.state,
+                                  context,
+                                ),
+                                controller: bloc.loginController,
+                                keyboardType: TextInputType.emailAddress,
+                                style: const TextStyle(
+                                  color: AppColors.transparentWhite50,
+                                ),
+                                decoration: InputDecoration(
+                                  disabledBorder: InputBorder.none,
+                                  filled: true,
+                                  fillColor: LoginScreenColors
+                                      .inputFieldBackgroundColor,
+                                  prefixIcon: Image.asset(
+                                    AssetsImagesPaths.usernameIconPath,
+                                  ),
                                 ),
                               ),
                             ),
@@ -121,25 +132,30 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                               style: LoginScreenStyles.inputLabelsStyle,
                             ),
                             const SizedBox(height: AppSizes.size12),
-                            TextFormField(
-                              autovalidateMode: AutovalidateMode.disabled,
-                              validator: (_) => widget.loginViewMapper
-                                  .stateToPasswordErrorMessage(
-                                bloc.state,
-                                context,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                maxWidth: LoginScreenSizes.maxFieldSize,
                               ),
-                              controller: bloc.passwordController,
-                              obscureText: true,
-                              style: const TextStyle(
-                                color: AppColors.transparentWhite50,
-                              ),
-                              decoration: InputDecoration(
-                                disabledBorder: InputBorder.none,
-                                filled: true,
-                                fillColor:
-                                    LoginScreenColors.inputFieldBackgroundColor,
-                                prefixIcon: Image.asset(
-                                  AssetsImagesPaths.passwordIconPath,
+                              child: TextFormField(
+                                autovalidateMode: AutovalidateMode.disabled,
+                                validator: (_) => widget.loginViewMapper
+                                    .stateToPasswordErrorMessage(
+                                  bloc.state,
+                                  context,
+                                ),
+                                controller: bloc.passwordController,
+                                obscureText: true,
+                                style: const TextStyle(
+                                  color: AppColors.transparentWhite50,
+                                ),
+                                decoration: InputDecoration(
+                                  disabledBorder: InputBorder.none,
+                                  filled: true,
+                                  fillColor: LoginScreenColors
+                                      .inputFieldBackgroundColor,
+                                  prefixIcon: Image.asset(
+                                    AssetsImagesPaths.passwordIconPath,
+                                  ),
                                 ),
                               ),
                             ),
@@ -155,21 +171,26 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.red,
-                                ),
-                                onPressed: bloc.onLogin,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: AppSizes.size15,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                maxWidth: LoginScreenSizes.maxButtonSize,
+                              ),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.red,
                                   ),
-                                  child: Text(
-                                    appLocalizations.loginButtonLabel,
-                                    style:
-                                        LoginScreenStyles.loginButtonTextStyle,
+                                  onPressed: bloc.onLogin,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: AppSizes.size15,
+                                    ),
+                                    child: Text(
+                                      appLocalizations.loginButtonLabel,
+                                      style: LoginScreenStyles
+                                          .loginButtonTextStyle,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -182,21 +203,24 @@ class _LoginScreenState extends BlocScreenState<LoginScreen, LoginBloc> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const AuthIconButtonWidget(
+                              AuthIconButtonWidget(
                                 AssetsImagesPaths.twitterIconPath,
                                 color: LoginScreenColors.twitterColor,
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: null,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.facebookIconPath,
                                 color: LoginScreenColors.facebookColor,
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByFacebook,
                               ),
                               const SizedBox(width: AppSizes.size24),
                               AuthIconButtonWidget(
                                 AssetsImagesPaths.googleIconPath,
                                 color: LoginScreenColors.googleColor,
+                                size: Responsive.adaptiveSize44(context),
                                 onPressAction: bloc.authByGoogle,
                               ),
                             ],

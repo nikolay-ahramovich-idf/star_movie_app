@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/utils/dimensions.dart';
 
 class AuthIconButtonWidget extends StatelessWidget {
   final String imagePath;
   final Color color;
+  final double size;
   final VoidCallback? onPressAction;
 
   const AuthIconButtonWidget(
     this.imagePath, {
     super.key,
     required this.color,
+    required this.size,
     this.onPressAction,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppSizes.size44,
-      height: AppSizes.size44,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,
