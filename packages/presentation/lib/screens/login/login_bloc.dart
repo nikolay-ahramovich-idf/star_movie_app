@@ -30,6 +30,7 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
       );
 
   GlobalKey<FormState> get formStateGlobalKey;
+  set formStateGlobalKey(GlobalKey<FormState> value);
 
   TextEditingController get loginController;
 
@@ -53,7 +54,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final _formStateGlobalKey = GlobalKey<FormState>();
+  var _formStateGlobalKey = GlobalKey<FormState>();
 
   _LoginBloc(
     this._userIsRegisteredUseCase,
@@ -74,6 +75,10 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
+
+  @override
+  set formStateGlobalKey(GlobalKey<FormState> value) =>
+      _formStateGlobalKey = value;
 
   @override
   TextEditingController get loginController => _loginController;
@@ -158,7 +163,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       null,
     ));
 
-    _formStateGlobalKey.currentState?.validate();
+    formStateGlobalKey.currentState?.validate();
   }
 
   void _updateFieldControllers(UserEntity user) {

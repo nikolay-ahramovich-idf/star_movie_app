@@ -9,7 +9,6 @@ class LoginValidationUseCase implements UseCaseParams<UserEntity, void> {
   @override
   void call(UserEntity params) {
     final loginValidationStatus = _validateLogin(params.login);
-
     final passwordValidationStatus = _validatePassword(params.password);
 
     if (loginValidationStatus != null || passwordValidationStatus != null) {

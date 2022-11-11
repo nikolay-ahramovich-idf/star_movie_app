@@ -26,6 +26,12 @@ jobs:
       - run: echo $GOOGLE_SERVICES_FILE_CONTENT | base64 -d > android/app/google-services.json
         env:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
+      - name: Tests
+        run: flutter test packages/data
+        run: flutter test packages/domain
+        run: flutter test packages/presentation --no-test-assets
+      - name: Integration tests
+        run: flutter test --flavor sandbox integration_test 
       - name: Build APK
         run: flutter build apk --flavor sandbox -t lib/main_sandbox.dart --debug
       - name: upload artifact to Firebase App Distribution
