@@ -7,7 +7,7 @@ on:
 jobs:
   apk:
     name: Generate APK
-    runs-on: ubuntu-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -29,7 +29,11 @@ jobs:
       - name: Tests
         run: flutter test packages/data && flutter test packages/domain && flutter test packages/presentation --no-test-assets
       - name: Integration tests
-        run: flutter test --flavor sandbox integration_test 
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 27
+          arch: x86_64
+          script: flutter test --flavor sandbox integration_test
       - name: Build APK
         run: flutter build apk --flavor sandbox -t lib/main_sandbox.dart --debug
       - name: upload artifact to Firebase App Distribution
