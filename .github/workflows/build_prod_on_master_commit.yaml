@@ -27,9 +27,7 @@ jobs:
         env:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Tests
-        run: flutter test packages/data
-        run: flutter test packages/domain
-        run: flutter test packages/presentation --no-test-assets
+        run: flutter test packages/data && flutter test packages/domain && flutter test packages/presentation --no-test-assets
       - name: Integration tests
         run: flutter test --flavor sandbox integration_test 
       - name: Build APK
