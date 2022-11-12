@@ -1,12 +1,12 @@
 name: build-apps
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 jobs:
-  apk:
-    name: Generate APK
+  tests:
+    name: Testing App
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v3
@@ -29,15 +29,38 @@ jobs:
       - name: Tests
         run: flutter test packages/data && flutter test packages/domain && flutter test packages/presentation --no-test-assets
       - name: Integration tests
-        run: flutter test --flavor sandbox integration_test 
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 27
+          arch: x86_64
+          script: flutter test --flavor sandbox integration_test
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.3.4'
+          channel: 'stable'
+      - run: mkdir assets/json
+      - run: echo $SECRETS_FILE_CONTENT | base64 -d > assets/json/config.json
+        env:
+          SECRETS_FILE_CONTENT: ${{ secrets.SECRETS_FILE_CONTENT }}
+      - run: flutter pub get
+      - run: echo $GOOGLE_SERVICES_FILE_CONTENT | base64 -d > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Build APK
         run: flutter build apk --flavor prod -t lib/main_prod.dart --release
-      - name: Create Release
-        id: create_release
-        uses: ncipollo/release-action@v1
+      - name: Upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.5
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-prod-release.apk"
-          tag: v1.${{ github.run_number }}
-          token: ${{ secrets.TOKEN_GITHUB }}
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          appId: ${{secrets.FIREBASE_ANDROID_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-prod-release.apk
