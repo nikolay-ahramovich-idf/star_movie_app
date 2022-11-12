@@ -17,6 +17,7 @@ class DesktopRootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: Drawer(
         width: AppSizes.size70,
         child: TabBarWidget(

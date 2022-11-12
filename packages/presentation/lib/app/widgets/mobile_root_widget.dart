@@ -17,6 +17,7 @@ class MobileRootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Navigator(
         onPopPage: (
           Route<dynamic> route,

@@ -34,11 +34,15 @@ void main() {
         validPassword,
       );
 
+      await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
       final loginButton = find.text('Login');
+
+      expect(loginButton, findsOneWidget);
+
       await tester.tap(loginButton);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
 
       final nextScreenTextWidget = find.text('Login is success');
 
