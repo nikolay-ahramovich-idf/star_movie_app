@@ -17,6 +17,11 @@ class MovieDetailsScreenConfig {
   static const int maxCastCount = 4;
 }
 
+class PaymentScreenConfig {
+  PaymentScreenConfig._();
+  static const int cvvLength = 3;
+}
+
 class RatingWidgetConfig {
   RatingWidgetConfig._();
 

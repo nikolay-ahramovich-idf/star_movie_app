@@ -11,6 +11,7 @@ import 'package:presentation/navigation/base_arguments.dart';
 import 'package:presentation/navigation/base_page.dart';
 import 'package:presentation/screens/home/home_screen.dart';
 import 'package:presentation/screens/login/login_screen.dart';
+import 'package:presentation/screens/payment/payment_screen.dart';
 
 abstract class AppBloc implements Bloc<BaseArguments, AppData> {
   factory AppBloc(
@@ -48,6 +49,9 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
       case BottomNavigationItemType.home:
         _goToHomePage(pageIndex);
         break;
+      case BottomNavigationItemType.event:
+        _goToPaymentPage(pageIndex);
+        break;
       case BottomNavigationItemType.login:
         _goToLoginPage(pageIndex);
         break;
@@ -60,6 +64,13 @@ class _AppBloc extends BlocImpl<BaseArguments, AppData> implements AppBloc {
     if (appNavigator.currentPage().toString() != HomeScreen.routeName) {
       state.currentPageIndex = index;
       _popAllAndPush(HomeScreen.page());
+    }
+  }
+
+  void _goToPaymentPage(int index) {
+    if (appNavigator.currentPage().toString() != PaymentScreen.routeName) {
+      state.currentPageIndex = index;
+      _popAllAndPush(PaymentScreen.page());
     }
   }
 
