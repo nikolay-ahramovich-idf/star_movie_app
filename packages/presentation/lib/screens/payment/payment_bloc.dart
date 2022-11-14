@@ -74,6 +74,8 @@ class _PaymentBloc extends BlocImpl<BaseArguments, PaymentData>
   void dispose() {
     _phoneNumberController.dispose();
     _cardNumberController.dispose();
+    _dateController.dispose();
+    _cvvController.dispose();
 
     super.dispose();
   }
