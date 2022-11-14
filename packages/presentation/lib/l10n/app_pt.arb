@@ -30,5 +30,15 @@
     "menuMovieReelButtonLabel": "Carretel de filme",
     "menuEventTicketButtonLabel": "Ingresso do evento",
     "menuAlarmButtonLabel": "Alarme",
-    "menuSingleButtonLabel": "Solteira"
+    "menuSingleButtonLabel": "Solteira",
+    "paymentScreenLabel": "Payment",
+    "phoneNumberFieldLabel": "Phone Number",
+    "cardNumberFieldLabel": "Card Number",
+    "validThruFieldLabel": "Valid thru",
+    "cvvFieldLabel": "CVV",
+    "paymentButtonLabel": "Pagar",
+    "dateValidationEmptyMonthMessage": "Mês está vazio",
+    "dateValidationEmptyYearMessage": "Ano está vazio",
+    "dateValidationMonthOutOfRange": "O mês está fora do intervalo",
+    "dateValidationDateExpired": "Data expirada"
 }
