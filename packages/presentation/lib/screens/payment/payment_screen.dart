@@ -57,9 +57,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                   appLocalizations.phoneNumberFieldLabel,
                   style: const TextStyle(color: AppColors.white),
                 ),
-                const SizedBox(
-                  height: AppSizes.size4,
-                ),
+                const SizedBox(height: AppSizes.size4),
                 TextFormField(
                   controller: bloc.phoneNumberController,
                   inputFormatters: [PhoneInputFormatter()],
@@ -69,20 +67,14 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                     filled: true,
                     fillColor: LoginScreenColors.inputFieldBackgroundColor,
                   ),
-                  style: const TextStyle(
-                    color: AppColors.transparentWhite50,
-                  ),
+                  style: const TextStyle(color: AppColors.transparentWhite50),
                 ),
-                const SizedBox(
-                  height: AppSizes.size24,
-                ),
+                const SizedBox(height: AppSizes.size24),
                 Text(
                   appLocalizations.cardNumberFieldLabel,
                   style: const TextStyle(color: AppColors.white),
                 ),
-                const SizedBox(
-                  height: AppSizes.size4,
-                ),
+                const SizedBox(height: AppSizes.size4),
                 TextFormField(
                   controller: bloc.cardNumberController,
                   inputFormatters: [CardNumberInputFormatter()],
@@ -92,13 +84,9 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                     filled: true,
                     fillColor: LoginScreenColors.inputFieldBackgroundColor,
                   ),
-                  style: const TextStyle(
-                    color: AppColors.transparentWhite50,
-                  ),
+                  style: const TextStyle(color: AppColors.transparentWhite50),
                 ),
-                const SizedBox(
-                  height: AppSizes.size24,
-                ),
+                const SizedBox(height: AppSizes.size24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -111,9 +99,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                             appLocalizations.validThruFieldLabel,
                             style: const TextStyle(color: AppColors.white),
                           ),
-                          const SizedBox(
-                            height: AppSizes.size4,
-                          ),
+                          const SizedBox(height: AppSizes.size4),
                           TextFormField(
                             controller: bloc.dateController,
                             validator: (_) => widget.paymentViewMapper
@@ -136,9 +122,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      width: AppSizes.size24,
-                    ),
+                    const SizedBox(width: AppSizes.size24),
                     SizedBox(
                       width: AppSizes.size80,
                       child: Column(
@@ -148,9 +132,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                             appLocalizations.cvvFieldLabel,
                             style: const TextStyle(color: AppColors.white),
                           ),
-                          const SizedBox(
-                            height: AppSizes.size4,
-                          ),
+                          const SizedBox(height: AppSizes.size4),
                           TextFormField(
                             controller: bloc.cvvController,
                             inputFormatters: [
@@ -176,20 +158,16 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: AppSizes.size45,
-                ),
+                const SizedBox(height: AppSizes.size45),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.red,
-                    ),
+                        backgroundColor: AppColors.red),
                     onPressed: bloc.onSubmit,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppSizes.size15,
-                      ),
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSizes.size15),
                       child: Text(
                         appLocalizations.paymentButtonLabel,
                       ),
