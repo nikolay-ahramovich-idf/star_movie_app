@@ -36,6 +36,8 @@ class MockUserEntity extends Mock implements UserEntity {}
 class MockGlobalKey extends Mock implements GlobalKey<FormState> {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   GetIt.I.registerSingleton<AppNavigator>(MockAppNavigator());
 
   final mockLogAnalyticsEventUseCase = MockLogAnalyticsEventUseCase();
@@ -106,11 +108,10 @@ void main() {
   });
 
   group('auth flow failure cases', () {
-    setUpAll(() {
-      final mockGlobalKey = MockGlobalKey();
-      when(() => mockGlobalKey.currentState).thenReturn(null);
+    final mockGlobalKey = MockGlobalKey();
 
-      loginBloc.formStateGlobalKey = mockGlobalKey;
+    setUpAll(() {
+      when(() => mockGlobalKey.currentState).thenReturn(null);
     });
 
     test(
