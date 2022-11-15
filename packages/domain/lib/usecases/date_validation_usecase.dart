@@ -10,7 +10,11 @@ class DateValidationUseCase implements UseCaseParams<String, void> {
 
     final monthAndYear = params.split('/');
 
-    final month = int.parse(monthAndYear.first);
+    final month = int.tryParse(monthAndYear.first);
+
+    if (month == null) {
+      throw DateValidationException(DateValidationExceptionStatus.invalidMonth);
+    }
 
     if (month > 12) {
       throw DateValidationException(
@@ -19,14 +23,22 @@ class DateValidationUseCase implements UseCaseParams<String, void> {
     }
 
     if (monthAndYear.length == 2) {
-      final year = int.parse(monthAndYear.last);
+      final year = int.tryParse(monthAndYear.last);
+
+      if (year == null) {
+        throw DateValidationException(
+          DateValidationExceptionStatus.invalidYear,
+        );
+      }
+
       final todaysDate = DateTime.now();
       final currentYear = int.parse(todaysDate.year.toString().substring(2));
       final currentMonth = todaysDate.month;
 
       if (currentYear > year || (currentYear <= year && currentMonth > month)) {
         throw DateValidationException(
-            DateValidationExceptionStatus.dateExpired);
+          DateValidationExceptionStatus.dateExpired,
+        );
       }
     } else {
       throw DateValidationException(DateValidationExceptionStatus.emptyYear);

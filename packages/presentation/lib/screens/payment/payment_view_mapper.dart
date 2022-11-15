@@ -23,8 +23,12 @@ class _PaymentViewMapperImpl implements PaymentViewMapper {
     switch (state.dateValidationStatus) {
       case DateValidationExceptionStatus.emptyMonth:
         return appLocalizations.dateValidationEmptyMonthMessage;
+      case DateValidationExceptionStatus.invalidMonth:
+        return appLocalizations.dateValidationInvalidMonthMessage;
       case DateValidationExceptionStatus.emptyYear:
         return appLocalizations.dateValidationEmptyYearMessage;
+      case DateValidationExceptionStatus.invalidYear:
+        return appLocalizations.dateValidationInvalidYearMessage;
       case DateValidationExceptionStatus.outRangeMonth:
         return appLocalizations.dateValidationMonthOutOfRange;
       case DateValidationExceptionStatus.dateExpired:

@@ -38,7 +38,9 @@
     "cvvFieldLabel": "CVV",
     "paymentButtonLabel": "Pay",
     "dateValidationEmptyMonthMessage": "Month is empty",
+    "dateValidationInvalidMonthMessage": "Month is invalid",
     "dateValidationEmptyYearMessage": "Year is empty",
+    "dateValidationInvalidYearMessage": "Year is invalid",
     "dateValidationMonthOutOfRange": "Month is out of range",
     "dateValidationDateExpired": "Date expired"
 }
