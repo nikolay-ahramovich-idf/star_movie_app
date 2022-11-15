@@ -1,6 +1,7 @@
 import 'package:data/repositories/auth_repository_impl.dart';
 import 'package:domain/entities/user_entity.dart';
 import 'package:domain/exceptions/auth_failure_exception.dart';
+import 'package:domain/repositories/auth_repository.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,8 +12,8 @@ void main() {
   const mockLogin = 'login';
   const mockPassword = 'password';
 
-  late MockAuthService mockAuthService = MockAuthService();
-  late AuthRepositoryImpl authRepository = AuthRepositoryImpl(
+  MockAuthService mockAuthService = MockAuthService();
+  AuthRepository authRepository = AuthRepositoryImpl(
     mockAuthService,
     mockAuthService,
   );

@@ -30,7 +30,6 @@ abstract class LoginBloc implements Bloc<BaseArguments, LoginData> {
       );
 
   GlobalKey<FormState> get formStateGlobalKey;
-  set formStateGlobalKey(GlobalKey<FormState> value);
 
   TextEditingController get loginController;
 
@@ -75,10 +74,6 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
 
   @override
   GlobalKey<FormState> get formStateGlobalKey => _formStateGlobalKey;
-
-  @override
-  set formStateGlobalKey(GlobalKey<FormState> value) =>
-      _formStateGlobalKey = value;
 
   @override
   TextEditingController get loginController => _loginController;
