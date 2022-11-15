@@ -3,7 +3,7 @@ import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
-import 'package:domain/usecases/get_movie_cast_usecase.dart';
+import 'package:domain/usecases/get_movie_cast_crew_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_screen_usecase.dart';
@@ -15,6 +15,7 @@ import 'package:domain/usecases/user_is_registered_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:presentation/app/app_bloc.dart';
 import 'package:presentation/navigation/app_navigator.dart';
+import 'package:presentation/screens/cast_crew/cast_crew_bloc.dart';
 import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/login/login_bloc.dart';
 import 'package:presentation/screens/login/login_view_mapper.dart';
@@ -30,6 +31,7 @@ void initPresentationInjector() {
   _initHomeModule();
   _initMovieDetailsModule();
   _initPaymentModule();
+  _initCastCrewModule();
 }
 
 void _initAppModule() {
@@ -77,7 +79,7 @@ void _initMovieDetailsModule() {
   GetIt.I.registerFactory<MovieDetailsBloc>(
     () => MovieDetailsBloc(
       GetIt.I.get<GetImageUrlUseCase>(),
-      GetIt.I.get<GetMovieCastUseCase>(),
+      GetIt.I.get<GetMovieCastCrewUseCase>(),
       GetIt.I.get<ShareMovieUseCase>(),
     ),
   );
@@ -89,6 +91,14 @@ void _initPaymentModule() {
   GetIt.I.registerFactory<PaymentBloc>(
     () => PaymentBloc(
       GetIt.I.get<DateValidationUseCase>(),
+    ),
+  );
+}
+
+void _initCastCrewModule() {
+  GetIt.I.registerFactory<CastCrewBloc>(
+    () => CastCrewBloc(
+      GetIt.I.get<GetImageUrlUseCase>(),
     ),
   );
 }

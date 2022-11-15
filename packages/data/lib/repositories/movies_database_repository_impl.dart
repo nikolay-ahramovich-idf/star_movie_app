@@ -47,14 +47,14 @@ class MoviesDatabaseRepositoryImpl implements MoviesDatabaseRepository {
   }
 
   @override
-  Future<void> addCast(
+  Future<void> addCastAndCrew(
     List<MovieCharacter> cast,
   ) async {
     await _movieCharacterDao.insertCast(cast);
   }
 
   @override
-  Future<List<MovieCharacter>> getCast(int movieId) async {
+  Future<List<MovieCharacter>> getCastAndCrew(int movieId) async {
     return await _movieCharacterDao.findMovieCast(movieId);
   }
 }

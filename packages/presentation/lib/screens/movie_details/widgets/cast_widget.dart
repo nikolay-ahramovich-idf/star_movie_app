@@ -1,14 +1,18 @@
 import 'package:domain/entities/movie_character_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:presentation/const.dart';
+import 'package:presentation/screens/movie_details/movie_details_bloc.dart';
 import 'package:presentation/utils/colors.dart';
 import 'package:presentation/utils/dimensions.dart';
 import 'package:presentation/utils/styles.dart';
 
 class CastWidget extends StatelessWidget {
+  final MovieDetailsBloc bloc;
   final List<MovieCharacterEntity>? cast;
 
   const CastWidget(
+    this.bloc,
     this.cast, {
     super.key,
   });
@@ -26,15 +30,17 @@ class CastWidget extends StatelessWidget {
               appLocalizations.castAndCrewHeaderLabel,
               style: MovieDetailsScreenStyles.movieDescriptionHeaderStyle,
             ),
-            Text(
-              appLocalizations.viewAllButtonLabel,
-              style: MovieDetailsScreenStyles.showMoreStyle,
+            TextButton(
+              onPressed: () => bloc.goToCastCrewPage(cast ?? []),
+              child: Text(
+                appLocalizations.viewAllButtonLabel,
+                style: MovieDetailsScreenStyles.showMoreStyle,
+              ),
             ),
           ],
         ),
         const SizedBox(height: AppSizes.size24),
         Table(
-          // defaultColumnWidth: const IntrinsicColumnWidth(),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const {
             0: FixedColumnWidth(AppSizes.size49),
@@ -44,7 +50,9 @@ class CastWidget extends StatelessWidget {
             4: FixedColumnWidth(AppSizes.size24),
           },
           children: [
-            for (final castItem in cast ?? [])
+            for (final castItem in (cast ?? []).take(
+              MovieDetailsScreenConfig.maxCastCount,
+            ))
               TableRow(
                 children: [
                   Column(
@@ -65,7 +73,7 @@ class CastWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        castItem.actorName,
+                        castItem.personName,
                         style: MovieDetailsScreenStyles
                             .movieDescriptionCastNameStyle,
                       ),
@@ -85,7 +93,7 @@ class CastWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        castItem.characterName.toUpperCase(),
+                        castItem.roleName.toUpperCase(),
                         style: MovieDetailsScreenStyles
                             .movieDescriptionRoleNameStyle,
                       ),

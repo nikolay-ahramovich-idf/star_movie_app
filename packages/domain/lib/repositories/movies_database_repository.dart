@@ -17,7 +17,7 @@ abstract class MoviesDatabaseRepository {
     List<int> movieIds,
   );
 
-  Future<List<MovieCharacter>> getCast(int movieId);
+  Future<List<MovieCharacter>> getCastAndCrew(int movieId);
 
-  Future<void> addCast(List<MovieCharacter> cast);
+  Future<void> addCastAndCrew(List<MovieCharacter> cast);
 }

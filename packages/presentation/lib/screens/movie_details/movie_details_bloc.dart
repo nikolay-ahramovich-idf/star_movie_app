@@ -1,10 +1,12 @@
+import 'package:domain/entities/movie_character_entity.dart';
 import 'package:domain/entities/share_movie_entity.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
-import 'package:domain/usecases/get_movie_cast_usecase.dart';
+import 'package:domain/usecases/get_movie_cast_crew_usecase.dart';
 import 'package:domain/usecases/share_movie_usecase.dart';
 import 'package:presentation/bloc/base/bloc.dart';
 import 'package:presentation/bloc/base/bloc_impl.dart';
 import 'package:presentation/const.dart';
+import 'package:presentation/screens/cast_crew/cast_crew_screen.dart';
 import 'package:presentation/screens/movie_details/data/movie_details_data.dart';
 import 'package:presentation/screens/movie_details/movie_details_screen.dart';
 
@@ -12,7 +14,7 @@ abstract class MovieDetailsBloc
     implements Bloc<MovieDetailsScreenArguments, MovieDetailsData> {
   factory MovieDetailsBloc(
     GetImageUrlUseCase getImageUrlUseCase,
-    GetMovieCastUseCase getMovieCastUseCase,
+    GetMovieCastCrewUseCase getMovieCastUseCase,
     ShareMovieUseCase shareMovieUseCase,
   ) =>
       _MovieDetailsBloc(
@@ -33,13 +35,15 @@ abstract class MovieDetailsBloc
   void handleBackPressed();
 
   void handleShowMoreLessPressed(bool isExpanded);
+
+  void goToCastCrewPage(List<MovieCharacterEntity> castAndCrew);
 }
 
 class _MovieDetailsBloc
     extends BlocImpl<MovieDetailsScreenArguments, MovieDetailsData>
     implements MovieDetailsBloc {
   final GetImageUrlUseCase _getImageUrlUseCase;
-  final GetMovieCastUseCase _getMovieCastUseCase;
+  final GetMovieCastCrewUseCase _getMovieCastUseCase;
   final ShareMovieUseCase _shareMovieUseCase;
 
   _MovieDetailsBloc(
@@ -99,15 +103,19 @@ class _MovieDetailsBloc
     }
   }
 
+  @override
+  void goToCastCrewPage(List<MovieCharacterEntity> castAndCrew) {
+    appNavigator.push(
+      CastCrewScreen.page(
+        CastCrewScreenArguments(castAndCrew: castAndCrew),
+      ),
+    );
+  }
+
   Future<void> _getCast(MovieDetailsScreenArguments args) async {
     final traktId = args.movieDetails.traktId;
 
-    final getMovieCastUsecaseParams = GetMovieCastUseCaseParams(
-      traktId,
-      MovieDetailsScreenConfig.maxCastCount,
-    );
-
-    final movieCast = await _getMovieCastUseCase(getMovieCastUsecaseParams);
+    final movieCast = await _getMovieCastUseCase(traktId);
 
     final newState = MovieDetailsData(
       args.movieDetails,
