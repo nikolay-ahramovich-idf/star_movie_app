@@ -5,6 +5,35 @@ on:
     branches:
       - main
 jobs:
+  tests:
+    name: Testing Application
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.3.4'
+          channel: 'stable'
+      - run: mkdir assets/json
+      - run: echo $SECRETS_FILE_CONTENT | base64 -d > assets/json/config.json
+        env:
+          SECRETS_FILE_CONTENT: ${{ secrets.SECRETS_FILE_CONTENT }}
+      - run: flutter pub get
+      - run: echo $GOOGLE_SERVICES_FILE_CONTENT | base64 -d > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
+      - name: Tests
+        run: flutter test packages/data && flutter test packages/domain && flutter test packages/presentation --no-test-assets
+      - name: Integration tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 27
+          arch: x86_64
+          script: flutter test --flavor sandbox integration_test
   apk:
     name: Generate APK
     runs-on: ubuntu-latest
@@ -28,7 +57,7 @@ jobs:
           GOOGLE_SERVICES_FILE_CONTENT: ${{ secrets.GOOGLE_SERVICES_FILE_CONTENT }}
       - name: Build APK
         run: flutter build apk --flavor sandbox -t lib/main_sandbox.dart --debug
-      - name: upload artifact to Firebase App Distribution
+      - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.5
         with:
           appId: ${{secrets.FIREBASE_ANDROID_APP_ID}}

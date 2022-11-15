@@ -53,7 +53,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final _formStateGlobalKey = GlobalKey<FormState>();
+  var _formStateGlobalKey = GlobalKey<FormState>();
 
   _LoginBloc(
     this._userIsRegisteredUseCase,
@@ -158,7 +158,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
       null,
     ));
 
-    _formStateGlobalKey.currentState?.validate();
+    formStateGlobalKey.currentState?.validate();
   }
 
   void _updateFieldControllers(UserEntity user) {
