@@ -1,3 +1,4 @@
+import 'package:domain/usecases/date_validation_usecase.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
@@ -18,6 +19,8 @@ import 'package:presentation/screens/home/home_bloc.dart';
 import 'package:presentation/screens/login/login_bloc.dart';
 import 'package:presentation/screens/login/login_view_mapper.dart';
 import 'package:presentation/screens/movie_details/movie_details_bloc.dart';
+import 'package:presentation/screens/payment/payment_bloc.dart';
+import 'package:presentation/screens/payment/payment_view_mapper.dart';
 import 'package:presentation/screens/splash/splash_bloc.dart';
 
 void initPresentationInjector() {
@@ -26,6 +29,7 @@ void initPresentationInjector() {
   _initLoginModule();
   _initHomeModule();
   _initMovieDetailsModule();
+  _initPaymentModule();
 }
 
 void _initAppModule() {
@@ -75,6 +79,16 @@ void _initMovieDetailsModule() {
       GetIt.I.get<GetImageUrlUseCase>(),
       GetIt.I.get<GetMovieCastUseCase>(),
       GetIt.I.get<ShareMovieUseCase>(),
+    ),
+  );
+}
+
+void _initPaymentModule() {
+  GetIt.I.registerFactory<PaymentViewMapper>(() => PaymentViewMapper());
+
+  GetIt.I.registerFactory<PaymentBloc>(
+    () => PaymentBloc(
+      GetIt.I.get<DateValidationUseCase>(),
     ),
   );
 }

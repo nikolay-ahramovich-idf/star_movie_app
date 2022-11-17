@@ -9,6 +9,7 @@ import 'package:domain/services/analytics_service.dart';
 import 'package:domain/services/app_config_service.dart';
 import 'package:domain/services/app_interaction_service.dart';
 import 'package:domain/services/share_movie_service.dart';
+import 'package:domain/usecases/date_validation_usecase.dart';
 import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
@@ -101,5 +102,9 @@ Future<void> _initUsecaseModule() async {
     () => SetLastAppInteractionTimeUseCase(
       GetIt.I.get<AppInteractionService>(),
     ),
+  );
+
+  GetIt.I.registerFactory<DateValidationUseCase>(
+    () => DateValidationUseCase(),
   );
 }

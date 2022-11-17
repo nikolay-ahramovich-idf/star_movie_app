@@ -53,7 +53,7 @@ class _LoginBloc extends BlocImpl<BaseArguments, LoginData>
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  var _formStateGlobalKey = GlobalKey<FormState>();
+  final _formStateGlobalKey = GlobalKey<FormState>();
 
   _LoginBloc(
     this._userIsRegisteredUseCase,
