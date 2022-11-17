@@ -129,3 +129,14 @@ class RatingWidgetStyles {
     AppSizes.size30,
   );
 }
+
+class CastCrewWidgetStyles {
+  CastCrewWidgetStyles._();
+
+  static final castAndCrewLabelStyle = AppStyles.white(AppSizes.size14);
+
+  static final castAndCrewRoleLabelStyle = AppStyles.white(
+    AppSizes.size12,
+    opacity: 0.5,
+  );
+}

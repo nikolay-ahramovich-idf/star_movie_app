@@ -1,35 +1,37 @@
 class MovieCharacterEntity {
-  final String characterName;
-  final String actorName;
+  final String roleName;
+  final String personName;
   final int tmdbId;
   final String? posterPath;
 
   const MovieCharacterEntity({
-    required this.characterName,
-    required this.actorName,
+    required this.roleName,
+    required this.personName,
     required this.tmdbId,
     required this.posterPath,
   });
 
   MovieCharacterEntity updatePosterPath(String posterPath) {
     return MovieCharacterEntity(
-      characterName: characterName,
-      actorName: actorName,
+      roleName: roleName,
+      personName: personName,
       tmdbId: tmdbId,
       posterPath: posterPath,
     );
   }
 
   factory MovieCharacterEntity.fromJson(Map<String, dynamic> json) {
-    final characterName = List<String>.from(json['characters']).first;
+    final roleName = json.containsKey('characters')
+        ? List<String>.from(json['characters']).first
+        : List<String>.from(json['jobs']).first;
 
     final person = Map<String, dynamic>.from(json['person']);
-    final actorName = person['name'] as String;
+    final personName = person['name'] as String;
     final tmdbId = Map<String, dynamic>.from(person['ids'])['tmdb'] as int;
 
     return MovieCharacterEntity(
-      characterName: characterName,
-      actorName: actorName,
+      roleName: roleName,
+      personName: personName,
       tmdbId: tmdbId,
       posterPath: null,
     );

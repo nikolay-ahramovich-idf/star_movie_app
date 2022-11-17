@@ -10,18 +10,24 @@ class TMDBImagesRepository implements ImagesRepository {
 
   @override
   Future<List<Map<String, dynamic>>?> getActorsProfiles(int id) async {
-    final actorImagesResponse = await _tmdbApiService
-        .get<Map<String, dynamic>>(_getActorProfilesUri(id));
+    try {
+      final actorImagesResponse = await _tmdbApiService
+          .get<Map<String, dynamic>>(_getActorProfilesUri(id));
 
-    if (actorImagesResponse.data == null) {
+      if (actorImagesResponse.data == null) {
+        return null;
+      }
+
+      final actorProfiles = List<Map<String, dynamic>>.from(
+        actorImagesResponse.data?['profiles'],
+      );
+
+      return actorProfiles;
+    } catch (e) {
+      print(e.toString());
+
       return null;
     }
-
-    final actorProfiles = List<Map<String, dynamic>>.from(
-      actorImagesResponse.data?['profiles'],
-    );
-
-    return actorProfiles;
   }
 
   String _getActorProfilesUri(int id) {

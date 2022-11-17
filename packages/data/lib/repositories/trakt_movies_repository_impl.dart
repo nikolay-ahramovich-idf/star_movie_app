@@ -1,7 +1,7 @@
 import 'package:data/const.dart';
 import 'package:data/services/api_base_service.dart';
 import 'package:dio/dio.dart';
-import 'package:domain/entities/cast_response_entity.dart';
+import 'package:domain/entities/cast_crew_response_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
 import 'package:domain/exceptions/movies_request_exception.dart';
 import 'package:domain/repositories/movies_repository.dart';
@@ -34,14 +34,14 @@ class TraktMoviesRepositoryImpl implements MoviesRepository {
   }
 
   @override
-  Future<CastResponseEntity> getCast(int movieId) async {
+  Future<CastCrewResponseEntity> getCastAndCrew(int movieId) async {
     final peopleApiUri = _getPeopleApiUri(movieId);
 
     final peopleResponse = await _traktApiService.get<Map<String, dynamic>>(
       peopleApiUri,
     );
 
-    return CastResponseEntity.fromJson(peopleResponse.data ?? {});
+    return CastCrewResponseEntity.fromJson(peopleResponse.data ?? {});
   }
 
   Future<MoviesResponseEntity> _getMovies(

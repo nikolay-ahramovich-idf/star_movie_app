@@ -27,6 +27,24 @@ class Responsive {
     }
   }
 
+  static int rowsCountPerWidgetSize(context) {
+    final parentWidth = MediaQuery.of(context).size.width;
+
+    if (parentWidth < 700) {
+      return 1;
+    }
+
+    if (parentWidth < 1000) {
+      return 2;
+    }
+
+    if (parentWidth < 1400) {
+      return 3;
+    }
+
+    return 4;
+  }
+
   static bool isDesktop(BuildContext context) {
     return _getScreenType(context) == ScreenType.desktop;
   }

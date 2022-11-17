@@ -68,15 +68,14 @@ class MobileMovieDetailsWidget extends StatelessWidget {
                             icon: const Icon(
                               Icons.arrow_back_ios,
                               color: AppColors.white,
-                              size: MovieDetailsScreenSizes.navigationIconSize,
+                              size: AppSizes.navigationIconSize,
                             ),
                           ),
                           InkWell(
                             splashColor: Colors.green,
                             child: Image.asset(
                               AssetsImagesPaths.respondArrow,
-                              height:
-                                  MovieDetailsScreenSizes.navigationIconSize,
+                              height: AppSizes.navigationIconSize,
                             ),
                             onTap: () => bloc.shareMovie(
                               appLocalizations.shareMovieMessage,
@@ -166,7 +165,10 @@ class MobileMovieDetailsWidget extends StatelessWidget {
                                     bloc.handleShowMoreLessPressed,
                               ),
                               const SizedBox(height: AppSizes.size32),
-                              CastWidget(cast),
+                              CastWidget(
+                                bloc,
+                                cast,
+                              ),
                             ],
                           ),
                         ],

@@ -14,7 +14,7 @@ import 'package:domain/usecases/delay_usecase.dart';
 import 'package:domain/usecases/facebook_auth_usecase.dart';
 import 'package:domain/usecases/get_coming_soon_movies_usecase.dart';
 import 'package:domain/usecases/get_image_url_usecase.dart';
-import 'package:domain/usecases/get_movie_cast_usecase.dart';
+import 'package:domain/usecases/get_movie_cast_crew_usecase.dart';
 import 'package:domain/usecases/get_now_showing_movies_usecase.dart';
 import 'package:domain/usecases/google_auth_usecase.dart';
 import 'package:domain/usecases/log_analytics_event_usecase.dart';
@@ -54,8 +54,8 @@ Future<void> _initUsecaseModule() async {
     IMDBConfig.imdbApiKeyJsonConfigName,
   );
 
-  GetIt.I.registerFactory<GetMovieCastUseCase>(
-    () => GetMovieCastUseCase(
+  GetIt.I.registerFactory<GetMovieCastCrewUseCase>(
+    () => GetMovieCastCrewUseCase(
       GetIt.I.get<MoviesRepository>(),
       GetIt.I.get<MoviesDatabaseRepository>(),
       GetIt.I.get<ImagesRepository>(),

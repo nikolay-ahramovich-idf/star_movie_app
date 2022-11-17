@@ -1,4 +1,4 @@
-import 'package:domain/entities/cast_response_entity.dart';
+import 'package:domain/entities/cast_crew_response_entity.dart';
 import 'package:domain/entities/movies_response_entity.dart';
 
 abstract class MoviesRepository {
@@ -10,5 +10,5 @@ abstract class MoviesRepository {
     Map<String, dynamic> queryParameters,
   ]);
 
-  Future<CastResponseEntity> getCast(int movieId);
+  Future<CastCrewResponseEntity> getCastAndCrew(int movieId);
 }
