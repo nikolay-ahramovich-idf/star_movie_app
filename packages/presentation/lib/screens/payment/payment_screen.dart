@@ -67,9 +67,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                     filled: true,
                     fillColor: LoginScreenColors.inputFieldBackgroundColor,
                   ),
-                  style: const TextStyle(
-                    color: AppColors.transparentWhite50,
-                  ),
+                  style: const TextStyle(color: AppColors.transparentWhite50),
                 ),
                 const SizedBox(height: AppSizes.size24),
                 Text(
@@ -86,9 +84,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                     filled: true,
                     fillColor: LoginScreenColors.inputFieldBackgroundColor,
                   ),
-                  style: const TextStyle(
-                    color: AppColors.transparentWhite50,
-                  ),
+                  style: const TextStyle(color: AppColors.transparentWhite50),
                 ),
                 const SizedBox(height: AppSizes.size24),
                 Row(
@@ -136,9 +132,7 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                             appLocalizations.cvvFieldLabel,
                             style: const TextStyle(color: AppColors.white),
                           ),
-                          const SizedBox(
-                            height: AppSizes.size4,
-                          ),
+                          const SizedBox(height: AppSizes.size4),
                           TextFormField(
                             controller: bloc.cvvController,
                             inputFormatters: [
@@ -169,13 +163,11 @@ class _PaymentScreenState extends BlocScreenState<PaymentScreen, PaymentBloc> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.red,
-                    ),
+                        backgroundColor: AppColors.red),
                     onPressed: bloc.onSubmit,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppSizes.size15,
-                      ),
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSizes.size15),
                       child: Text(
                         appLocalizations.paymentButtonLabel,
                       ),

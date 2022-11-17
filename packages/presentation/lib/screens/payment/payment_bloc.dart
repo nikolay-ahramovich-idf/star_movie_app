@@ -58,7 +58,9 @@ class _PaymentBloc extends BlocImpl<BaseArguments, PaymentData>
   @override
   void onSubmit() {
     try {
-      _dateValidationUseCase(_dateController.text);
+      final date = _parseDate(_dateController.text);
+
+      _dateValidationUseCase(date);
 
       if (state.dateValidationStatus != null) {
         add(PaymentData(null));
@@ -74,7 +76,23 @@ class _PaymentBloc extends BlocImpl<BaseArguments, PaymentData>
   void dispose() {
     _phoneNumberController.dispose();
     _cardNumberController.dispose();
+    _dateController.dispose();
+    _cvvController.dispose();
 
     super.dispose();
+  }
+
+  DateModel _parseDate(String date) {
+    final dateRegExp = RegExp(r'^(\d{2})?\/?(\d{2})?$');
+
+    final matches = dateRegExp.firstMatch(date);
+
+    final month = int.tryParse(matches?.group(1) ?? '');
+    final year = int.tryParse(matches?.group(2) ?? '');
+
+    return DateModel(
+      month,
+      year,
+    );
   }
 }
