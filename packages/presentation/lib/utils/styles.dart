@@ -133,9 +133,9 @@ class RatingWidgetStyles {
 class CastCrewWidgetStyles {
   CastCrewWidgetStyles._();
 
-  static final movieDescriptionCastNameStyle = AppStyles.white(AppSizes.size14);
+  static final castAndCrewLabelStyle = AppStyles.white(AppSizes.size14);
 
-  static final movieDescriptionRoleNameStyle = AppStyles.white(
+  static final castAndCrewRoleLabelStyle = AppStyles.white(
     AppSizes.size12,
     opacity: 0.5,
   );

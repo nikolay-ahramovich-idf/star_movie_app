@@ -41,7 +41,7 @@ class CastCrewWidget extends StatelessWidget {
                   width: AppSizes.size100,
                   child: Text(
                     castAndCrewItem.personName,
-                    style: CastCrewWidgetStyles.movieDescriptionCastNameStyle,
+                    style: CastCrewWidgetStyles.castAndCrewLabelStyle,
                   ),
                 )
               ],
@@ -58,7 +58,7 @@ class CastCrewWidget extends StatelessWidget {
                   width: AppSizes.size100,
                   child: Text(
                     castAndCrewItem.roleName.toUpperCase(),
-                    style: CastCrewWidgetStyles.movieDescriptionRoleNameStyle,
+                    style: CastCrewWidgetStyles.castAndCrewRoleLabelStyle,
                   ),
                 ),
               ],
