@@ -1,8 +1,6 @@
 enum DateValidationExceptionStatus {
   emptyMonth,
-  invalidMonth,
   emptyYear,
-  invalidYear,
   outRangeMonth,
   dateExpired,
 }
